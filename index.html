@@ -505,14 +505,27 @@ function finishCleanup(step,ok){
     $("nextMsg").textContent="🤝 이제 짝의 데이터와 합쳐서 다시 청소시켜 봐요!";
     $("nextBtn").textContent="🤝 합쳐서 청소시키기 →"; $("nextBox").style.display="block";
   }else if(step===2){
-    $("growthMsg").textContent=`합치니 데이터가 10개! ${_soloPct!=null?`혼자(${_soloPct}%)보다 안정적이에요. `:""}어려운 물체는 아직 헷갈려요.`;
-    $("nextMsg").textContent="📚 5개씩 더 가르치면 어려운 것까지 맞힐까요?";
-    $("nextBtn").textContent="📚 더 가르치러 가기 →"; $("nextBox").style.display="block";
+    const wrong=TEST.length-ok;
+    if(pct>=100){
+      // 합쳤는데 이미 완벽 → 더 훈련 없이 마무리
+      $("growthMsg").textContent=`🎉 합치니 ${pct}%! 둘의 데이터로 완벽하게 청소했어요.`;
+      finishStage();
+    }else{
+      // 아직 못 거르는 게 있음 → 더 훈련 권유
+      $("growthMsg").textContent=`합치니 데이터가 10개! ${_soloPct!=null?`혼자(${_soloPct}%)보다 안정적이에요. `:""}하지만 로봇이 아직 ${wrong}개를 헷갈려 해요. 🤔`;
+      $("nextMsg").innerHTML=`🤖 "아직 잘 못 거르겠어요! <b>5개씩 더 가르쳐</b> 주실래요?"`;
+      $("nextBtn").textContent="📚 훈련 더 시키기 (5개씩 추가) →"; $("nextBox").style.display="block";
+    }
   }else{
     $("growthMsg").textContent=`🎉 데이터 20개! 로봇이 ${pct}% 정확도로 청소했어요.`;
-    renderNoiseList(); $("noiseSec").style.display="block"; $("lbBox").style.display="block"; $("talkBox").style.display="block"; $("resetBox").style.display="block"; loadLeaderboard();
+    finishStage();
   }
 }
+function finishStage(){
+  // 노이즈·순위·토론 표시 (마무리 공통)
+  renderNoiseList();
+  $("noiseSec").style.display="block"; $("lbBox").style.display="block"; $("talkBox").style.display="block"; $("resetBox").style.display="block";
+  loadLeaderboard();
 function nextStep(){
   if(curStep===1){ const t=buildTrain(1); _soloPct=Math.max(accOf(t.A),accOf(t.B)); curStep=2; runCleanup(2); }
   else if(curStep===2){ startRound2(); }
