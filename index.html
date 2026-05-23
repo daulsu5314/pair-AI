@@ -8,11 +8,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Black+Han+Sans&family=Gaegu:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  :root{--deep:#0a2238;--deep2:#0e3050;--ink:#eaf4fb;--card:#13314f;--cardline:#2a5680;
-    --accent:#ffb33e;--trash:#ff7043;--life:#46d6cf;--pa:#a78bff;--pb:#5fe0c8;--muted:#8fb4cf;--soft:#102844;--frame:#cfd8de;}
+  :root{--deep:#0a2238;--ink:#eaf4fb;--card:#13314f;--cardline:#2a5680;--accent:#ffb33e;
+    --trash:#ff7043;--life:#46d6cf;--pa:#a78bff;--pb:#5fe0c8;--pc:#ff9ec4;--muted:#8fb4cf;--soft:#102844;--frame:#cfd8de;--ok:#5fd98a;}
   *{box-sizing:border-box;}html,body{margin:0;padding:0;}
-  body{background:linear-gradient(180deg,#0a2238 0%,#06182b 100%);color:var(--ink);
-    font-family:'Gowun Dodum',sans-serif;line-height:1.55;padding:18px 14px 50px;min-height:100vh;}
+  body{background:linear-gradient(180deg,#0a2238 0%,#06182b 100%);color:var(--ink);font-family:'Gowun Dodum',sans-serif;line-height:1.55;padding:18px 14px 50px;min-height:100vh;}
   .wrap{max-width:820px;margin:0 auto;}
   header{text-align:center;margin-bottom:10px;}
   .badge{display:inline-block;font-family:'Gaegu',cursive;font-weight:700;background:var(--life);color:#04222e;padding:3px 16px;border-radius:20px;font-size:13px;letter-spacing:1px;margin-bottom:6px;}
@@ -26,14 +25,18 @@
   .intro{text-align:center;}
   .robot{font-size:74px;line-height:1;margin-bottom:6px;animation:bob 2.5s ease-in-out infinite;}
   @keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
-  .speech{background:var(--soft);border:2px solid var(--cardline);border-radius:16px;padding:15px 18px;max-width:460px;margin:0 auto 16px;font-size:14px;position:relative;}
+  .speech{background:var(--soft);border:2px solid var(--cardline);border-radius:16px;padding:15px 18px;max-width:470px;margin:0 auto 16px;font-size:14px;position:relative;}
   .speech::after{content:"";position:absolute;top:-12px;left:50%;transform:translateX(-50%);border:6px solid transparent;border-bottom-color:var(--cardline);}
   .speech b{color:var(--accent);}
   .lobby{text-align:center;}.lobby h2{font-family:'Black Han Sans',sans-serif;font-size:18px;margin:0 0 12px;}
-  .field{margin:0 auto 14px;max-width:340px;text-align:left;}
+  .pickn{display:flex;gap:10px;justify-content:center;margin-bottom:14px;}
+  .pickn button{font-family:'Gaegu',cursive;font-weight:700;font-size:15px;padding:9px 20px;border-radius:12px;border:2px solid var(--cardline);background:var(--soft);color:var(--ink);cursor:pointer;}
+  .pickn button.sel{background:var(--accent);color:#3a2410;border-color:var(--accent);}
+  .field{margin:0 auto 12px;max-width:340px;text-align:left;}
   .field label{font-size:13px;color:var(--muted);display:block;margin-bottom:4px;font-family:'Gaegu',cursive;font-weight:700;}
-  .field input{width:100%;font-family:'Gaegu',cursive;font-size:18px;border:2px solid var(--cardline);border-radius:10px;padding:11px 14px;text-align:center;letter-spacing:2px;text-transform:uppercase;background:var(--soft);color:var(--ink);}
-  .bigbtn{font-family:'Gaegu',cursive;font-weight:700;font-size:16px;background:var(--accent);color:#3a2410;border:none;border-radius:10px;padding:12px 24px;cursor:pointer;box-shadow:0 4px 0 #c8861f;}
+  .field input{width:100%;font-family:'Gaegu',cursive;font-size:17px;border:2px solid var(--cardline);border-radius:10px;padding:10px 13px;background:var(--soft);color:var(--ink);}
+  .field input.code{text-align:center;letter-spacing:2px;text-transform:uppercase;}
+  .bigbtn{font-family:'Gaegu',cursive;font-weight:700;font-size:16px;background:var(--accent);color:#3a2410;border:none;border-radius:10px;padding:12px 26px;cursor:pointer;box-shadow:0 4px 0 #c8861f;}
   .bigbtn:active{transform:translateY(2px);box-shadow:0 2px 0 #c8861f;}
   .bigbtn.ghost{background:var(--soft);color:var(--ink);border:2px solid var(--cardline);box-shadow:none;}
   .or{font-family:'Gaegu',cursive;color:var(--muted);margin:12px 0;}
@@ -42,34 +45,23 @@
   .waitroom{text-align:center;}
   .roomcode{font-family:'Black Han Sans',sans-serif;font-size:38px;letter-spacing:6px;color:var(--accent);background:var(--soft);border:2px dashed var(--accent);border-radius:14px;padding:13px;margin:8px 0 6px;}
   .roominfo{font-size:13px;color:var(--muted);margin-bottom:16px;}
-  .players{display:flex;gap:14px;justify-content:center;margin-bottom:14px;}
-  .pcard{flex:1;max-width:200px;border:2px solid var(--cardline);border-radius:12px;padding:13px;background:var(--soft);}
-  .pcard.a{border-color:var(--pa);}.pcard.b{border-color:var(--pb);}
-  .pcard .role{font-family:'Black Han Sans',sans-serif;font-size:15px;}
-  .pcard.a .role{color:var(--pa);}.pcard.b .role{color:var(--pb);}
+  .players{display:flex;gap:10px;justify-content:center;margin-bottom:14px;flex-wrap:wrap;}
+  .pcard{flex:1;min-width:120px;max-width:180px;border:2px solid var(--cardline);border-radius:12px;padding:12px;background:var(--soft);}
+  .pcard.a{border-color:var(--pa);}.pcard.b{border-color:var(--pb);}.pcard.c{border-color:var(--pc);}
+  .pcard .role{font-family:'Black Han Sans',sans-serif;font-size:14px;}
+  .pcard.a .role{color:var(--pa);}.pcard.b .role{color:var(--pb);}.pcard.c .role{color:var(--pc);}
   .pcard .status{font-size:12px;color:var(--muted);margin-top:4px;}.pcard .status.joined{color:var(--life);font-weight:700;}
   .spinner{font-size:32px;animation:spin 1.4s linear infinite;display:inline-block;}
   @keyframes spin{to{transform:rotate(360deg);}}
-
-  /* ===== Code.org 스타일 실험실 무대 ===== */
-  .lab{position:relative;background:
-      radial-gradient(circle at 12% 18%,rgba(70,214,207,.10),transparent 30%),
-      radial-gradient(circle at 88% 80%,rgba(167,139,255,.10),transparent 32%),
-      linear-gradient(180deg,#123150 0%,#0c2138 100%);
-    border:2px solid var(--cardline);border-radius:16px;padding:16px 14px 18px;overflow:hidden;}
-  /* 상단 바: 질문 + 수집 카운터 */
+  .lab{position:relative;background:radial-gradient(circle at 12% 18%,rgba(70,214,207,.10),transparent 30%),radial-gradient(circle at 88% 80%,rgba(167,139,255,.10),transparent 32%),linear-gradient(180deg,#123150 0%,#0c2138 100%);border:2px solid var(--cardline);border-radius:16px;padding:16px 14px 18px;overflow:hidden;}
   .lab-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;}
   .lab-q{font-family:'Black Han Sans',sans-serif;font-size:clamp(16px,2.6vw,22px);color:#dff;}
   .counter{display:flex;align-items:center;gap:6px;background:#061626;border:1.5px solid var(--cardline);border-radius:18px;padding:4px 12px;font-family:'Black Han Sans';font-size:15px;}
-  .counter .ic{font-size:16px;}
   .counter .n{color:var(--accent);}
-  /* 무대 가운데: 액자들 + 로봇 */
   .stagewrap{display:flex;align-items:center;justify-content:center;gap:10px;min-height:230px;}
   .frame{background:var(--frame);border-radius:8px;padding:9px 9px 22px;box-shadow:0 6px 16px rgba(0,0,0,.35);position:relative;}
   .frame .pic{background:#222b33;border-radius:4px;width:150px;height:150px;display:flex;align-items:center;justify-content:center;font-size:84px;}
-  .frame.side{transform:scale(.62);opacity:.5;filter:blur(.4px);}
-  .frame.side .pic{font-size:70px;}
-  /* 스캔 프레임(네온 모서리) */
+  .frame.side{transform:scale(.62);opacity:.5;}.frame.side .pic{font-size:70px;}
   .scan{position:relative;}
   .scan::before,.scan::after,.scan .c1,.scan .c2{content:"";position:absolute;width:26px;height:26px;border:3px solid var(--life);}
   .scan::before{top:-8px;left:-8px;border-right:0;border-bottom:0;border-radius:6px 0 0 0;}
@@ -81,30 +73,25 @@
   .labrobot{font-size:64px;flex-shrink:0;animation:bob 2.6s ease-in-out infinite;}
   .labrobot .tag{display:block;font-family:'Black Han Sans';font-size:12px;color:var(--muted);text-align:center;margin-top:-6px;}
   .itemname{text-align:center;font-family:'Black Han Sans',sans-serif;font-size:18px;margin:8px 0 2px;}
-  /* 라벨 버튼 */
   .lbl-btns{display:flex;gap:12px;margin-top:12px;}
   .lbl-btns button{flex:1;font-family:'Gaegu',cursive;font-weight:700;font-size:16px;border:none;border-radius:10px;padding:14px 6px;cursor:pointer;color:#fff;}
   .lbl-btns button:active{transform:translateY(2px);}
   .lbl-btns .trash{background:var(--trash);box-shadow:0 4px 0 #c14a26;}.lbl-btns .trash:active{box-shadow:0 2px 0 #c14a26;}
   .lbl-btns .life{background:var(--life);box-shadow:0 4px 0 #239a94;color:#04222e;}.lbl-btns .life:active{box-shadow:0 2px 0 #239a94;}
-  .phase-tag{text-align:center;font-family:'Gaegu',cursive;font-weight:700;font-size:13px;background:var(--soft);border-radius:16px;padding:4px 14px;display:inline-block;margin:0 auto 8px;color:var(--accent);}
   .who-now{text-align:center;font-family:'Black Han Sans',sans-serif;font-size:16px;margin-bottom:8px;}
-  .who-now.a{color:var(--pa);}.who-now.b{color:var(--pb);}
+  .who-now.a{color:var(--pa);}.who-now.b{color:var(--pb);}.who-now.c{color:var(--pc);}
+  .phase-tag{text-align:center;font-family:'Gaegu',cursive;font-weight:700;font-size:13px;background:var(--soft);border-radius:16px;padding:4px 14px;display:inline-block;margin:0 auto 8px;color:var(--accent);}
   .dots{display:flex;gap:5px;justify-content:center;margin-top:12px;flex-wrap:wrap;}
   .dot{width:12px;height:12px;border-radius:50%;background:var(--cardline);}.dot.done{background:var(--accent);}
   .partner-prog{text-align:center;font-size:12.5px;color:var(--muted);margin-top:8px;font-family:'Gaegu',cursive;}
   .midresult{text-align:center;}
-
-  /* 청소 무대 결과 */
   .stepbar{display:flex;gap:6px;justify-content:center;margin-bottom:10px;flex-wrap:wrap;}
-  .stepchip{font-size:11.5px;font-family:'Gaegu',cursive;font-weight:700;padding:3px 10px;border-radius:12px;background:var(--soft);color:var(--muted);border:1.5px solid var(--cardline);}
+  .stepchip{font-size:11px;font-family:'Gaegu';font-weight:700;padding:3px 9px;border-radius:12px;background:var(--soft);color:var(--muted);border:1.5px solid var(--cardline);}
   .stepchip.on{background:var(--accent);color:#3a2410;border-color:var(--accent);}
   .stepchip.done{color:var(--life);border-color:var(--life);}
   .verdict{text-align:center;font-family:'Gaegu',cursive;font-size:14px;min-height:22px;margin-top:10px;}
-  .scoreboard{text-align:center;font-family:'Black Han Sans',sans-serif;font-size:18px;margin:10px 0 2px;}
-  .scoreboard .pct{color:var(--accent);font-size:30px;display:inline-block;transition:transform .3s ease,color .3s ease;}
-  .scoreboard .cnt{font-size:13px;color:var(--muted);font-family:'Gowun Dodum';}
-  /* 처리된 물체들이 쌓이는 트레이 */
+  .datacount{text-align:center;font-family:'Gaegu',cursive;font-weight:700;font-size:13px;color:var(--life);margin-top:4px;}
+  .datacount b{font-family:'Black Han Sans';color:var(--accent);font-size:16px;}
   .trays{display:flex;gap:10px;margin-top:12px;}
   .tray{flex:1;background:var(--soft);border:1.5px solid var(--cardline);border-radius:12px;padding:8px;min-height:70px;}
   .tray.trash{border-color:var(--trash);}.tray.life{border-color:var(--life);}
@@ -115,6 +102,9 @@
   .tray .ti.wrong{background:rgba(255,112,67,.25);outline:2px solid var(--trash);animation:wrongpulse 1s ease-in-out 2;}
   @keyframes wrongpulse{0%,100%{outline-color:var(--trash);}50%{outline-color:#ffd9a8;}}
   .tray .ti .x{position:absolute;top:-7px;right:-8px;font-size:14px;}
+  .scoreboard{text-align:center;font-family:'Black Han Sans',sans-serif;font-size:18px;margin:10px 0 2px;}
+  .scoreboard .pct{color:var(--accent);font-size:30px;display:inline-block;transition:transform .3s ease,color .3s ease;}
+  .scoreboard .cnt{font-size:13px;color:var(--muted);font-family:'Gowun Dodum';}
   .winner{text-align:center;font-family:'Gaegu',cursive;font-weight:700;font-size:15px;color:var(--life);margin:10px 0;min-height:20px;}
   .nextbox{text-align:center;margin-top:10px;}.nextbox p{font-size:13.5px;color:#ffd9a8;margin:0 0 10px;}
   .noise-sec{background:var(--soft);border-radius:12px;padding:16px;margin-top:14px;}
@@ -123,15 +113,14 @@
   .noise-list{display:flex;flex-direction:column;gap:8px;}
   .noise-item{display:flex;align-items:center;gap:10px;background:var(--card);border:1.5px solid var(--cardline);border-radius:10px;padding:8px 12px;font-size:13.5px;flex-wrap:wrap;}
   .noise-item .emoji{font-size:22px;}.noise-item .nm{font-weight:700;min-width:74px;}
-  .noise-item .who{font-size:11px;padding:1px 8px;border-radius:10px;}
-  .noise-item .who.a{background:#2a2150;color:var(--pa);}.noise-item .who.b{background:#0d3f3a;color:var(--pb);}
+  .noise-item .who{font-size:11px;padding:1px 8px;border-radius:10px;background:var(--soft);color:var(--muted);}
   .fixbtn{margin-left:auto;font-family:'Gaegu',cursive;font-weight:700;font-size:12.5px;background:var(--accent);color:#3a2410;border:none;border-radius:8px;padding:5px 12px;cursor:pointer;}
   .fixbtn:active{transform:translateY(1px);}.fixbtn.done{background:var(--soft);color:var(--muted);border:1.5px solid var(--cardline);}
   .recheck{margin-top:14px;text-align:center;}
   .lb{margin-top:16px;}.lb h3{font-family:'Black Han Sans',sans-serif;font-size:15px;margin:0 0 10px;text-align:center;}
   .lb-table{width:100%;border-collapse:collapse;font-size:13.5px;}
   .lb-table th,.lb-table td{border:1px solid var(--cardline);padding:7px 10px;}
-  .lb-table thead th{background:var(--deep2);color:var(--ink);font-weight:400;font-size:12.5px;}
+  .lb-table thead th{background:var(--deep);color:var(--ink);font-weight:400;font-size:12.5px;}
   .lb-table td.rank{text-align:center;font-family:'Black Han Sans',sans-serif;width:48px;}
   .lb-table td.acc{text-align:right;font-family:'Black Han Sans',sans-serif;color:var(--accent);width:70px;}
   .lb-table tr.me{background:#2a3f1a;}.lb-table tr.me td{font-weight:700;}
@@ -151,57 +140,56 @@
     <h1>바다 청소 <span class="hl">로봇</span> 가르치기</h1>
     <p class="lead">쓰레기는 줍고, 바다생물은 놔두도록 — AI에게 직접 가르쳐요!</p>
   </header>
-  <div class="warn" id="setupWarn" style="display:none;">⚙️ <b>아직 Supabase 키가 입력되지 않았어요.</b></div>
+  <div class="warn" id="setupWarn" style="display:none;">⚙️ <b>Supabase 키가 입력되지 않았어요.</b></div>
 
-  <!-- 인트로 -->
   <div class="panel stage on" id="stageIntro">
     <div class="intro">
       <div class="robot">🤖</div>
-      <div class="speech">안녕하세요! 저는 바다 청소 로봇이에요. 🌊<br>바다에 <b>쓰레기가 너무 많아요.</b> 뭘 주워야 할지 가르쳐 주세요!<br>쓰레기는 줍고, <b>물고기·거북이는 놔둬야</b> 해요. 🙏</div>
-      <p style="font-size:13px;color:var(--muted);max-width:480px;margin:0 auto 16px;">두 사람이 <b style="color:var(--pa)">서로 다른 물체</b>를 가르쳐요. 혼자 → 합치기 → 더 가르치기, 로봇이 점점 똑똑해지는 걸 봐요!</p>
+      <div class="speech">안녕하세요! 저는 바다 청소 로봇이에요. 🌊<br>뭘 주워야 할지 가르쳐 주세요. 쓰레기는 줍고, <b>물고기·거북이는 놔둬야</b> 해요. 🙏</div>
+      <p style="font-size:13px;color:var(--muted);max-width:480px;margin:0 auto 16px;">여러 명이 <b style="color:var(--pa)">서로 다른 물체</b>를 가르쳐요. 각자 결과 → 합치기 → 더 가르치기로 점점 똑똑해져요!</p>
       <button class="bigbtn" onclick="goLobby()">🚀 로봇 가르치러 가기</button>
     </div>
   </div>
 
-  <!-- 로비 -->
   <div class="panel stage" id="stage0">
     <div class="lobby">
       <h2>🚪 방 만들기 / 입장하기</h2>
+      <div style="font-size:13px;color:var(--muted);font-family:'Gaegu';font-weight:700;margin-bottom:6px;">몇 명이 함께 하나요? (방 만드는 사람이 정해요)</div>
+      <div class="pickn">
+        <button id="pick2" class="sel" onclick="setN(2)">2명 (가·나)</button>
+        <button id="pick3" onclick="setN(3)">3명 (가·나·다)</button>
+      </div>
+      <div class="field"><label>내 이름</label><input id="myName" placeholder="내 이름" maxlength="10"/></div>
       <div class="field"><label>우리 조 이름 (순위표에 표시)</label><input id="teamName" placeholder="예: 1모둠, 돌고래팀..." maxlength="14"/></div>
       <button class="bigbtn" onclick="createRoom()">🟣 (가) 방 만들기</button>
       <div class="or">— 또는 —</div>
-      <div class="field"><label>짝이 알려준 방 코드</label><input id="joinCode" placeholder="예: 7K2Q" maxlength="4"/></div>
-      <button class="bigbtn ghost" onclick="joinRoom()">🟢 (나) 방 입장하기</button>
+      <div class="field"><label>짝이 알려준 방 코드</label><input id="joinCode" class="code" placeholder="예: 7K2Q" maxlength="4"/></div>
+      <button class="bigbtn ghost" onclick="joinRoom()">🟢 방 입장하기 (나·다)</button>
       <div class="err" id="lobbyErr"></div>
       <div class="conn" id="connStatus">서버 연결 확인 중...</div>
     </div>
   </div>
 
-  <!-- 대기실 -->
   <div class="panel stage" id="stage1">
     <div class="waitroom">
       <h2 style="font-family:'Black Han Sans';font-size:17px;margin:0 0 4px;">방 코드</h2>
       <div class="roomcode" id="roomCodeShow">----</div>
-      <div class="roominfo">짝에게 이 코드를 알려주세요. 둘 다 들어오면 자동 시작!</div>
-      <div class="players">
-        <div class="pcard a"><div class="role">🟣 (가)</div><div class="status joined">입장함</div></div>
-        <div class="pcard b"><div class="role">🟢 (나)</div><div class="status" id="statB">기다리는 중...</div></div>
-      </div>
-      <div><span class="spinner">🌊</span><div style="font-size:13px;color:var(--muted);margin-top:6px;">짝이 들어오면 시작됩니다.</div></div>
+      <div class="roominfo" id="roomInfo">짝에게 이 코드를 알려주세요. 모두 들어오면 자동 시작!</div>
+      <div class="players" id="playersBox"></div>
+      <div><span class="spinner">🌊</span><div style="font-size:13px;color:var(--muted);margin-top:6px;">모두 들어오면 가르치기가 시작됩니다.</div></div>
     </div>
   </div>
 
-  <!-- 라벨링: Code.org 스타일 무대 -->
   <div class="panel stage" id="stage2">
-    <div style="text-align:center;"><span class="phase-tag" id="phaseTag">1라운드 · 물체 5개 가르치기</span></div>
-    <div class="who-now" id="whoNow">🟣 (가)의 차례</div>
+    <div style="text-align:center;"><span class="phase-tag" id="phaseTag">1라운드</span></div>
+    <div class="who-now" id="whoNow">○○님</div>
     <div class="lab">
       <div class="lab-top">
         <span class="lab-q">이것은 무엇인가요?</span>
         <span class="counter">🗑️ <span class="n" id="cntTrash">0</span> &nbsp;|&nbsp; 💙 <span class="n" id="cntLife" style="color:var(--life)">0</span></span>
       </div>
       <div class="stagewrap">
-        <div class="frame side"><div class="pic" id="prevPic">🍶</div></div>
+        <div class="frame side"><div class="pic" id="prevPic">❔</div></div>
         <div class="frame scan glow"><div class="c1"></div><div class="c2"></div><div class="pic" id="lEmoji">🐟</div></div>
         <div class="labrobot">🤖<span class="tag">A.I.</span></div>
       </div>
@@ -216,25 +204,19 @@
     <div class="partner-prog" id="partnerProg"></div>
   </div>
 
-  <!-- 대기 -->
   <div class="panel stage" id="stageWait">
     <div class="midresult"><span class="spinner">🌊</span>
       <h2 style="font-family:'Black Han Sans';font-size:17px;margin:12px 0 4px;" id="waitTitle">가르치기 완료!</h2>
-      <div style="font-size:13px;color:var(--muted);">짝이 끝내면 로봇이 청소를 시작해요. <span id="waitPartnerProg"></span></div>
+      <div style="font-size:13px;color:var(--muted);">친구들이 끝내면 로봇이 청소를 시작해요. <span id="waitPartnerProg"></span></div>
     </div>
   </div>
 
-  <!-- 청소 무대 -->
   <div class="panel stage" id="stage3">
-    <div class="stepbar">
-      <span class="stepchip" id="chip1">1. 혼자 (5개)</span>
-      <span class="stepchip" id="chip2">2. 합치기 (10개)</span>
-      <span class="stepchip" id="chip3">3. 더 가르치기 (20개)</span>
-    </div>
+    <div class="stepbar" id="stepbar"></div>
     <div style="text-align:center;"><span class="phase-tag" id="resultTag">🤖 로봇이 바다를 청소합니다</span></div>
     <div class="lab">
       <div class="lab-top">
-        <span class="lab-q" id="cleanQ">이것은 무엇일까?</span>
+        <span class="lab-q">이것은 무엇일까?</span>
         <span class="counter">정확도 <span class="n" id="livePct">--%</span></span>
       </div>
       <div class="stagewrap">
@@ -242,6 +224,7 @@
         <div class="labrobot">🤖<span class="tag">A.I.</span></div>
       </div>
       <div class="verdict" id="verdict"></div>
+      <div class="datacount" id="dataCount"></div>
     </div>
     <div class="trays">
       <div class="tray trash"><h4>🗑️ 주운 것 (쓰레기라고 판단)</h4><div class="items" id="trayTrash"></div></div>
@@ -250,11 +233,7 @@
     <div style="text-align:center;font-size:11.5px;color:var(--trash);font-family:'Gaegu';margin-top:6px;">🔺 빨간 세모 = 로봇이 잘못 처리한 것 (물고기를 줍거나 쓰레기를 놔둠)</div>
     <div class="scoreboard" id="scoreboard"></div>
     <div class="winner" id="growthMsg"></div>
-
-    <div class="nextbox" id="nextBox" style="display:none;">
-      <p id="nextMsg"></p><button class="bigbtn" id="nextBtn" onclick="nextStep()">다음 →</button>
-    </div>
-
+    <div class="nextbox" id="nextBox" style="display:none;"><p id="nextMsg"></p><button class="bigbtn" id="nextBtn" onclick="nextStep()">다음 →</button></div>
     <div class="noise-sec" id="noiseSec" style="display:none;">
       <h3>🔍 로봇이 실수했나요? — 잘못 가르친 것 찾기</h3>
       <p>로봇이 물고기를 줍거나 쓰레기를 놓쳤다면 누군가 <b>잘못 가르쳤을지도</b> 몰라요. 고치고 다시 청소시켜 보세요.</p>
@@ -266,7 +245,7 @@
       <table class="lb-table"><thead><tr><th>순위</th><th>조 이름</th><th>청소 정확도</th></tr></thead><tbody id="lbBody"></tbody></table>
     </div>
     <div class="talk" id="talkBox" style="display:none;">
-      <div class="bar">💬 짝과 이야기해요</div>
+      <div class="bar">💬 함께 이야기해요</div>
       <div class="body"><ol>
         <li>혼자 가르쳤을 때, 라벨을 잘못 붙이면 정확도가 어떻게 됐나요?</li>
         <li>둘이 합치니(10개) 왜 더 안정적이 됐을까요?</li>
@@ -312,6 +291,14 @@ const B_ITEMS=[
   {e:"🪸",n:"산호",hard:.7,angular:.5,moves:0,organic:1,shiny:.1,eyes:0,truth:"sealife"},
   {e:"🥢",n:"빨대",hard:.6,angular:.4,moves:0,organic:0,shiny:.4,eyes:0,truth:"trash"},
 ];
+const C_ITEMS=[
+  {e:"🦐",n:"새우",hard:.4,angular:.3,moves:1,organic:1,shiny:.2,eyes:1,truth:"sealife"},
+  {e:"🧴",n:"세제통",hard:1,angular:.7,moves:0,organic:0,shiny:.5,eyes:0,truth:"trash"},
+  {e:"🐙",n:"문어",hard:0,angular:0,moves:1,organic:1,shiny:.2,eyes:1,truth:"sealife"},
+  {e:"🐚",n:"고둥",hard:.85,angular:.4,moves:.1,organic:1,shiny:.2,eyes:0,truth:"sealife"},
+  {e:"🪨",n:"콘크리트 조각",hard:1,angular:.7,moves:0,organic:0,shiny:.1,eyes:0,truth:"trash"},
+  {e:"🦞",n:"가재",hard:.7,angular:.5,moves:1,organic:1,shiny:.2,eyes:1,truth:"sealife"},
+];
 const TEST=[
   {e:"🐡",n:"복어",hard:0,angular:.1,moves:1,organic:1,shiny:.3,eyes:1,truth:"sealife"},
   {e:"🐬",n:"돌고래",hard:.2,angular:.1,moves:1,organic:1,shiny:.3,eyes:1,truth:"sealife"},
@@ -334,26 +321,34 @@ const TEST=[
   {e:"📄",n:"비닐조각",hard:0,angular:.3,moves:0,organic:0,shiny:.4,eyes:0,truth:"trash"},
   {e:"🔩",n:"녹슨 철판",hard:1,angular:.6,moves:0,organic:.1,shiny:.2,eyes:0,truth:"trash"},
 ];
+const SPLIT={2:{A:5,B:5,C:0},3:{A:4,B:3,C:3}};
+const ITEMS={A:A_ITEMS,B:B_ITEMS,C:C_ITEMS};
+const RINFO={A:{tag:"🟣 (가)",cls:"a"},B:{tag:"🟢 (나)",cls:"b"},C:{tag:"🌸 (다)",cls:"c"}};
 
-let myRole=null, roomCode=null, teamName="";
-let round=1, idx=0, myItems=[], myLabels=[];
-let aLabels=[],bLabels=[],fixedA=[],fixedB=[];
-let curStep=0, soloShown=false, moreShown=false, aStarted=false, animTimer=null, _soloPct=null;
+let myRole=null, roomCode=null, teamName="", myName="", nPlayers=2;
+let round=1, idx=0, idxBase=0, idxEnd=0, myItems=[], myLabels=[];
+let fixed={A:[],B:[],C:[]};
+let curStep=0, soloShown=false, moreShown=false, startedLabeling=false, animTimer=null, pollTimer=null, _soloPct=null;
 let myTrashCnt=0, myLifeCnt=0;
+let soloQueue=[], soloPos=0;
 const $=id=>document.getElementById(id);
 function showStage(n){["stageIntro","stage0","stage1","stage2","stageWait","stage3"].forEach(s=>$(s).classList.remove("on"));$(n).classList.add("on");}
+function rolesInPlay(){ return ["A","B","C"].slice(0,nPlayers); }
+function perCount(role){ return SPLIT[nPlayers][role]; }
 
 window.addEventListener("load",()=>{
   if(!connected){ $("setupWarn").style.display="block"; $("connStatus").textContent="⚠️ 오프라인 모드 (키 미입력)"; $("connStatus").className="conn bad"; }
   else{ $("connStatus").textContent="✅ 서버 연결됨 — 방을 만들거나 입장하세요"; $("connStatus").className="conn ok"; }
 });
 function goLobby(){ showStage("stage0"); }
+function setN(n){ nPlayers=n; $("pick2").className=n===2?"sel":""; $("pick3").className=n===3?"sel":""; }
 function randCode(){const c="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";let s="";for(let i=0;i<4;i++)s+=c[Math.floor(Math.random()*c.length)];return s;}
 
 async function createRoom(){
   if(!connected){$("lobbyErr").textContent="Supabase 키를 먼저 입력해야 해요.";return;}
-  teamName=$("teamName").value.trim()||"이름없는 조"; roomCode=randCode(); myRole="A";
-  const {error}=await sb.from("sessions").insert({room_code:roomCode,team_name:teamName});
+  myName=$("myName").value.trim()||"가"; teamName=$("teamName").value.trim()||"이름없는 조";
+  roomCode=randCode(); myRole="A";
+  const {error}=await sb.from("sessions").insert({room_code:roomCode,team_name:teamName,n_players:nPlayers,a_name:myName});
   if(error){$("lobbyErr").textContent="방 생성 실패: "+error.message;return;}
   $("roomCodeShow").textContent=roomCode; showStage("stage1"); subscribe();
 }
@@ -361,83 +356,109 @@ async function joinRoom(){
   if(!connected){$("lobbyErr").textContent="Supabase 키를 먼저 입력해야 해요.";return;}
   const code=$("joinCode").value.trim().toUpperCase();
   if(code.length!==4){$("lobbyErr").textContent="방 코드 4자리를 입력하세요.";return;}
+  myName=$("myName").value.trim()||"";
   const {data,error}=await sb.from("sessions").select("*").eq("room_code",code).maybeSingle();
   if(error||!data){$("lobbyErr").textContent="그런 방이 없어요. 코드를 확인하세요.";return;}
-  if(data.b_joined){$("lobbyErr").textContent="이 방엔 이미 (나)가 들어와 있어요.";return;}
-  roomCode=code; myRole="B"; teamName=data.team_name||"";
-  await sb.from("sessions").update({b_joined:true}).eq("room_code",code);
-  subscribe(); startRound1();
+  nPlayers=data.n_players||2;
+  // 빈 자리 찾기: B 먼저, 그다음 C(3명일 때)
+  if(!data.b_joined){ myRole="B"; }
+  else if(nPlayers>=3 && !data.c_joined){ myRole="C"; }
+  else { $("lobbyErr").textContent="이 방은 이미 다 찼어요."; return; }
+  if(!myName) myName = RINFO[myRole].tag.replace(/[🟢🌸() ]/g,"");
+  roomCode=code; teamName=data.team_name||"";
+  const upd = myRole==="B" ? {b_joined:true,b_name:myName} : {c_joined:true,c_name:myName};
+  await sb.from("sessions").update(upd).eq("room_code",code);
+  subscribe();
 }
-let chan=null, pollTimer=null;
 function subscribe(){
-  chan=sb.channel("room-"+roomCode).on("postgres_changes",{event:"*",schema:"public",table:"sessions",filter:"room_code=eq."+roomCode},p=>handleUpdate(p.new)).subscribe();
+  sb.channel("room-"+roomCode).on("postgres_changes",{event:"*",schema:"public",table:"sessions",filter:"room_code=eq."+roomCode},p=>handleUpdate(p.new)).subscribe();
+  sb.channel("lb-"+roomCode).on("postgres_changes",{event:"*",schema:"public",table:"sessions"},()=>loadLeaderboard()).subscribe();
   pollOnce();
-  // 실시간 신호가 안 와도 2초마다 직접 확인 (가장 튼튼한 방법)
-  if(pollTimer) clearInterval(pollTimer);
-  pollTimer=setInterval(()=>{ if(!moreShown) pollOnce(); else clearInterval(pollTimer); }, 2000);
+  if(pollTimer)clearInterval(pollTimer);
+  pollTimer=setInterval(()=>{ if(!moreShown)pollOnce(); else clearInterval(pollTimer); },2000);
 }
 async function pollOnce(){ if(!connected||!roomCode)return; const {data}=await sb.from("sessions").select("*").eq("room_code",roomCode).maybeSingle(); if(data)handleUpdate(data); }
 
+function allJoined(row){ const r=rolesInPlay(); return r.every(k=> k==="A" ? true : (k==="B"?row.b_joined:row.c_joined)); }
+function labelsOf(row,k){ const s=(k==="A"?row.a_labels:k==="B"?row.b_labels:row.c_labels)||""; return s.split("").map(c=>c==="t"?"trash":"sealife"); }
+function soloDoneAll(row){ return rolesInPlay().every(k=> k==="A"?row.a_solo_done:k==="B"?row.b_solo_done:row.c_solo_done); }
+function doneAll(row){ return rolesInPlay().every(k=> k==="A"?row.a_done:k==="B"?row.b_done:row.c_done); }
+
 function handleUpdate(row){
   if(!row)return;
-  if(myRole==="A" && !aStarted && row.b_joined){ aStarted=true; $("statB").textContent="입장함!"; $("statB").classList.add("joined"); setTimeout(startRound1,500); }
-  const partnerLabels = myRole==="A" ? row.b_labels : row.a_labels;
-  const pc = partnerLabels ? partnerLabels.length : 0;
-  const need = round===1?5:10;
-  if($("partnerProg")) $("partnerProg").textContent=`짝 진행: ${Math.min(pc,need)} / ${need}`;
-  if($("waitPartnerProg")) $("waitPartnerProg").textContent=`(짝 진행 ${Math.min(pc,need)}/${need})`;
-  aLabels=(row.a_labels||"").split("").map(c=>c==="t"?"trash":"sealife");
-  bLabels=(row.b_labels||"").split("").map(c=>c==="t"?"trash":"sealife");
-  if(row.a_solo_done && row.b_solo_done && !soloShown && !row.a_done && !row.b_done && aLabels.length>=5 && bLabels.length>=5){
-    soloShown=true; fixedA=aLabels.slice(0,5); fixedB=bLabels.slice(0,5); curStep=1; showStage("stage3"); runCleanup(1);
+  nPlayers=row.n_players||2;
+  // 대기실 표시
+  if($("stage1").classList.contains("on")){ renderPlayers(row); }
+  // 모두 입장 → 라벨링 시작
+  if(!startedLabeling && allJoined(row)){ startedLabeling=true; renderPlayers(row); setTimeout(startRound1,400); }
+  // 짝 진행 표시
+  const need = perCount(myRole)*(round===2?2:1);
+  let others=rolesInPlay().filter(k=>k!==myRole).map(k=>{ const n=labelsOf(row,k).length; const nm=(k==="A"?row.a_name:k==="B"?row.b_name:row.c_name)||RINFO[k].tag; return `${nm} ${Math.min(n,perCount(k)*(round===2?2:1))}/${perCount(k)*(round===2?2:1)}`; });
+  if($("partnerProg")) $("partnerProg").textContent="친구 진행 — "+others.join(" · ");
+  if($("waitPartnerProg")) $("waitPartnerProg").textContent="("+others.join(" · ")+")";
+  // 라벨 동기화
+  for(const k of rolesInPlay()) fixed[k]=labelsOf(row,k);
+  // 1단계(혼자) 결과
+  if(soloDoneAll(row) && !soloShown && !doneAll(row)){
+    soloShown=true; curStep=1; buildSoloQueue(); showStage("stage3"); runClean(soloQueue[0]);
   }
-  if(row.a_done && row.b_done && !moreShown && aLabels.length>=10 && bLabels.length>=10){
-    moreShown=true; fixedA=aLabels.slice(0,10); fixedB=bLabels.slice(0,10); curStep=3; showStage("stage3"); runCleanup(3);
+  // 3단계(더추가) 결과
+  if(doneAll(row) && !moreShown){
+    moreShown=true; curStep=3; showStage("stage3"); runClean({type:"more"});
   }
+}
+function renderPlayers(row){
+  let html='';
+  for(const k of rolesInPlay()){
+    const joined = k==="A" ? true : (k==="B"?row.b_joined:row.c_joined);
+    const nm = (k==="A"?row.a_name:k==="B"?row.b_name:row.c_name)||"";
+    html+=`<div class="pcard ${RINFO[k].cls}"><div class="role">${RINFO[k].tag}</div><div class="status ${joined?'joined':''}">${joined?(nm||"입장함"):"기다리는 중..."}</div></div>`;
+  }
+  $("playersBox").innerHTML=html;
+  $("roomInfo").textContent = nPlayers===3 ? "3명이 모두 들어오면 자동 시작!" : "짝이 들어오면 자동 시작!";
 }
 
 function startRound1(){
-  round=1; idx=0; myLabels=[]; myItems = myRole==="A" ? A_ITEMS : B_ITEMS; myTrashCnt=0; myLifeCnt=0;
+  round=1; const per=perCount(myRole);
+  idxBase=0; idxEnd=per; idx=0; myLabels=[]; myItems=ITEMS[myRole]; myTrashCnt=0; myLifeCnt=0;
   $("cntTrash").textContent="0"; $("cntLife").textContent="0";
-  $("whoNow").className="who-now "+(myRole==="A"?"a":"b");
-  $("whoNow").textContent=(myRole==="A"?"🟣 (가)":"🟢 (나)")+"의 차례";
-  $("phaseTag").textContent="1라운드 · 물체 5개 가르치기"; $("lTot").textContent="5";
+  $("whoNow").className="who-now "+RINFO[myRole].cls;
+  $("whoNow").textContent=(myName||RINFO[myRole].tag)+" ("+RINFO[myRole].tag+")";
+  $("phaseTag").textContent="1라운드 · "+per+"개 가르치기"; $("lTot").textContent=per;
   showStage("stage2"); showItem();
 }
-function startRound2(){ round=2; idx=5; $("phaseTag").textContent="2라운드 · 5개 더 가르치기"; $("lTot").textContent="10"; showStage("stage2"); showItem(); }
-function renderDots(){const s0=round===1?0:5,e0=round===1?5:10;let s='';for(let i=s0;i<e0;i++)s+=`<span class="dot${i<idx?' done':''}"></span>`;$("lDots").innerHTML=s;}
+function startRound2(){
+  round=2; const per=perCount(myRole);
+  idxBase=per; idxEnd=per*2; idx=per;
+  $("phaseTag").textContent="2라운드 · "+per+"개 더 가르치기"; $("lTot").textContent=per;
+  showStage("stage2"); showItem();
+}
 function showItem(){
   const a=myItems[idx];
-  // 이전 물체를 옆 액자에
-  if(idx>0){ $("prevPic").textContent=myItems[idx-1].e; }
-  else { $("prevPic").textContent="❔"; }
+  $("prevPic").textContent = idx>idxBase ? myItems[idx-1].e : "❔";
   $("lEmoji").textContent=a.e; $("lName").textContent=a.n;
-  $("lProg").textContent= round===1?idx:(idx-5); renderDots();
+  $("lProg").textContent=idx-idxBase;
+  let s='';for(let i=idxBase;i<idxEnd;i++)s+=`<span class="dot${i<idx?' done':''}"></span>`;$("lDots").innerHTML=s;
 }
 async function putLabel(label){
   myLabels[idx]=label; idx++;
-  if(label==="trash"){myTrashCnt++;$("cntTrash").textContent=myTrashCnt;} else {myLifeCnt++;$("cntLife").textContent=myLifeCnt;}
+  if(label==="trash"){myTrashCnt++;$("cntTrash").textContent=myTrashCnt;}else{myLifeCnt++;$("cntLife").textContent=myLifeCnt;}
   const str=myLabels.map(l=>l==="trash"?"t":"s").join("");
-  const end=round===1?5:10;
-  if(idx>=end){
-    // 마지막: 라벨 + 완료표시를 한 번에 저장 (충돌 방지)
-    const labelField = myRole==="A"?{a_labels:str}:{b_labels:str};
-    const doneField  = round===1 ? (myRole==="A"?{a_solo_done:true}:{b_solo_done:true}) : (myRole==="A"?{a_done:true}:{b_done:true});
-    if(connected){
-      const {error}=await sb.from("sessions").update({...labelField,...doneField}).eq("room_code",roomCode);
-      if(error){ console.error("저장 실패:",error); alert("저장에 실패했어요: "+error.message); return; }
-    }
-    $("waitTitle").textContent = round===1?"1라운드 완료!":"2라운드 완료!";
+  const labelField = myRole==="A"?{a_labels:str}:myRole==="B"?{b_labels:str}:{c_labels:str};
+  if(idx>=idxEnd){
+    const doneField = round===1
+      ? (myRole==="A"?{a_solo_done:true}:myRole==="B"?{b_solo_done:true}:{c_solo_done:true})
+      : (myRole==="A"?{a_done:true}:myRole==="B"?{b_done:true}:{c_done:true});
+    if(connected){ const {error}=await sb.from("sessions").update({...labelField,...doneField}).eq("room_code",roomCode);
+      if(error){ console.error("저장 실패:",error); alert("저장 실패: "+error.message); return; } }
+    $("waitTitle").textContent= round===1?"1라운드 완료!":"2라운드 완료!";
     showStage("stageWait"); pollOnce(); return;
   }
-  // 중간: 라벨 저장 (await로 확실히)
-  if(connected){
-    const {error}=await sb.from("sessions").update(myRole==="A"?{a_labels:str}:{b_labels:str}).eq("room_code",roomCode);
-    if(error){ console.error("라벨 저장 실패:",error); }
-  }
+  if(connected){ const {error}=await sb.from("sessions").update(labelField).eq("room_code",roomCode); if(error)console.error("라벨 저장 실패:",error); }
   showItem();
 }
 
+/* 분류기 */
 function buildProfile(train){
   const g={trash:{},sealife:{}},cnt={trash:0,sealife:0};
   for(const f of FEATS){g.trash[f]=0;g.sealife[f]=0;}
@@ -446,115 +467,102 @@ function buildProfile(train){
   return {g,cnt};
 }
 function classify(item,prof){const {g,cnt}=prof;if(!cnt.trash&&!cnt.sealife)return null;if(!cnt.trash)return "sealife";if(!cnt.sealife)return "trash";let dt=0,ds=0;for(const f of FEATS){dt+=Math.pow(item[f]-g.trash[f],2);ds+=Math.pow(item[f]-g.sealife[f],2);}return dt<=ds?"trash":"sealife";}
-function buildTrain(step){
-  if(step===1){
-    const ta=A_ITEMS.slice(0,5).map((a,i)=>({...a,label:fixedA[i]}));
-    const tb=B_ITEMS.slice(0,5).map((a,i)=>({...a,label:fixedB[i]}));
-    return {A:ta,B:tb};
-  }
-  const n=step===2?5:10;
-  const ta=A_ITEMS.slice(0,n).map((a,i)=>({...a,label:fixedA[i]}));
-  const tb=B_ITEMS.slice(0,n).map((a,i)=>({...a,label:fixedB[i]}));
-  return [...ta,...tb];
-}
+function trainOfRole(k,uptoRound){ const per=perCount(k); const n=uptoRound>=2?per*2:per; return ITEMS[k].slice(0,n).map((a,i)=>({...a,label:fixed[k][i]})).filter(x=>x.label); }
+function trainAll(uptoRound){ let t=[]; for(const k of rolesInPlay()) t=t.concat(trainOfRole(k,uptoRound)); return t; }
 function accOf(train){const p=buildProfile(train);let ok=0;for(const a of TEST)if(classify(a,p)===a.truth)ok++;return Math.round(ok/TEST.length*100);}
 
-function runCleanup(step){
-  if(animTimer) clearInterval(animTimer);
-  $("chip1").className="stepchip"+(step===1?" on":(step>1?" done":""));
-  $("chip2").className="stepchip"+(step===2?" on":(step>2?" done":""));
-  $("chip3").className="stepchip"+(step===3?" on":"");
-  $("nextBox").style.display="none"; $("noiseSec").style.display="none"; $("lbBox").style.display="none"; $("talkBox").style.display="none"; $("resetBox").style.display="none";
+function buildSoloQueue(){ soloQueue=rolesInPlay().map(k=>({type:"solo",role:k})); soloQueue.push({type:"combine"}); soloPos=0; }
 
-  let train;
-  if(step===1){
-    const t=buildTrain(1);
-    if(myRole==="A"){ train=t.A; $("resultTag").textContent="1단계 · 🟣 (가)가 혼자 가르친 로봇"; }
-    else { train=t.B; $("resultTag").textContent="1단계 · 🟢 (나)가 혼자 가르친 로봇"; }
-  }else{
-    train=buildTrain(step);
-    $("resultTag").textContent= step===2 ? "2단계 · 🤝 둘이 합쳐 가르친 로봇 (10개)" : "3단계 · 📚 더 가르친 로봇 (20개)";
-  }
+function runClean(step){
+  if(animTimer)clearInterval(animTimer);
+  $("nextBox").style.display="none"; $("noiseSec").style.display="none"; $("lbBox").style.display="none"; $("talkBox").style.display="none"; $("resetBox").style.display="none";
+  let train, tag, cnt;
+  if(step.type==="solo"){ const k=step.role; train=trainOfRole(k,1); const nm=myRole===k?(myName||RINFO[k].tag):RINFO[k].tag; tag=`1단계 · ${nm} (${RINFO[k].tag}) 혼자 가르친 로봇`; cnt=train.length; }
+  else if(step.type==="combine"){ train=trainAll(1); tag=`2단계 · 🤝 합쳐 가르친 로봇`; cnt=train.length; }
+  else { train=trainAll(2); tag=`3단계 · 📚 더 가르친 로봇`; cnt=train.length; }
+  $("resultTag").textContent=tag;
+  renderStepbar(step);
   const prof=buildProfile(train);
   $("trayTrash").innerHTML=""; $("trayLife").innerHTML=""; $("growthMsg").textContent=""; $("scoreboard").innerHTML="";
-  $("livePct").textContent="--%"; $("livePct").style.color="var(--accent)";
-  $("cleanPic").textContent="🌊"; $("verdict").textContent="로봇이 물체를 하나씩 살펴봐요...";
-  $("cleanFrame").classList.add("glow");
-
+  $("livePct").textContent="--%"; $("livePct").style.color="var(--accent)"; $("cleanPic").textContent="🌊";
+  $("verdict").textContent="로봇이 물체를 하나씩 살펴봐요..."; $("cleanFrame").classList.add("glow");
+  $("dataCount").innerHTML=`이 로봇은 <b>${cnt}개</b>의 훈련 데이터로 배웠어요`;
   let i=0, ok=0;
   animTimer=setInterval(()=>{
    try{
-    if(i>=TEST.length){ clearInterval(animTimer); $("cleanFrame").classList.remove("glow"); finishCleanup(step,ok); return; }
+    if(i>=TEST.length){ clearInterval(animTimer); $("cleanFrame").classList.remove("glow"); finishClean(step,ok,cnt); return; }
     const a=TEST[i], pred=classify(a,prof), correct=pred===a.truth; if(correct)ok++;
-    // 가운데 액자에 현재 물체
     $("cleanPic").textContent=a.e;
-    // 트레이에 쌓기
-    const tray = pred==="trash" ? $("trayTrash") : $("trayLife");
-    const span=document.createElement("span");
-    span.className="ti"+(correct?"":" wrong");
-    span.innerHTML=a.e+(correct?"":'<span class="x">🔺</span>');
-    span.title=a.n; tray.appendChild(span);
-    // 실시간 점수
-    const done=i+1, livePct=Math.round(ok/done*100);
-    const lp=$("livePct");
-    lp.textContent=livePct+"%"; lp.style.color=correct?"var(--life)":"var(--trash)"; lp.style.transform="scale(1.3)";
+    const tray=pred==="trash"?$("trayTrash"):$("trayLife");
+    const sp=document.createElement("span"); sp.className="ti"+(correct?"":" wrong"); sp.title=a.n;
+    sp.innerHTML=a.e+(correct?"":'<span class="x">🔺</span>'); tray.appendChild(sp);
+    const done=i+1,lpct=Math.round(ok/done*100),lp=$("livePct");
+    lp.textContent=lpct+"%"; lp.style.color=correct?"var(--life)":"var(--trash)"; lp.style.transform="scale(1.3)";
     setTimeout(()=>{ if(lp){lp.style.transform="scale(1)";lp.style.color="var(--accent)";} },300);
-    $("verdict").innerHTML = `${a.e} <b>${a.n}</b> → 로봇: ${pred==="trash"?"🗑️ 줍는다":"💙 놔둔다"} <span style="color:${correct?'var(--life)':'var(--trash)'}">${correct?"(정답! 📈)":"(실수! 📉)"}</span>`;
+    $("verdict").innerHTML=`${a.e} <b>${a.n}</b> → 로봇: ${pred==="trash"?"🗑️ 줍는다":"💙 놔둔다"} <span style="color:${correct?'var(--life)':'var(--trash)'}">${correct?"(정답! 📈)":"(실수! 📉)"}</span>`;
     i++;
-   }catch(e){ clearInterval(animTimer); console.error(e); $("verdict").textContent="오류가 났어요. 새 게임으로 다시 시도해 주세요."; }
-  }, 620);
+   }catch(e){ clearInterval(animTimer); console.error(e); $("verdict").textContent="오류—새 게임으로 다시 해주세요."; }
+  }, 600);
 }
-function finishCleanup(step,ok){
+function renderStepbar(step){
+  let chips=[];
+  for(const k of rolesInPlay()){ const nm=myRole===k?(myName||RINFO[k].tag):RINFO[k].tag; chips.push(`<span class="stepchip${step.type==='solo'&&step.role===k?' on':''}">${nm} 혼자</span>`); }
+  chips.push(`<span class="stepchip${step.type==='combine'?' on':''}">합치기</span>`);
+  chips.push(`<span class="stepchip${step.type==='more'?' on':''}">더 가르치기</span>`);
+  $("stepbar").innerHTML=chips.join("");
+}
+function finishClean(step,ok,cnt){
   const pct=Math.round(ok/TEST.length*100);
   $("cleanPic").textContent="🌊"; $("verdict").textContent="청소 끝! 🌊";
-  $("scoreboard").innerHTML=`최종 청소 정확도 <span class="pct">${pct}%</span> <span class="cnt">(${TEST.length}개 중 ${ok}개 정답)</span>`;
-  if(connected){ const f = step===1?{acc_solo:pct}:(step===2?{acc_combined:pct}:{acc_more:pct,best_acc:pct}); sb.from("sessions").update(f).eq("room_code",roomCode); }
-  if(step===1){
-    let msg;
-    if(pct>=80) msg="잘 가르쳤네요! 그런데 데이터가 5개뿐이라 라벨 하나만 틀려도 확 떨어져요.";
-    else if(pct>=55) msg="군데군데 실수해요. 데이터가 적으면 라벨 하나의 영향이 큽니다!";
-    else msg="로봇이 많이 헷갈려 해요! 잘못 가르쳤거나 한쪽으로 치우쳤어요.";
-    $("growthMsg").textContent=msg;
-    $("nextMsg").textContent="🤝 이제 짝의 데이터와 합쳐서 다시 청소시켜 봐요!";
-    $("nextBtn").textContent="🤝 합쳐서 청소시키기 →"; $("nextBox").style.display="block";
-  }else if(step===2){
+  $("scoreboard").innerHTML=`최종 청소 정확도 <span class="pct">${pct}%</span> <span class="cnt">(${TEST.length}개 중 ${ok}개 정답 · 훈련 데이터 ${cnt}개)</span>`;
+  if(connected){ const f=step.type==="solo"?{acc_solo:pct}:(step.type==="combine"?{acc_combined:pct}:{acc_more:pct,best_acc:pct}); sb.from("sessions").update(f).eq("room_code",roomCode); }
+  if(step.type==="solo"){
+    const k=step.role, nm=myRole===k?(myName||RINFO[k].tag):RINFO[k].tag;
+    $("growthMsg").textContent= pct>=80?`${nm}님이 잘 가르쳤어요! 그래도 데이터가 적어 라벨 하나가 중요해요.`:(pct>=55?`${nm}님 로봇이 군데군데 실수해요.`:`${nm}님 로봇이 많이 헷갈려 해요!`);
+    const last=(soloPos===soloQueue.length-2); // 마지막 solo 다음은 combine
+    $("nextMsg").textContent= last?"🤝 이제 모두의 데이터를 합쳐서 청소시켜 봐요!":"다음 친구의 혼자 결과 보기";
+    $("nextBtn").textContent= last?"🤝 합쳐서 청소시키기 →":"다음 →"; $("nextBox").style.display="block";
+  }else if(step.type==="combine"){
     const wrong=TEST.length-ok;
-    if(pct>=100){
-      // 합쳤는데 이미 완벽 → 더 훈련 없이 마무리
-      $("growthMsg").textContent=`🎉 합치니 ${pct}%! 둘의 데이터로 완벽하게 청소했어요.`;
-      finishStage();
-    }else{
-      // 아직 못 거르는 게 있음 → 더 훈련 권유
-      $("growthMsg").textContent=`합치니 데이터가 10개! ${_soloPct!=null?`혼자(${_soloPct}%)보다 안정적이에요. `:""}하지만 로봇이 아직 ${wrong}개를 헷갈려 해요. 🤔`;
-      $("nextMsg").innerHTML=`🤖 "아직 잘 못 거르겠어요! <b>5개씩 더 가르쳐</b> 주실래요?"`;
-      $("nextBtn").textContent="📚 훈련 더 시키기 (5개씩 추가) →"; $("nextBox").style.display="block";
+    if(pct>=100){ $("growthMsg").textContent=`🎉 합치니 ${pct}%! 완벽하게 청소했어요.`; finishStage(); }
+    else{
+      $("growthMsg").textContent=`합치니 데이터가 ${cnt}개! 혼자보다 안정적이에요. 하지만 아직 ${wrong}개를 헷갈려 해요. 🤔`;
+      $("nextMsg").innerHTML=`🤖 "아직 잘 못 거르겠어요! <b>조금씩 더 가르쳐</b> 주실래요?"`;
+      $("nextBtn").textContent="📚 훈련 더 시키기 →"; $("nextBox").style.display="block";
     }
   }else{
-    $("growthMsg").textContent=`🎉 데이터 20개! 로봇이 ${pct}% 정확도로 청소했어요.`;
-    finishStage();
+    $("growthMsg").textContent=`🎉 더 가르치니 ${pct}%! 어려운 물체까지 잘 거르네요.`; finishStage();
   }
 }
-function finishStage(){
-  // 노이즈·순위·토론 표시 (마무리 공통)
-  renderNoiseList();
-  $("noiseSec").style.display="block"; $("lbBox").style.display="block"; $("talkBox").style.display="block"; $("resetBox").style.display="block";
-  loadLeaderboard();
-}
 function nextStep(){
-  if(curStep===1){ const t=buildTrain(1); _soloPct=Math.max(accOf(t.A),accOf(t.B)); curStep=2; runCleanup(2); }
-  else if(curStep===2){ startRound2(); }
+  // soloQueue = [solo, solo, (solo), combine]
+  if(curStep===1){
+    if(soloPos < soloQueue.length-1){
+      // 아직 solo 단계들 남음 → 다음 큐로 (다음 solo 또는 combine)
+      soloPos++;
+      const next=soloQueue[soloPos];
+      if(next.type==="combine"){ curStep=2; runClean(next); }
+      else runClean(next);
+    }
+  } else if(curStep===2){
+    // combine 결과에서 '더 훈련' → 2라운드 라벨링
+    round=2; startRound2();
+  }
 }
+function finishStage(){ renderNoiseList(); $("noiseSec").style.display="block"; $("lbBox").style.display="block"; $("talkBox").style.display="block"; $("resetBox").style.display="block"; loadLeaderboard(); }
+
 function renderNoiseList(){
   let items='';
-  A_ITEMS.forEach((a,i)=>{ if(fixedA[i]!==undefined && fixedA[i]!==a.truth) items+=nrow(a,"a",i); });
-  B_ITEMS.forEach((a,i)=>{ if(fixedB[i]!==undefined && fixedB[i]!==a.truth) items+=nrow(a,"b",i); });
-  if(!items)items='<p style="font-size:13px;color:var(--muted);margin:0;">🎉 잘못 가르친 게 없어요! 둘 다 정확히 가르쳤네요.</p>';
+  for(const k of rolesInPlay()){ const per=perCount(k)*(round>=2?2:1);
+    ITEMS[k].slice(0,per).forEach((a,i)=>{ if(fixed[k][i]!==undefined && fixed[k][i]!==a.truth) items+=nrow(a,k,i); });
+  }
+  if(!items)items='<p style="font-size:13px;color:var(--muted);margin:0;">🎉 잘못 가르친 게 없어요!</p>';
   $("noiseList").innerHTML=items;
 }
-function nrow(a,who,i){return `<div class="noise-item"><span class="emoji">${a.e}</span><span class="nm">${a.n}</span><span class="who ${who}">${who==="a"?"(가)":"(나)"} 잘못 가르침</span><button class="fixbtn" id="${who}${i}" onclick="${who==="a"?"fixA":"fixB"}(${i})">정답으로 고치기</button></div>`;}
-function fixA(i){ fixedA[i]=A_ITEMS[i].truth; const b=$("a"+i); if(b){b.textContent="✅ 고침";b.classList.add("done");b.disabled=true;} }
-function fixB(i){ fixedB[i]=B_ITEMS[i].truth; const b=$("b"+i); if(b){b.textContent="✅ 고침";b.classList.add("done");b.disabled=true;} }
-function recheck(){ runCleanup(3); }
+function nrow(a,k,i){ return `<div class="noise-item"><span class="emoji">${a.e}</span><span class="nm">${a.n}</span><span class="who">${RINFO[k].tag} 잘못 가르침</span><button class="fixbtn" id="fix_${k}_${i}" onclick="fixIt('${k}',${i})">정답으로 고치기</button></div>`; }
+function fixIt(k,i){ fixed[k][i]=ITEMS[k][i].truth; const b=$("fix_"+k+"_"+i); if(b){b.textContent="✅ 고침";b.classList.add("done");b.disabled=true;} }
+function recheck(){ runClean({type:"more"}); }
+
 async function loadLeaderboard(){
   if(!connected)return;
   const {data}=await sb.from("sessions").select("team_name,best_acc,room_code").not("best_acc","is",null).order("best_acc",{ascending:false}).limit(10);
@@ -564,6 +572,7 @@ async function loadLeaderboard(){
   $("lbBody").innerHTML=rows;
 }
 function esc(s){return (s||"").replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
 </script>
 </body>
 </html>
