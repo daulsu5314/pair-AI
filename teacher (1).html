@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>선생님 대시보드 — 바다 청소 로봇 짝활동</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Black+Han+Sans&family=Gaegu:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{--deep:#0a2238;--ink:#eaf4fb;--card:#13314f;--cardline:#2a5680;--accent:#ffb33e;
+    --trash:#ff7043;--life:#46d6cf;--pa:#a78bff;--pb:#5fe0c8;--muted:#8fb4cf;--soft:#102844;--ok:#5fd98a;}
+  *{box-sizing:border-box;}html,body{margin:0;padding:0;}
+  body{background:linear-gradient(180deg,#0a2238 0%,#06182b 100%);color:var(--ink);font-family:'Gowun Dodum',sans-serif;line-height:1.5;padding:20px 16px 50px;min-height:100vh;}
+  .wrap{max-width:980px;margin:0 auto;}
+  header{text-align:center;margin-bottom:14px;}
+  .badge{display:inline-block;font-family:'Gaegu',cursive;font-weight:700;background:var(--accent);color:#3a2410;padding:3px 16px;border-radius:20px;font-size:13px;margin-bottom:6px;}
+  h1{font-family:'Black Han Sans',sans-serif;font-size:clamp(22px,4vw,32px);margin:4px 0;}
+  .conn{font-size:12px;color:var(--muted);}.conn.ok{color:var(--life);}.conn.bad{color:var(--trash);}
+  .warn{background:#3a2410;border:2px dashed var(--accent);border-radius:12px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:#ffd9a8;text-align:center;}.warn b{color:var(--accent);}
+
+  /* 튜토리얼 */
+  .tut{background:var(--card);border:2px solid var(--cardline);border-radius:16px;padding:18px 22px;margin-bottom:20px;}
+  .tut h2{font-family:'Black Han Sans',sans-serif;font-size:18px;margin:0 0 12px;color:var(--accent);}
+  .steps{display:flex;flex-direction:column;gap:12px;}
+  .step{display:flex;gap:12px;align-items:flex-start;}
+  .step .num{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#3a2410;font-family:'Black Han Sans';font-size:15px;display:flex;align-items:center;justify-content:center;}
+  .step .txt{font-size:14px;}
+  .step .txt b{color:var(--life);}
+  .tut .tip{margin-top:14px;font-size:12.5px;color:var(--muted);background:var(--soft);border-radius:10px;padding:10px 14px;font-family:'Gaegu';}
+  .tut .tip b{color:var(--accent);}
+  .stage-guide{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
+  .sg{font-size:11.5px;font-family:'Gaegu';font-weight:700;padding:3px 10px;border-radius:12px;}
+  .sg.wait{background:#33425a;color:var(--muted);} .sg.label{background:#3a3450;color:var(--pa);}
+  .sg.solo{background:#2a3f5a;color:var(--pb);} .sg.combine{background:#2a4a5a;color:var(--life);}
+  .sg.more{background:#3a3420;color:var(--accent);} .sg.done{background:#1f4a2e;color:var(--ok);}
+
+  .controls{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;}
+  .controls h2{font-family:'Black Han Sans',sans-serif;font-size:18px;margin:0;}
+  .controls .right{display:flex;gap:8px;align-items:center;}
+  .refresh{font-family:'Gaegu',cursive;font-weight:700;font-size:13px;background:var(--soft);border:2px solid var(--cardline);color:var(--ink);border-radius:10px;padding:7px 16px;cursor:pointer;}
+  .refresh:active{transform:translateY(1px);}
+  .live{font-size:12px;color:var(--life);font-family:'Gaegu';}
+  .live .pulse{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--life);margin-right:4px;animation:p 1.4s infinite;}
+  @keyframes p{0%,100%{opacity:1;}50%{opacity:.3;}}
+  .tbl{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--card);border-radius:12px;overflow:hidden;}
+  .tbl th,.tbl td{border:1px solid var(--cardline);padding:9px 10px;text-align:center;}
+  .tbl thead th{background:var(--deep);color:var(--ink);font-weight:400;font-size:12.5px;}
+  .tbl td.team{text-align:left;font-weight:700;}
+  .tbl td.code{font-family:'Black Han Sans';color:var(--accent);letter-spacing:1px;}
+  .stage-badge{display:inline-block;font-size:11.5px;font-family:'Gaegu';font-weight:700;padding:2px 10px;border-radius:12px;}
+  .st-wait{background:#33425a;color:var(--muted);} .st-label{background:#3a3450;color:var(--pa);}
+  .st-solo{background:#2a3f5a;color:var(--pb);} .st-combine{background:#2a4a5a;color:var(--life);}
+  .st-more{background:#3a3420;color:var(--accent);} .st-done{background:#1f4a2e;color:var(--ok);}
+  .acc{font-family:'Black Han Sans';}
+  .acc.hi{color:var(--ok);}.acc.mid{color:var(--accent);}.acc.lo{color:var(--trash);}.acc.none{color:var(--muted);font-family:'Gowun Dodum';}
+  .empty{text-align:center;color:var(--muted);padding:30px;}
+  .bar-mini{height:6px;background:var(--soft);border-radius:4px;overflow:hidden;margin-top:3px;}
+  .bar-mini > div{height:100%;background:var(--accent);}
+  .note{font-size:12px;color:var(--muted);margin-top:14px;text-align:center;font-family:'Gaegu';}
+  .danger-row{background:#3a1f1733;}
+  .reset-all{font-family:'Gaegu',cursive;font-weight:700;font-size:12.5px;background:transparent;border:1.5px solid var(--trash);color:var(--trash);border-radius:8px;padding:6px 12px;cursor:pointer;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="badge">👩‍🏫 선생님 대시보드</span>
+    <h1>우리 반 청소 로봇 현황</h1>
+    <div class="conn" id="conn">서버 연결 확인 중...</div>
+  </header>
+
+  <div class="warn" id="warn" style="display:none;">⚙️ <b>Supabase 키가 입력되지 않았어요.</b> 이 파일 상단 SUPABASE_URL / SUPABASE_ANON_KEY 를 학생용과 같은 값으로 채우세요.</div>
+
+  <!-- 튜토리얼 -->
+  <div class="tut">
+    <h2>📖 활동 진행 방법</h2>
+    <div class="steps">
+      <div class="step"><div class="num">1</div><div class="txt">학생들을 <b>2명씩 짝</b> 지어, 각자 다른 기기에서 활동 주소에 접속하게 하세요.</div></div>
+      <div class="step"><div class="num">2</div><div class="txt">짝 중 한 명이 <b>조 이름</b>을 적고 <b>"방 만들기"</b> → 4자리 방 코드가 나와요. 다른 한 명은 그 코드로 <b>"방 입장"</b>.</div></div>
+      <div class="step"><div class="num">3</div><div class="txt">두 사람이 <b>서로 다른 물체 5개씩</b> 라벨링해요 (쓰레기🗑️ / 바다생물💙). 둘 다 끝나면 자동으로 다음으로 넘어가요.</div></div>
+      <div class="step"><div class="num">4</div><div class="txt"><b>혼자 → 합치기 → 더 가르치기</b> 3단계로, 데이터가 늘수록 로봇이 똑똑해지는 걸 봐요. 잘못 가르치면(노이즈) 로봇이 실수해요.</div></div>
+      <div class="step"><div class="num">5</div><div class="txt">아래 <b>조별 현황</b>에서 각 조가 어디까지 했는지 실시간으로 확인하고, 막힌 조를 도와주세요.</div></div>
+    </div>
+    <div class="stage-guide">
+      <span class="sg wait">⏳ 짝 기다림</span>
+      <span class="sg label">✏️ 라벨링 중</span>
+      <span class="sg solo">🔍 혼자 결과</span>
+      <span class="sg combine">🤝 합치기</span>
+      <span class="sg more">📚 더 가르치는 중</span>
+      <span class="sg done">✅ 완료</span>
+    </div>
+    <div class="tip">💡 <b>막힌 조 찾기:</b> "라벨링 중"에서 오래 멈춰 있으면 한 명이 아직 안 끝낸 거예요. 정확도가 <b style="color:var(--trash)">빨간색</b>이면 잘못 가르친 게 있으니 노이즈를 점검하라고 안내하세요.</div>
+  </div>
+
+  <!-- 조별 현황 -->
+  <div class="controls">
+    <h2>📊 조별 현황</h2>
+    <div class="right">
+      <span class="live"><span class="pulse"></span>실시간 갱신</span>
+      <button class="refresh" onclick="loadAll()">↻ 새로고침</button>
+    </div>
+  </div>
+  <table class="tbl">
+    <thead><tr>
+      <th style="width:150px;">조 이름</th><th style="width:64px;">방코드</th><th style="width:130px;">진행 단계</th>
+      <th>혼자</th><th>합치기</th><th>더 가르치기</th><th style="width:90px;">최종</th>
+    </tr></thead>
+    <tbody id="tbody"><tr><td colspan="7" class="empty">불러오는 중...</td></tr></tbody>
+  </table>
+  <div class="note" id="note"></div>
+  <div style="text-align:center;margin-top:18px;">
+    <button class="reset-all" onclick="resetAll()">🗑️ 수업 종료 — 모든 기록 지우기</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* ★ 학생용 index.html 과 똑같은 값을 넣으세요 */
+const SUPABASE_URL  = "https://irfcmhjgexiocigfpjaq.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_VWffGFDqnF2ldODgqHES6A_D0tGqfGA";
+
+let sb=null, connected=false;
+try{ if(SUPABASE_URL.startsWith("http") && SUPABASE_ANON_KEY.length>20){ sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY); connected=true; } }catch(e){ connected=false; }
+const $=id=>document.getElementById(id);
+
+window.addEventListener("load",()=>{
+  if(!connected){ $("warn").style.display="block"; $("conn").textContent="⚠️ 오프라인 (키 미입력)"; $("conn").className="conn bad"; return; }
+  $("conn").textContent="✅ 서버 연결됨"; $("conn").className="conn ok";
+  loadAll();
+  sb.channel("teacher-all").on("postgres_changes",{event:"*",schema:"public",table:"sessions"},()=>loadAll()).subscribe();
+  setInterval(loadAll, 5000);
+});
+
+function stageOf(r){
+  if(r.a_done && r.b_done) return {key:"done", txt:"✅ 완료"};
+  if((r.a_done||r.b_done)) return {key:"more", txt:"📚 더 가르치는 중"};
+  if(r.acc_combined!=null) return {key:"combine", txt:"🤝 합치기 단계"};
+  if(r.a_solo_done && r.b_solo_done) return {key:"solo", txt:"🔍 혼자 결과 확인"};
+  if(r.a_solo_done || r.b_solo_done || (r.a_labels&&r.a_labels.length) || (r.b_labels&&r.b_labels.length)) return {key:"label", txt:"✏️ 라벨링 중"};
+  if(r.b_joined) return {key:"label", txt:"✏️ 라벨링 중"};
+  return {key:"wait", txt:"⏳ 짝 기다리는 중"};
+}
+function accCell(v){
+  if(v==null) return '<span class="acc none">–</span>';
+  let cls = v>=85?"hi":(v>=60?"mid":"lo");
+  return `<span class="acc ${cls}">${v}%</span><div class="bar-mini"><div style="width:${v}%"></div></div>`;
+}
+async function loadAll(){
+  if(!connected)return;
+  const {data,error}=await sb.from("sessions").select("*").order("created_at",{ascending:true});
+  if(error){ $("tbody").innerHTML=`<tr><td colspan="7" class="empty">불러오기 실패: ${error.message}</td></tr>`; return; }
+  if(!data || !data.length){ $("tbody").innerHTML='<tr><td colspan="7" class="empty">아직 시작한 조가 없어요. 학생들이 방을 만들면 여기 나타나요.</td></tr>'; return; }
+  let rows='';
+  for(const r of data){
+    const st=stageOf(r);
+    const danger = (r.acc_more!=null && r.acc_more<60) || (r.acc_combined!=null && r.acc_combined<50);
+    rows+=`<tr class="${danger?'danger-row':''}">`+
+      `<td class="team">${esc(r.team_name||"이름없음")}</td>`+
+      `<td class="code">${esc(r.room_code)}</td>`+
+      `<td><span class="stage-badge st-${st.key}">${st.txt}</span></td>`+
+      `<td>${accCell(r.acc_solo)}</td><td>${accCell(r.acc_combined)}</td><td>${accCell(r.acc_more)}</td><td>${accCell(r.best_acc)}</td>`+
+      `</tr>`;
+  }
+  $("tbody").innerHTML=rows;
+  $("note").textContent=`마지막 갱신: ${new Date().toLocaleTimeString('ko-KR')} · 총 ${data.length}개 조`;
+}
+async function resetAll(){
+  if(!connected)return;
+  if(!confirm("정말 모든 조의 기록을 지울까요? 되돌릴 수 없어요.\n(수업이 끝난 뒤에만 누르세요)")) return;
+  const {error}=await sb.from("sessions").delete().neq("id",-1);
+  if(error){ alert("삭제 실패: "+error.message); return; }
+  loadAll();
+}
+function esc(s){return (s||"").replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+</script>
+</body>
+</html>
