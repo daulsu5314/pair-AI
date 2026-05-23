@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>포유류 분류 AI — 데이터가 쌓일수록 똑똑해진다</title>
+<title>포유류 분류 AI — 둘이 합쳐야 똑똑해진다</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Black+Han+Sans&family=Gaegu:wght@400;700&display=swap" rel="stylesheet">
@@ -22,14 +22,13 @@
   h1{font-family:'Black Han Sans',sans-serif;font-size:clamp(24px,4.4vw,38px);margin:6px 0;letter-spacing:-1px;line-height:1.08;}
   h1 .hl{color:var(--accent);}
   .lead{font-family:'Gaegu',cursive;font-size:17px;margin:0 0 4px;}
-  .lead2{font-size:13.5px;color:var(--muted);max-width:630px;margin:0 auto 14px;}
+  .lead2{font-size:13.5px;color:var(--muted);max-width:640px;margin:0 auto 14px;}
   .panel{background:var(--card);border:2px solid var(--ink);border-radius:16px;padding:22px;
     box-shadow:6px 6px 0 rgba(26,35,48,.1);margin-bottom:18px;}
   .stage{display:none;}.stage.on{display:block;animation:fade .3s ease;}
   @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
   .warn{background:#fff4ec;border:2px dashed var(--accent);border-radius:12px;padding:14px 18px;margin-bottom:18px;
-    font-size:13px;color:#9a4a2c;text-align:center;}
-  .warn b{color:var(--accent);}
+    font-size:13px;color:#9a4a2c;text-align:center;}.warn b{color:var(--accent);}
 
   .lobby{text-align:center;}
   .lobby h2{font-family:'Black Han Sans',sans-serif;font-size:20px;margin:0 0 12px;}
@@ -39,8 +38,7 @@
     padding:11px 14px;text-align:center;letter-spacing:2px;text-transform:uppercase;}
   .bigbtn{font-family:'Gaegu',cursive;font-weight:700;font-size:16px;background:var(--accent);color:#fff;
     border:2px solid var(--ink);border-radius:10px;padding:13px 26px;cursor:pointer;box-shadow:3px 3px 0 rgba(26,35,48,.15);}
-  .bigbtn:active{transform:translateY(2px);}
-  .bigbtn.ghost{background:#fff;color:var(--ink);}
+  .bigbtn:active{transform:translateY(2px);}.bigbtn.ghost{background:#fff;color:var(--ink);}
   .or{font-family:'Gaegu',cursive;color:var(--muted);margin:14px 0;}
   .err{color:var(--accent);font-size:12.5px;min-height:18px;margin-top:8px;}
   .conn{font-size:11.5px;color:var(--muted);margin-top:14px;}
@@ -81,44 +79,45 @@
   .progress{text-align:center;font-family:'Gaegu',cursive;font-size:14px;margin-top:14px;}
   .progress b{font-family:'Black Han Sans',sans-serif;font-size:18px;}
   .dots{display:flex;gap:5px;justify-content:center;margin-top:8px;flex-wrap:wrap;}
-  .dot{width:13px;height:13px;border-radius:50%;background:var(--line);}
-  .dot.done{background:var(--accent);}
-  .dot.phase2{background:var(--line);border:2px solid var(--accent);}
+  .dot{width:13px;height:13px;border-radius:50%;background:var(--line);}.dot.done{background:var(--accent);}
   .partner-prog{text-align:center;font-size:12.5px;color:var(--muted);margin-top:10px;font-family:'Gaegu',cursive;}
 
-  /* 중간 정확도 카드 */
   .midresult{text-align:center;}
   .midresult .lab{font-family:'Gaegu',cursive;font-size:15px;color:var(--muted);}
   .acc-circle{font-family:'Black Han Sans',sans-serif;font-size:54px;color:var(--accent);margin:6px 0;}
-  .midresult p{font-size:13.5px;color:var(--muted);margin:6px auto 18px;max-width:440px;}
-  .midresult .arrow{font-size:28px;color:var(--accent);margin:4px 0;}
+  .midresult p{font-size:13.5px;color:var(--muted);margin:6px auto 18px;max-width:460px;}
 
-  /* 비교 그래프 */
   .compare{margin:14px 0;}
   .bar-row{display:flex;align-items:center;gap:10px;margin:8px 0;font-size:13px;}
-  .bar-row .blab{width:84px;text-align:right;font-family:'Gaegu',cursive;font-weight:700;}
+  .bar-row .blab{width:120px;text-align:right;font-family:'Gaegu',cursive;font-weight:700;}
   .bar-outer{flex:1;background:var(--soft);border-radius:8px;height:28px;overflow:hidden;border:1.5px solid var(--line);}
   .bar-inner{height:100%;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;color:#fff;
     font-family:'Black Han Sans',sans-serif;font-size:13px;transition:width .8s ease;}
-  .bar-inner.b5{background:var(--no);}
-  .bar-inner.b15{background:var(--accent);}
+  .bar-inner.solo{background:var(--no);}
+  .bar-inner.combined{background:var(--accent);}
 
-  .scorecard{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;}
-  .score{border:2px solid var(--ink);border-radius:14px;padding:16px;text-align:center;box-shadow:5px 5px 0 rgba(26,35,48,.1);background:var(--card);}
-  .score.a{border-color:var(--pa);}.score.b{border-color:var(--pb);}
-  .score h3{font-family:'Black Han Sans',sans-serif;font-size:15px;margin:0 0 4px;}
-  .score.a h3{color:var(--pa);}.score.b h3{color:var(--pb);}
-  .score .big{font-family:'Black Han Sans',sans-serif;font-size:36px;line-height:1;}
-  .score.a .big{color:var(--pa);}.score.b .big{color:var(--pb);}
-  .score .sub{font-size:11px;color:var(--muted);margin-top:2px;}
   .winner{text-align:center;font-family:'Gaegu',cursive;font-weight:700;font-size:17px;color:var(--accent);margin-bottom:8px;min-height:24px;}
+
+  .testresult{margin:8px 0 4px;}
+  .tr-grid{display:flex;flex-direction:column;gap:6px;}
+  .tr-item{display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:7px 12px;font-size:13.5px;}
+  .tr-item .tnm{font-weight:700;min-width:70px;}
+  .tr-item .arr{color:var(--muted);}
+  .tr-item .pred{font-family:'Gaegu',cursive;font-weight:700;}
+  .tr-item .mark{margin-left:auto;font-family:'Black Han Sans',sans-serif;font-size:15px;}
+  .tr-item.ok{border-color:var(--pb);}
+  .tr-item.ok .mark{color:var(--pb);}
+  .tr-item.no{border-color:var(--accent);background:#fff4ec;}
+  .tr-item.no .mark{color:var(--accent);}
+  .tr-total{text-align:center;font-family:'Black Han Sans',sans-serif;font-size:20px;margin:14px 0 4px;}
+  .tr-total .pct{color:var(--accent);font-size:30px;}
 
   .noise-sec{background:var(--soft);border-radius:12px;padding:16px;margin-top:10px;}
   .noise-sec h3{font-family:'Black Han Sans',sans-serif;font-size:15px;margin:0 0 4px;}
   .noise-sec p{font-size:12.5px;color:var(--muted);margin:0 0 12px;}
   .noise-list{display:flex;flex-direction:column;gap:8px;}
   .noise-item{display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:8px 12px;font-size:13.5px;flex-wrap:wrap;}
-  .noise-item .emoji{font-size:22px;}.noise-item .nm{font-weight:700;min-width:64px;}
+  .noise-item .emoji{font-size:22px;}.noise-item .nm{font-weight:700;min-width:74px;}
   .noise-item .who{font-size:11px;padding:1px 8px;border-radius:10px;}
   .noise-item .who.a{background:var(--pabg);color:var(--pa);}
   .noise-item .who.b{background:var(--pbbg);color:var(--pb);}
@@ -151,13 +150,13 @@
 <div class="wrap">
   <header>
     <span class="badge">지도학습 · 실시간 짝활동</span>
-    <h1>데이터가 쌓일수록 <span class="hl">똑똑해지는</span> AI</h1>
-    <p class="lead">5마리로 시작 → 정확도 확인 → 15마리로 늘리면? → AI 대결 + 노이즈 사냥</p>
-    <p class="lead2">두 사람이 각자 컴퓨터에서 같은 방에 들어가, 헷갈리는 동물에 "포유류/아님"을 라벨링해요. 먼저 5마리만 가르쳐 AI를 시험하고, 그다음 15마리로 늘려서 정확도가 어떻게 변하는지 봅니다. 라벨이 틀리면(노이즈) AI도 따라 틀려요!</p>
+    <h1>둘이 <span class="hl">합쳐야</span> 똑똑해지는 AI</h1>
+    <p class="lead">A와 B가 서로 다른 동물을 가르친다 → 합치면 정확도가 확 오른다!</p>
+    <p class="lead2">(가)와 (나)는 <b>서로 다른 5마리</b>씩 라벨링해요. 혼자만의 데이터로는 AI가 한쪽으로 치우쳐 자주 틀려요. 하지만 둘의 데이터를 합치면? 균형이 잡혀서 훨씬 똑똑해집니다. 라벨이 틀리면(노이즈) AI도 따라 틀려요!</p>
   </header>
 
   <div class="warn" id="setupWarn" style="display:none;">
-    ⚙️ <b>아직 Supabase 키가 입력되지 않았어요.</b> 이 파일 상단의 SUPABASE_URL 과 SUPABASE_ANON_KEY 를 채워야 실시간 연결이 됩니다. (설치 안내서 참고)
+    ⚙️ <b>아직 Supabase 키가 입력되지 않았어요.</b> 이 파일 상단 SUPABASE_URL / SUPABASE_ANON_KEY 를 채워야 실시간 연결됩니다.
   </div>
 
   <!-- STAGE 0 로비 -->
@@ -192,7 +191,7 @@
 
   <!-- STAGE 2 라벨링 -->
   <div class="panel stage" id="stage2">
-    <div class="phase-wrap"><span class="phase-tag" id="phaseTag">1단계 · 처음 5마리 가르치기</span></div>
+    <div class="phase-wrap"><span class="phase-tag" id="phaseTag">내가 맡은 동물 5마리</span></div>
     <div class="who-now" id="whoNow">🟣 (가)의 라벨링</div>
     <div class="task">이 동물은 <b>포유류</b>인가요? 직접 판단해서 누르세요.</div>
     <div class="animal-now">
@@ -204,19 +203,19 @@
       <button class="y" onclick="putLabel('mammal')">✅ 포유류다</button>
       <button class="n" onclick="putLabel('other')">❌ 포유류 아니다</button>
     </div>
-    <div class="progress"><b id="lProg">0</b> / <span id="lTotal">5</span> 마리</div>
+    <div class="progress"><b id="lProg">0</b> / 5 마리</div>
     <div class="dots" id="lDots"></div>
     <div class="partner-prog" id="partnerProg"></div>
   </div>
 
-  <!-- STAGE 2.5 중간 정확도(5마리) -->
+  <!-- STAGE 2.5 혼자 정확도 -->
   <div class="panel stage" id="stageMid">
     <div class="midresult">
-      <span class="phase-tag">1단계 결과 · 5마리만 배운 AI</span>
+      <span class="phase-tag">내 데이터(5마리)만으로 만든 AI</span>
       <div class="lab">지금 내 AI의 정확도는</div>
-      <div class="acc-circle" id="acc5big">--%</div>
-      <p>아직 5마리밖에 못 배워서, 본 적 없는 동물을 자주 틀려요. 데이터를 더 주면 똑똑해질까요?</p>
-      <button class="bigbtn" onclick="startPhase2()">📈 10마리 더 가르치기 →</button>
+      <div class="acc-circle" id="accSolo">--%</div>
+      <p>내가 맡은 동물만 배워서, AI가 한쪽으로 치우쳐 있어요. 짝의 데이터가 합쳐지면 어떻게 될까요?</p>
+      <button class="bigbtn" onclick="goWait()">🤝 짝의 데이터와 합치기 →</button>
     </div>
   </div>
 
@@ -224,26 +223,27 @@
   <div class="panel stage" id="stageWait">
     <div class="midresult">
       <span class="spinner">⏳</span>
-      <h2 style="font-family:'Black Han Sans';font-size:18px;margin:12px 0 4px;">15마리 라벨링 완료!</h2>
-      <div style="font-size:13px;color:var(--muted);">짝이 끝내면 자동으로 결과가 나옵니다. <span id="waitPartnerProg"></span></div>
+      <h2 style="font-family:'Black Han Sans';font-size:18px;margin:12px 0 4px;">내 라벨링 완료!</h2>
+      <div style="font-size:13px;color:var(--muted);">짝이 끝내면 두 데이터가 합쳐져 결과가 나옵니다. <span id="waitPartnerProg"></span></div>
     </div>
   </div>
 
   <!-- STAGE 3 결과 -->
   <div class="panel stage" id="stage3">
-    <span class="phase-tag" style="display:block;width:fit-content;margin:0 auto 10px;">📊 데이터 5마리 → 15마리, 정확도 변화</span>
-    <div class="compare" id="myCompare"></div>
+    <span class="phase-tag" style="display:block;width:fit-content;margin:0 auto 10px;">📊 혼자 5마리 → 둘이 합쳐 10마리</span>
+    <div class="compare" id="compareBars"></div>
     <div class="winner" id="growthMsg" style="color:var(--pb);"></div>
 
-    <div class="scorecard" style="margin-top:18px;">
-      <div class="score a"><h3>🟣 (가)의 AI</h3><div class="big" id="accA">0%</div><div class="sub" id="subA"></div></div>
-      <div class="score b"><h3>🟢 (나)의 AI</h3><div class="big" id="accB">0%</div><div class="sub" id="subB"></div></div>
+    <div class="testresult" id="testResultBox">
+      <div style="text-align:center;margin:6px 0 12px;">
+        <button class="bigbtn ghost" id="showTestBtn" onclick="toggleTestResult()">🔬 합친 AI로 테스트 결과 보기</button>
+      </div>
+      <div id="testResultList" style="display:none;"></div>
     </div>
-    <div class="winner" id="winner"></div>
 
     <div class="noise-sec">
       <h3>🔍 노이즈(틀린 라벨) 사냥</h3>
-      <p>AI가 틀린다면 학습 데이터에 <b>틀리게 붙인 라벨</b>이 있을지도! 정답을 확인하고 "고치기" 후 다시 시험해 정확도 변화를 보세요. 데이터가 많으면 노이즈가 좀 있어도 잘 버텨요.</p>
+      <p>합쳤는데도 AI가 틀린다면, 둘 중 누군가 <b>라벨을 틀리게</b> 붙였을지도! 정답을 확인하고 "고치기" 후 다시 시험해 보세요.</p>
       <div class="noise-list" id="noiseList"></div>
       <div class="recheck"><button class="bigbtn" onclick="recheck()">♻️ 고친 데이터로 다시 시험</button></div>
     </div>
@@ -257,16 +257,16 @@
     <div class="talk">
       <div class="bar">💬 짝과 이야기해요</div>
       <div class="body"><ol>
-        <li>5마리만 배웠을 때와 15마리 배웠을 때, 내 AI 정확도는 어떻게 달라졌나요?</li>
-        <li>데이터가 많아지니 왜 더 잘 맞히게 됐을까요?</li>
+        <li>내 데이터(5마리)만일 때 AI 정확도는 왜 낮았나요? (한쪽 동물만 봐서?)</li>
+        <li>둘의 데이터를 합치니 정확도가 어떻게 달라졌나요? 왜 그럴까요?</li>
+        <li>한 사람이 포유류만, 다른 사람이 비포유류만 가르쳤다면 AI는 어떻게 배울까요? (데이터 균형)</li>
         <li>틀린 라벨(노이즈)을 고치니 정확도가 어떻게 변했나요?</li>
-        <li>"데이터는 많기만 하면 좋다"가 맞을까요? 양과 정확함 중 무엇이 더 중요할까요?</li>
       </ol></div>
     </div>
     <div class="toolbar"><button class="reset" onclick="location.reload()">↺ 새 게임</button></div>
   </div>
 
-  <div class="footer">한 줄 요약 ✦ "데이터가 많을수록 AI는 똑똑해진다. 단, 라벨이 정확할 때!"</div>
+  <div class="footer">한 줄 요약 ✦ "데이터는 양도, 균형도 중요하다. 혼자보다 둘이 합칠 때 AI는 똑똑해진다."</div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -281,43 +281,40 @@ const SUPABASE_ANON_KEY = "sb_publishable_VWffGFDqnF2ldODgqHES6A_D0tGqfGA";
 let sb=null, connected=false;
 try{ if(SUPABASE_URL.startsWith("http") && SUPABASE_ANON_KEY.length>20){ sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY); connected=true; } }catch(e){ connected=false; }
 
-/* 학습 동물 15마리 (앞 5마리 = 1단계, 뒤 10마리 = 2단계) */
-const TRAIN=[
+/* (가)가 맡는 5마리 — 주로 포유류 */
+const A_ANIMALS=[
   {e:"🐕",n:"개",fur:.95,milk:1,legs:4,wet:.05,fly:0,eggs:0,truth:"mammal",clue:["털이 있다","새끼를 낳는다"]},
   {e:"🐬",n:"돌고래",fur:.05,milk:1,legs:0,wet:.95,fly:0,eggs:0,truth:"mammal",clue:["물속에 산다","새끼를 낳는다"]},
-  {e:"🦅",n:"독수리",fur:0,milk:0,legs:2,wet:.05,fly:1,eggs:1,truth:"other",clue:["하늘을 난다","알을 낳는다"]},
-  {e:"🐟",n:"금붕어",fur:0,milk:0,legs:0,wet:.98,fly:0,eggs:1,truth:"other",clue:["물속에 산다","아가미로 숨쉰다"]},
-  {e:"🐅",n:"호랑이",fur:.95,milk:1,legs:4,wet:.05,fly:0,eggs:0,truth:"mammal",clue:["털이 있다","젖을 먹인다"]},
   {e:"🦇",n:"박쥐",fur:.9,milk:1,legs:2,wet:.05,fly:1,eggs:0,truth:"mammal",clue:["하늘을 난다","털이 있다"]},
-  {e:"🦫",n:"오리너구리",fur:.8,milk:1,legs:4,wet:.6,fly:0,eggs:1,truth:"mammal",clue:["알을 낳는다","젖을 먹인다"]},
-  {e:"🦔",n:"천산갑",fur:.1,milk:1,legs:4,wet:.05,fly:0,eggs:0,truth:"mammal",clue:["몸이 비늘로 덮임","새끼를 낳는다"]},
   {e:"🐘",n:"코끼리",fur:.3,milk:1,legs:4,wet:.1,fly:0,eggs:0,truth:"mammal",clue:["몸집이 크다","젖을 먹인다"]},
-  {e:"🐇",n:"토끼",fur:.9,milk:1,legs:4,wet:.03,fly:0,eggs:0,truth:"mammal",clue:["털이 있다","새끼를 낳는다"]},
-  {e:"🐧",n:"펭귄",fur:0,milk:0,legs:2,wet:.5,fly:0,eggs:1,truth:"other",clue:["헤엄친다","알을 낳는다"]},
+  {e:"🦅",n:"독수리",fur:0,milk:0,legs:2,wet:.05,fly:1,eggs:1,truth:"other",clue:["하늘을 난다","알을 낳는다"]},
+];
+/* (나)가 맡는 5마리 — 주로 비포유류 */
+const B_ANIMALS=[
   {e:"🦈",n:"상어",fur:0,milk:0,legs:0,wet:.99,fly:0,eggs:0,truth:"other",clue:["물속에 산다","아가미로 숨쉰다"]},
-  {e:"🐸",n:"개구리",fur:0,milk:0,legs:4,wet:.5,fly:0,eggs:1,truth:"other",clue:["물과 땅을 오감","알을 낳는다"]},
-  {e:"🦎",n:"코모도왕도마뱀",fur:0,milk:0,legs:4,wet:.1,fly:0,eggs:1,truth:"other",clue:["비늘이 있다","알을 낳는다"]},
+  {e:"🐧",n:"펭귄",fur:0,milk:0,legs:2,wet:.5,fly:0,eggs:1,truth:"other",clue:["헤엄친다","알을 낳는다"]},
   {e:"🐍",n:"뱀",fur:0,milk:0,legs:0,wet:.1,fly:0,eggs:1,truth:"other",clue:["다리가 없다","알을 낳는다"]},
+  {e:"🐸",n:"개구리",fur:0,milk:0,legs:4,wet:.5,fly:0,eggs:1,truth:"other",clue:["물과 땅을 오감","알을 낳는다"]},
+  {e:"🦫",n:"오리너구리",fur:.8,milk:1,legs:4,wet:.6,fly:0,eggs:1,truth:"mammal",clue:["알을 낳는다","젖을 먹인다"]},
 ];
 const TEST=[
   {n:"고래",fur:.02,milk:1,legs:0,wet:.99,fly:0,eggs:0,truth:"mammal"},
-  {n:"물범",fur:.2,milk:1,legs:4,wet:.75,fly:0,eggs:0,truth:"mammal"},
-  {n:"바늘두더지",fur:.6,milk:1,legs:4,wet:.1,fly:0,eggs:1,truth:"mammal"},
-  {n:"날다람쥐",fur:.9,milk:1,legs:4,wet:.05,fly:1,eggs:0,truth:"mammal"},
-  {n:"듀공",fur:.05,milk:1,legs:0,wet:.9,fly:0,eggs:0,truth:"mammal"},
+  {n:"호랑이",fur:.95,milk:1,legs:4,wet:.05,fly:0,eggs:0,truth:"mammal"},
+  {n:"토끼",fur:.9,milk:1,legs:4,wet:.03,fly:0,eggs:0,truth:"mammal"},
+  {n:"여우",fur:.9,milk:1,legs:4,wet:.05,fly:0,eggs:0,truth:"mammal"},
+  {n:"천산갑",fur:.1,milk:1,legs:4,wet:.05,fly:0,eggs:0,truth:"mammal"},
   {n:"타조",fur:0,milk:0,legs:2,wet:.05,fly:0,eggs:1,truth:"other"},
-  {n:"잉어",fur:0,milk:0,legs:0,wet:.95,fly:0,eggs:1,truth:"other"},
-  {n:"거북",fur:0,milk:0,legs:4,wet:.6,fly:0,eggs:1,truth:"other"},
   {n:"악어",fur:0,milk:0,legs:4,wet:.6,fly:0,eggs:1,truth:"other"},
+  {n:"금붕어",fur:0,milk:0,legs:0,wet:.96,fly:0,eggs:1,truth:"other"},
   {n:"올빼미",fur:0,milk:0,legs:2,wet:.05,fly:1,eggs:1,truth:"other"},
+  {n:"거북",fur:0,milk:0,legs:4,wet:.6,fly:0,eggs:1,truth:"other"},
 ];
-const PHASE1=5;
 
 let myRole=null, roomCode=null, teamName="";
-let idx=0, myLabels=[], phase=1;
-let myAcc5=null;
+let idx=0, myLabels=[];
+let myAnimals=[];           // 내가 맡은 5마리
 let aLabels=[],bLabels=[],fixedA=[],fixedB=[];
-let aAcc5=null,bAcc5=null,aAcc15=null,bAcc15=null;
+let myAccSolo=null;
 let resultShown=false, aStarted=false;
 const $=id=>document.getElementById(id);
 function showStage(n){["stage0","stage1","stage2","stageMid","stageWait","stage3"].forEach(s=>$(s).classList.remove("on"));$(n).classList.add("on");}
@@ -364,113 +361,132 @@ function handleUpdate(row){
   }
   const partnerLabels = myRole==="A" ? row.b_labels : row.a_labels;
   const pc = partnerLabels ? partnerLabels.length : 0;
-  if($("partnerProg")) $("partnerProg").textContent=`짝 진행: ${pc} / 15`;
-  if($("waitPartnerProg")) $("waitPartnerProg").textContent=`(짝 진행 ${pc}/15)`;
+  if($("partnerProg")) $("partnerProg").textContent=`짝 진행: ${pc} / 5`;
+  if($("waitPartnerProg")) $("waitPartnerProg").textContent=`(짝 진행 ${pc}/5)`;
 
   if(row.a_done && row.b_done && !resultShown){
     aLabels=(row.a_labels||"").split("").map(c=>c==="m"?"mammal":"other");
     bLabels=(row.b_labels||"").split("").map(c=>c==="m"?"mammal":"other");
-    aAcc5=row.a_acc5; bAcc5=row.b_acc5;
     fixedA=[...aLabels]; fixedB=[...bLabels];
     resultShown=true; showStage("stage3"); renderResult(true); renderNoiseList(); loadLeaderboard();
   }
 }
 
 function startLabeling(){
-  idx=0; myLabels=[]; phase=1;
+  idx=0; myLabels=[];
+  myAnimals = myRole==="A" ? A_ANIMALS : B_ANIMALS;
   $("whoNow").className="who-now "+(myRole==="A"?"a":"b");
   $("whoNow").textContent=(myRole==="A"?"🟣 (가)":"🟢 (나)")+"의 라벨링";
-  $("phaseTag").textContent="1단계 · 처음 5마리 가르치기";
-  $("lTotal").textContent=PHASE1;
+  $("phaseTag").textContent=(myRole==="A"?"🟣 (가)":"🟢 (나)")+"가 맡은 동물 5마리";
   showStage("stage2"); showLabelAnimal();
 }
 function renderDots(){
-  let s='';const total=phase===1?PHASE1:TRAIN.length;
-  for(let i=0;i<total;i++){
-    let cls="dot"; if(i<idx)cls+=" done"; else if(i>=PHASE1)cls+=" phase2";
-    s+=`<span class="${cls}"></span>`;
-  }
-  $("lDots").innerHTML=s;
+  let s='';for(let i=0;i<5;i++)s+=`<span class="dot${i<idx?' done':''}"></span>`;$("lDots").innerHTML=s;
 }
 function showLabelAnimal(){
-  const a=TRAIN[idx];
+  const a=myAnimals[idx];
   $("lEmoji").textContent=a.e; $("lName").textContent=a.n;
   $("lClues").innerHTML=a.clue.map(c=>`<span class="clue">🔎 ${c}</span>`).join("");
-  $("lProg").textContent=phase===1?idx:idx; renderDots();
+  $("lProg").textContent=idx; renderDots();
 }
 async function putLabel(label){
   myLabels.push(label); idx++;
   const str=myLabels.map(l=>l==="mammal"?"m":"o").join("");
   if(connected) sb.from("sessions").update(myRole==="A"?{a_labels:str}:{b_labels:str}).eq("room_code",roomCode);
-  if(phase===1 && idx>=PHASE1){ // 1단계 끝 → 중간 정확도
-    myAcc5=accuracy(myLabels.slice(0,PHASE1), PHASE1).pct;
-    if(connected) sb.from("sessions").update(myRole==="A"?{a_acc5:myAcc5}:{b_acc5:myAcc5}).eq("room_code",roomCode);
-    $("acc5big").textContent=myAcc5+"%"; showStage("stageMid"); return;
+  if(idx>=5){ // 내 5마리 끝 → 혼자 정확도
+    myAccSolo=accuracySolo(myLabels);
+    $("accSolo").textContent=myAccSolo+"%"; showStage("stageMid"); return;
   }
-  if(phase===2 && idx>=TRAIN.length){ finishLabeling(str); return; }
   showLabelAnimal();
 }
-function startPhase2(){
-  phase=2; $("phaseTag").textContent="2단계 · 10마리 더 가르치기";
-  $("lTotal").textContent=TRAIN.length; showStage("stage2"); showLabelAnimal();
-}
-async function finishLabeling(str){
-  const acc15=accuracy(myLabels, TRAIN.length).pct;
-  const upd = myRole==="A" ? {a_labels:str,a_done:true,a_acc15:acc15} : {b_labels:str,b_done:true,b_acc15:acc15};
+async function goWait(){
+  const str=myLabels.map(l=>l==="mammal"?"m":"o").join("");
+  const upd = myRole==="A" ? {a_labels:str,a_done:true} : {b_labels:str,b_done:true};
   if(connected) await sb.from("sessions").update(upd).eq("room_code",roomCode);
   showStage("stageWait"); pollOnce();
 }
 
-/* K-최근접 다수결 분류기. labels 길이만큼만 학습데이터로 사용 */
+/* 분류기: 학습데이터 배열(라벨 포함된 동물)로 K-최근접 다수결 */
 function dist(a,t){let d=0;d+=Math.pow(a.fur-t.fur,2);d+=Math.pow(a.milk-t.milk,2);d+=Math.pow((a.legs-t.legs)/4,2);d+=Math.pow(a.wet-t.wet,2);d+=Math.pow(a.fly-t.fly,2);d+=Math.pow(a.eggs-t.eggs,2);return d;}
-function classify(animal, labels, count){
-  const n=count||labels.length;
-  const pool=[];
-  for(let i=0;i<n;i++) pool.push({d:dist(animal,TRAIN[i]),label:labels[i]});
-  pool.sort((x,y)=>x.d-y.d);
-  const K=Math.min(5, pool.length); let m=0,o=0;
-  for(let i=0;i<K;i++) pool[i].label==="mammal"?m++:o++;
+function classify(animal, train){
+  if(!train.length)return null;
+  const p=train.map(t=>({d:dist(animal,t),label:t.label})).sort((x,y)=>x.d-y.d);
+  const K=Math.min(3,p.length); let m=0,o=0;
+  for(let i=0;i<K;i++) p[i].label==="mammal"?m++:o++;
   return m>=o?"mammal":"other";
 }
-function accuracy(labels, count){
-  let ok=0; for(const a of TEST) if(classify(a,labels,count)===a.truth) ok++;
-  return {pct:Math.round(ok/TEST.length*100),hit:ok,total:TEST.length};
+function accFromTrain(train){let ok=0;for(const a of TEST)if(classify(a,train)===a.truth)ok++;return Math.round(ok/TEST.length*100);}
+/* 혼자(내 5마리)만의 정확도 */
+function accuracySolo(labels){
+  const train=myAnimals.map((a,i)=>({...a,label:labels[i]}));
+  return accFromTrain(train);
+}
+/* 합친 정확도 (fixedA/fixedB 사용) */
+function buildCombined(){
+  const ta=A_ANIMALS.map((a,i)=>({...a,label:fixedA[i]}));
+  const tb=B_ANIMALS.map((a,i)=>({...a,label:fixedB[i]}));
+  return [...ta,...tb];
 }
 
 async function renderResult(save){
-  const ra5=aAcc5!=null?aAcc5:accuracy(aLabels.slice(0,PHASE1),PHASE1).pct;
-  const rb5=bAcc5!=null?bAcc5:accuracy(bLabels.slice(0,PHASE1),PHASE1).pct;
-  const ra=accuracy(fixedA, TRAIN.length), rb=accuracy(fixedB, TRAIN.length);
-  // 내 5→15 비교 막대
-  const my5 = myRole==="A"?ra5:rb5;
-  const my15 = (myRole==="A"?ra:rb).pct;
-  $("myCompare").innerHTML=
-    `<div class="bar-row"><span class="blab">5마리</span><div class="bar-outer"><div class="bar-inner b5" style="width:${Math.max(my5,8)}%">${my5}%</div></div></div>`+
-    `<div class="bar-row"><span class="blab">15마리</span><div class="bar-outer"><div class="bar-inner b15" style="width:${Math.max(my15,8)}%">${my15}%</div></div></div>`;
-  const diff=my15-my5;
-  $("growthMsg").textContent= diff>0 ? `📈 데이터를 늘리니 정확도가 ${diff}%p 올랐어요!` : (diff===0?"정확도가 그대로네요. 노이즈를 점검해 보세요!":"어라, 떨어졌네요? 노이즈(틀린 라벨)를 의심해 보세요!");
-  $("accA").textContent=ra.pct+"%"; $("subA").textContent=`5마리 ${ra5}% → 15마리 ${ra.pct}%`;
-  $("accB").textContent=rb.pct+"%"; $("subB").textContent=`5마리 ${rb5}% → 15마리 ${rb.pct}%`;
-  let w; if(ra.pct>rb.pct)w="🟣 (가)의 AI가 더 똑똑해요!"; else if(rb.pct>ra.pct)w="🟢 (나)의 AI가 더 똑똑해요!"; else w="🤝 두 AI 정확도가 같아요!";
-  $("winner").textContent=w;
-  if(save && connected){ const best=Math.max(ra.pct,rb.pct);
-    await sb.from("sessions").update({a_acc15:ra.pct,b_acc15:rb.pct,best_acc:best}).eq("room_code",roomCode); }
+  // 내 혼자 정확도(이미 계산됨) — 없으면 재계산
+  const soloTrainA=A_ANIMALS.map((a,i)=>({...a,label:aLabels[i]}));
+  const soloTrainB=B_ANIMALS.map((a,i)=>({...a,label:bLabels[i]}));
+  const soloA=accFromTrain(soloTrainA), soloB=accFromTrain(soloTrainB);
+  const mySolo = myRole==="A"?soloA:soloB;
+  const combined=accFromTrain(buildCombined());
+  $("compareBars").innerHTML=
+    `<div class="bar-row"><span class="blab">🟣(가) 혼자</span><div class="bar-outer"><div class="bar-inner solo" style="width:${Math.max(soloA,8)}%">${soloA}%</div></div></div>`+
+    `<div class="bar-row"><span class="blab">🟢(나) 혼자</span><div class="bar-outer"><div class="bar-inner solo" style="width:${Math.max(soloB,8)}%">${soloB}%</div></div></div>`+
+    `<div class="bar-row"><span class="blab">🤝 둘이 합쳐</span><div class="bar-outer"><div class="bar-inner combined" style="width:${Math.max(combined,8)}%">${combined}%</div></div></div>`;
+  const bestSolo=Math.max(soloA,soloB);
+  const diff=combined-bestSolo;
+  $("growthMsg").textContent= diff>0 ? `📈 합치니 정확도가 ${diff}%p 올랐어요! 데이터를 합치면 더 똑똑해져요.` : (diff===0?"정확도가 그대로네요. 노이즈를 점검해 보세요!":"어라? 노이즈(틀린 라벨)를 의심해 보세요!");
+  if(save && connected){ await sb.from("sessions").update({acc_solo:bestSolo,acc_combined:combined,best_acc:combined}).eq("room_code",roomCode); }
+}
+
+/* 합친 AI로 각 테스트 동물 분류 결과를 하나하나 보여줌 */
+let testResultOpen=false;
+function toggleTestResult(){
+  testResultOpen=!testResultOpen;
+  $("testResultList").style.display = testResultOpen ? "block" : "none";
+  $("showTestBtn").textContent = testResultOpen ? "🔬 테스트 결과 닫기" : "🔬 합친 AI로 테스트 결과 보기";
+  if(testResultOpen) renderTestResult();
+}
+function renderTestResult(){
+  const train=buildCombined();
+  let rows='', ok=0;
+  for(const a of TEST){
+    const pred=classify(a,train);
+    const correct=pred===a.truth; if(correct)ok++;
+    const predTxt = pred==="mammal" ? "포유류" : "포유류 아님";
+    rows+=`<div class="tr-item ${correct?'ok':'no'}">`+
+      `<span class="tnm">${a.n}</span>`+
+      `<span class="arr">→ AI 판단:</span>`+
+      `<span class="pred">${predTxt}</span>`+
+      `<span class="mark">${correct?'✅':'❌'}</span></div>`;
+  }
+  const pct=Math.round(ok/TEST.length*100);
+  $("testResultList").innerHTML=
+    `<div class="tr-grid">${rows}</div>`+
+    `<div class="tr-total">정답 ${ok} / ${TEST.length} &nbsp;→&nbsp; 정확도 <span class="pct">${pct}%</span></div>`;
 }
 function renderNoiseList(){
   let items='';
-  for(let i=0;i<TRAIN.length;i++){
-    const a=TRAIN[i]; const wA=fixedA[i]!==a.truth, wB=fixedB[i]!==a.truth;
-    if(wA||wB){ let tags=''; if(wA)tags+=`<span class="who a">(가) 틀림</span>`; if(wB)tags+=`<span class="who b">(나) 틀림</span>`;
-      items+=`<div class="noise-item" id="ni${i}"><span class="emoji">${a.e}</span><span class="nm">${a.n}</span>${tags}<button class="fixbtn" onclick="fixNoise(${i})">정답으로 고치기</button></div>`; }
-  }
+  A_ANIMALS.forEach((a,i)=>{ if(fixedA[i]!==a.truth) items+=noiseRow(a,"a",()=>fixA(i),"fa"+i); });
+  B_ANIMALS.forEach((a,i)=>{ if(fixedB[i]!==a.truth) items+=noiseRow(a,"b",()=>fixB(i),"fb"+i); });
   if(!items)items='<p style="font-size:13px;color:var(--muted);margin:0;">🎉 틀린 라벨이 없어요! 둘 다 정확히 했네요.</p>';
   $("noiseList").innerHTML=items;
 }
-function fixNoise(i){ const t=TRAIN[i].truth; fixedA[i]=t; fixedB[i]=t;
-  const b=document.querySelector(`#ni${i} .fixbtn`); if(b){b.textContent="✅ 고침";b.classList.add("done");b.disabled=true;} }
+function noiseRow(a,who,_,id){
+  return `<div class="noise-item"><span class="emoji">${a.e}</span><span class="nm">${a.n}</span><span class="who ${who}">${who==="a"?"(가)":"(나)"} 틀림</span><button class="fixbtn" id="${id}" onclick="${who==="a"?"fixA":"fixB"}(${who==="a"?A_ANIMALS.indexOf(a):B_ANIMALS.indexOf(a)})">정답으로 고치기</button></div>`;
+}
+function fixA(i){ fixedA[i]=A_ANIMALS[i].truth; const b=$("fa"+i); if(b){b.textContent="✅ 고침";b.classList.add("done");b.disabled=true;} }
+function fixB(i){ fixedB[i]=B_ANIMALS[i].truth; const b=$("fb"+i); if(b){b.textContent="✅ 고침";b.classList.add("done");b.disabled=true;} }
 async function recheck(){ await renderResult(true); loadLeaderboard();
-  $("winner").style.transition="none";$("winner").style.transform="scale(1.08)";
-  setTimeout(()=>{$("winner").style.transition="transform .3s";$("winner").style.transform="scale(1)";},30); }
+  if(testResultOpen) renderTestResult();
+  $("growthMsg").style.transition="none";$("growthMsg").style.transform="scale(1.06)";
+  setTimeout(()=>{$("growthMsg").style.transition="transform .3s";$("growthMsg").style.transform="scale(1)";},30); }
 
 async function loadLeaderboard(){
   if(!connected)return;
