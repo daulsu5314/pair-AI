@@ -366,13 +366,15 @@ async function joinRoom(){
   await sb.from("sessions").update({b_joined:true}).eq("room_code",code);
   subscribe(); startRound1();
 }
-let chan=null;
+let chan=null, pollTimer=null;
 function subscribe(){
   chan=sb.channel("room-"+roomCode).on("postgres_changes",{event:"*",schema:"public",table:"sessions",filter:"room_code=eq."+roomCode},p=>handleUpdate(p.new)).subscribe();
-  sb.channel("lb-"+roomCode).on("postgres_changes",{event:"*",schema:"public",table:"sessions"},()=>loadLeaderboard()).subscribe();
   pollOnce();
+  // 실시간 신호가 안 와도 2초마다 직접 확인 (가장 튼튼한 방법)
+  if(pollTimer) clearInterval(pollTimer);
+  pollTimer=setInterval(()=>{ if(!moreShown) pollOnce(); else clearInterval(pollTimer); }, 2000);
 }
-async function pollOnce(){ const {data}=await sb.from("sessions").select("*").eq("room_code",roomCode).maybeSingle(); if(data)handleUpdate(data); }
+async function pollOnce(){ if(!connected||!roomCode)return; const {data}=await sb.from("sessions").select("*").eq("room_code",roomCode).maybeSingle(); if(data)handleUpdate(data); }
 
 function handleUpdate(row){
   if(!row)return;
