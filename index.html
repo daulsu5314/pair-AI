@@ -160,7 +160,6 @@
         <button id="pick3" onclick="setN(3)">3명 (가·나·다)</button>
       </div>
       <div class="field"><label>내 이름</label><input id="myName" placeholder="내 이름" maxlength="10"/></div>
-      <div class="field"><label>우리 조 이름 (순위표에 표시)</label><input id="teamName" placeholder="예: 1모둠, 돌고래팀..." maxlength="14"/></div>
       <button class="bigbtn" onclick="createRoom()">🟣 (가) 방 만들기</button>
       <div class="or">— 또는 —</div>
       <div class="field"><label>짝이 알려준 방 코드</label><input id="joinCode" class="code" placeholder="예: 7K2Q" maxlength="4"/></div>
@@ -240,10 +239,6 @@
       <div class="noise-list" id="noiseList"></div>
       <div class="recheck"><button class="bigbtn" onclick="recheck()">♻️ 고쳐서 다시 청소</button></div>
     </div>
-    <div class="lb" id="lbBox" style="display:none;">
-      <h3>🏆 우리 반 청소 로봇 순위 (실시간)</h3>
-      <table class="lb-table"><thead><tr><th>순위</th><th>조 이름</th><th>청소 정확도</th></tr></thead><tbody id="lbBody"></tbody></table>
-    </div>
     <div class="talk" id="talkBox" style="display:none;">
       <div class="bar">💬 함께 이야기해요</div>
       <div class="body"><ol>
@@ -272,9 +267,9 @@ const A_ITEMS=[
   {e:"🪝",n:"낚시바늘",hard:1,angular:.8,moves:0,organic:0,shiny:.9,eyes:0,truth:"trash"},
   {e:"🛍️",n:"비닐봉지",hard:0,angular:.3,moves:0,organic:0,shiny:.5,eyes:0,truth:"trash"},
   {e:"🥫",n:"녹슨 캔",hard:1,angular:.9,moves:0,organic:0,shiny:.6,eyes:0,truth:"trash"},
+  {e:"🧊",n:"스티로폼",hard:.4,angular:.5,moves:0,organic:0,shiny:.3,eyes:0,truth:"trash"},
   {e:"🐟",n:"물고기",hard:0,angular:.1,moves:1,organic:1,shiny:.4,eyes:1,truth:"sealife"},
   {e:"🎐",n:"해파리",hard:0,angular:.1,moves:.5,organic:1,shiny:.3,eyes:0,truth:"sealife"},
-  {e:"🧊",n:"스티로폼",hard:.4,angular:.5,moves:0,organic:0,shiny:.3,eyes:0,truth:"trash"},
   {e:"⭐",n:"불가사리",hard:.5,angular:.6,moves:.3,organic:1,shiny:.1,eyes:0,truth:"sealife"},
   {e:"🪢",n:"폐그물",hard:.3,angular:.4,moves:0,organic:0,shiny:.2,eyes:0,truth:"trash"},
   {e:"🦀",n:"게",hard:.6,angular:.4,moves:1,organic:1,shiny:.2,eyes:1,truth:"sealife"},
@@ -284,18 +279,18 @@ const B_ITEMS=[
   {e:"🐢",n:"바다거북",hard:.4,angular:.2,moves:1,organic:1,shiny:.1,eyes:1,truth:"sealife"},
   {e:"🦑",n:"오징어",hard:0,angular:0,moves:1,organic:1,shiny:.2,eyes:1,truth:"sealife"},
   {e:"🌸",n:"말미잘",hard:.1,angular:.2,moves:.3,organic:1,shiny:.1,eyes:0,truth:"sealife"},
+  {e:"🪸",n:"산호",hard:.7,angular:.5,moves:0,organic:1,shiny:.1,eyes:0,truth:"sealife"},
   {e:"🛞",n:"폐타이어",hard:1,angular:.5,moves:0,organic:0,shiny:.1,eyes:0,truth:"trash"},
   {e:"🔋",n:"건전지",hard:1,angular:.8,moves:0,organic:0,shiny:.7,eyes:0,truth:"trash"},
   {e:"🐚",n:"조개",hard:.8,angular:.4,moves:.2,organic:1,shiny:.2,eyes:0,truth:"sealife"},
   {e:"🍾",n:"플라스틱병",hard:1,angular:.6,moves:0,organic:0,shiny:.7,eyes:0,truth:"trash"},
-  {e:"🪸",n:"산호",hard:.7,angular:.5,moves:0,organic:1,shiny:.1,eyes:0,truth:"sealife"},
   {e:"🥢",n:"빨대",hard:.6,angular:.4,moves:0,organic:0,shiny:.4,eyes:0,truth:"trash"},
 ];
 const C_ITEMS=[
   {e:"🦐",n:"새우",hard:.4,angular:.3,moves:1,organic:1,shiny:.2,eyes:1,truth:"sealife"},
-  {e:"🧴",n:"세제통",hard:1,angular:.7,moves:0,organic:0,shiny:.5,eyes:0,truth:"trash"},
   {e:"🐙",n:"문어",hard:0,angular:0,moves:1,organic:1,shiny:.2,eyes:1,truth:"sealife"},
   {e:"🐚",n:"고둥",hard:.85,angular:.4,moves:.1,organic:1,shiny:.2,eyes:0,truth:"sealife"},
+  {e:"🧴",n:"세제통",hard:1,angular:.7,moves:0,organic:0,shiny:.5,eyes:0,truth:"trash"},
   {e:"🪨",n:"콘크리트 조각",hard:1,angular:.7,moves:0,organic:0,shiny:.1,eyes:0,truth:"trash"},
   {e:"🦞",n:"가재",hard:.7,angular:.5,moves:1,organic:1,shiny:.2,eyes:1,truth:"sealife"},
 ];
@@ -346,7 +341,7 @@ function randCode(){const c="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";let s="";for(let 
 
 async function createRoom(){
   if(!connected){$("lobbyErr").textContent="Supabase 키를 먼저 입력해야 해요.";return;}
-  myName=$("myName").value.trim()||"가"; teamName=$("teamName").value.trim()||"이름없는 조";
+  myName=$("myName").value.trim()||"가"; teamName=myName+"의 모둠";
   roomCode=randCode(); myRole="A";
   const {error}=await sb.from("sessions").insert({room_code:roomCode,team_name:teamName,n_players:nPlayers,a_name:myName});
   if(error){$("lobbyErr").textContent="방 생성 실패: "+error.message;return;}
@@ -372,7 +367,6 @@ async function joinRoom(){
 }
 function subscribe(){
   sb.channel("room-"+roomCode).on("postgres_changes",{event:"*",schema:"public",table:"sessions",filter:"room_code=eq."+roomCode},p=>handleUpdate(p.new)).subscribe();
-  sb.channel("lb-"+roomCode).on("postgres_changes",{event:"*",schema:"public",table:"sessions"},()=>loadLeaderboard()).subscribe();
   pollOnce();
   if(pollTimer)clearInterval(pollTimer);
   pollTimer=setInterval(()=>{ if(!moreShown)pollOnce(); else clearInterval(pollTimer); },2000);
@@ -475,7 +469,7 @@ function buildSoloQueue(){ soloQueue=rolesInPlay().map(k=>({type:"solo",role:k})
 
 function runClean(step){
   if(animTimer)clearInterval(animTimer);
-  $("nextBox").style.display="none"; $("noiseSec").style.display="none"; $("lbBox").style.display="none"; $("talkBox").style.display="none"; $("resetBox").style.display="none";
+  $("nextBox").style.display="none"; $("noiseSec").style.display="none"; $("talkBox").style.display="none"; $("resetBox").style.display="none";
   let train, tag, cnt;
   if(step.type==="solo"){ const k=step.role; train=trainOfRole(k,1); const nm=myRole===k?(myName||RINFO[k].tag):RINFO[k].tag; tag=`1단계 · ${nm} (${RINFO[k].tag}) 혼자 가르친 로봇`; cnt=train.length; }
   else if(step.type==="combine"){ train=trainAll(1); tag=`2단계 · 🤝 합쳐 가르친 로봇`; cnt=train.length; }
@@ -549,7 +543,7 @@ function nextStep(){
     round=2; startRound2();
   }
 }
-function finishStage(){ renderNoiseList(); $("noiseSec").style.display="block"; $("lbBox").style.display="block"; $("talkBox").style.display="block"; $("resetBox").style.display="block"; loadLeaderboard(); }
+function finishStage(){ renderNoiseList(); $("noiseSec").style.display="block"; $("talkBox").style.display="block"; $("resetBox").style.display="block"; }
 
 function renderNoiseList(){
   let items='';
@@ -563,14 +557,7 @@ function nrow(a,k,i){ return `<div class="noise-item"><span class="emoji">${a.e}
 function fixIt(k,i){ fixed[k][i]=ITEMS[k][i].truth; const b=$("fix_"+k+"_"+i); if(b){b.textContent="✅ 고침";b.classList.add("done");b.disabled=true;} }
 function recheck(){ runClean({type:"more"}); }
 
-async function loadLeaderboard(){
-  if(!connected)return;
-  const {data}=await sb.from("sessions").select("team_name,best_acc,room_code").not("best_acc","is",null).order("best_acc",{ascending:false}).limit(10);
-  if(!data)return;
-  let rows=''; data.forEach((r,i)=>{ const me=r.room_code===roomCode?' class="me"':''; rows+=`<tr${me}><td class="rank">${i+1}</td><td>${esc(r.team_name||"이름없는 조")}</td><td class="acc">${r.best_acc}%</td></tr>`; });
-  if(!rows)rows='<tr><td colspan="3" style="text-align:center;color:var(--muted);">아직 완료한 조가 없어요.</td></tr>';
-  $("lbBody").innerHTML=rows;
-}
+function loadLeaderboard(){ /* 순위표 제거됨 */ }
 function esc(s){return (s||"").replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
 
 </script>
