@@ -416,13 +416,22 @@ async function putLabel(label){
   myLabels[idx]=label; idx++;
   if(label==="trash"){myTrashCnt++;$("cntTrash").textContent=myTrashCnt;} else {myLifeCnt++;$("cntLife").textContent=myLifeCnt;}
   const str=myLabels.map(l=>l==="trash"?"t":"s").join("");
-  if(connected) sb.from("sessions").update(myRole==="A"?{a_labels:str}:{b_labels:str}).eq("room_code",roomCode);
   const end=round===1?5:10;
   if(idx>=end){
-    const upd = round===1 ? (myRole==="A"?{a_solo_done:true}:{b_solo_done:true}) : (myRole==="A"?{a_done:true}:{b_done:true});
-    if(connected) await sb.from("sessions").update(upd).eq("room_code",roomCode);
+    // 마지막: 라벨 + 완료표시를 한 번에 저장 (충돌 방지)
+    const labelField = myRole==="A"?{a_labels:str}:{b_labels:str};
+    const doneField  = round===1 ? (myRole==="A"?{a_solo_done:true}:{b_solo_done:true}) : (myRole==="A"?{a_done:true}:{b_done:true});
+    if(connected){
+      const {error}=await sb.from("sessions").update({...labelField,...doneField}).eq("room_code",roomCode);
+      if(error){ console.error("저장 실패:",error); alert("저장에 실패했어요: "+error.message); return; }
+    }
     $("waitTitle").textContent = round===1?"1라운드 완료!":"2라운드 완료!";
     showStage("stageWait"); pollOnce(); return;
+  }
+  // 중간: 라벨 저장 (await로 확실히)
+  if(connected){
+    const {error}=await sb.from("sessions").update(myRole==="A"?{a_labels:str}:{b_labels:str}).eq("room_code",roomCode);
+    if(error){ console.error("라벨 저장 실패:",error); }
   }
   showItem();
 }
