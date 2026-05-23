@@ -8,98 +8,114 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Black+Han+Sans&family=Gaegu:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  :root{--deep:#0a2a43;--deep2:#0e3a5c;--ink:#eaf4fb;--card:#103b5a;--cardline:#1d5a86;
-    --accent:#ffb33e;--trash:#ff7043;--life:#39c6c0;--pa:#a78bff;--pb:#5fe0c8;--muted:#8fb4cf;--soft:#0f3350;}
+  :root{--deep:#0a2238;--deep2:#0e3050;--ink:#eaf4fb;--card:#13314f;--cardline:#2a5680;
+    --accent:#ffb33e;--trash:#ff7043;--life:#46d6cf;--pa:#a78bff;--pb:#5fe0c8;--muted:#8fb4cf;--soft:#102844;--frame:#cfd8de;}
   *{box-sizing:border-box;}html,body{margin:0;padding:0;}
-  body{background:linear-gradient(180deg,#0a2a43 0%,#06192b 100%);color:var(--ink);
-    font-family:'Gowun Dodum',sans-serif;line-height:1.55;padding:24px 16px 60px;min-height:100vh;}
-  .wrap{max-width:760px;margin:0 auto;}
-  body::before{content:"";position:fixed;inset:0;pointer-events:none;
-    background:radial-gradient(circle at 20% 30%,rgba(57,198,192,.07),transparent 40%),radial-gradient(circle at 80% 70%,rgba(95,224,200,.06),transparent 40%);}
+  body{background:linear-gradient(180deg,#0a2238 0%,#06182b 100%);color:var(--ink);
+    font-family:'Gowun Dodum',sans-serif;line-height:1.55;padding:18px 14px 50px;min-height:100vh;}
+  .wrap{max-width:820px;margin:0 auto;}
   header{text-align:center;margin-bottom:10px;}
-  .badge{display:inline-block;font-family:'Gaegu',cursive;font-weight:700;background:var(--life);color:#04222e;padding:3px 16px;border-radius:20px;font-size:14px;letter-spacing:1px;margin-bottom:8px;}
-  h1{font-family:'Black Han Sans',sans-serif;font-size:clamp(23px,4.4vw,37px);margin:6px 0;letter-spacing:-1px;line-height:1.1;}
+  .badge{display:inline-block;font-family:'Gaegu',cursive;font-weight:700;background:var(--life);color:#04222e;padding:3px 16px;border-radius:20px;font-size:13px;letter-spacing:1px;margin-bottom:6px;}
+  h1{font-family:'Black Han Sans',sans-serif;font-size:clamp(21px,4vw,33px);margin:4px 0;letter-spacing:-1px;}
   h1 .hl{color:var(--accent);}
-  .lead{font-family:'Gaegu',cursive;font-size:17px;margin:0 0 4px;color:var(--life);}
-  .panel{background:var(--card);border:2px solid var(--cardline);border-radius:16px;padding:22px;box-shadow:0 8px 24px rgba(0,0,0,.3);margin-bottom:18px;}
+  .lead{font-family:'Gaegu',cursive;font-size:15px;margin:0 0 4px;color:var(--life);}
+  .panel{background:var(--card);border:2px solid var(--cardline);border-radius:16px;padding:20px;box-shadow:0 8px 24px rgba(0,0,0,.3);margin-bottom:16px;}
   .stage{display:none;}.stage.on{display:block;animation:fade .3s ease;}
   @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
-  .warn{background:#3a2410;border:2px dashed var(--accent);border-radius:12px;padding:14px 18px;margin-bottom:18px;font-size:13px;color:#ffd9a8;text-align:center;}.warn b{color:var(--accent);}
+  .warn{background:#3a2410;border:2px dashed var(--accent);border-radius:12px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:#ffd9a8;text-align:center;}.warn b{color:var(--accent);}
   .intro{text-align:center;}
-  .robot{font-size:80px;line-height:1;margin-bottom:6px;animation:bob 2.5s ease-in-out infinite;}
+  .robot{font-size:74px;line-height:1;margin-bottom:6px;animation:bob 2.5s ease-in-out infinite;}
   @keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
-  .speech{background:var(--soft);border:2px solid var(--cardline);border-radius:16px;padding:16px 20px;max-width:460px;margin:0 auto 18px;font-size:14.5px;position:relative;}
+  .speech{background:var(--soft);border:2px solid var(--cardline);border-radius:16px;padding:15px 18px;max-width:460px;margin:0 auto 16px;font-size:14px;position:relative;}
   .speech::after{content:"";position:absolute;top:-12px;left:50%;transform:translateX(-50%);border:6px solid transparent;border-bottom-color:var(--cardline);}
   .speech b{color:var(--accent);}
-  .lobby{text-align:center;}.lobby h2{font-family:'Black Han Sans',sans-serif;font-size:19px;margin:0 0 12px;}
+  .lobby{text-align:center;}.lobby h2{font-family:'Black Han Sans',sans-serif;font-size:18px;margin:0 0 12px;}
   .field{margin:0 auto 14px;max-width:340px;text-align:left;}
   .field label{font-size:13px;color:var(--muted);display:block;margin-bottom:4px;font-family:'Gaegu',cursive;font-weight:700;}
   .field input{width:100%;font-family:'Gaegu',cursive;font-size:18px;border:2px solid var(--cardline);border-radius:10px;padding:11px 14px;text-align:center;letter-spacing:2px;text-transform:uppercase;background:var(--soft);color:var(--ink);}
-  .bigbtn{font-family:'Gaegu',cursive;font-weight:700;font-size:16px;background:var(--accent);color:#3a2410;border:none;border-radius:10px;padding:13px 26px;cursor:pointer;box-shadow:0 4px 0 #c8861f;}
+  .bigbtn{font-family:'Gaegu',cursive;font-weight:700;font-size:16px;background:var(--accent);color:#3a2410;border:none;border-radius:10px;padding:12px 24px;cursor:pointer;box-shadow:0 4px 0 #c8861f;}
   .bigbtn:active{transform:translateY(2px);box-shadow:0 2px 0 #c8861f;}
   .bigbtn.ghost{background:var(--soft);color:var(--ink);border:2px solid var(--cardline);box-shadow:none;}
-  .bigbtn:disabled{opacity:.5;cursor:default;}
-  .or{font-family:'Gaegu',cursive;color:var(--muted);margin:14px 0;}
+  .or{font-family:'Gaegu',cursive;color:var(--muted);margin:12px 0;}
   .err{color:var(--trash);font-size:12.5px;min-height:18px;margin-top:8px;}
   .conn{font-size:11.5px;color:var(--muted);margin-top:14px;}.conn.ok{color:var(--life);}.conn.bad{color:var(--trash);}
   .waitroom{text-align:center;}
-  .roomcode{font-family:'Black Han Sans',sans-serif;font-size:40px;letter-spacing:6px;color:var(--accent);background:var(--soft);border:2px dashed var(--accent);border-radius:14px;padding:14px;margin:8px 0 6px;}
-  .roominfo{font-size:13px;color:var(--muted);margin-bottom:18px;}
-  .players{display:flex;gap:14px;justify-content:center;margin-bottom:16px;}
-  .pcard{flex:1;max-width:200px;border:2px solid var(--cardline);border-radius:12px;padding:14px;background:var(--soft);}
+  .roomcode{font-family:'Black Han Sans',sans-serif;font-size:38px;letter-spacing:6px;color:var(--accent);background:var(--soft);border:2px dashed var(--accent);border-radius:14px;padding:13px;margin:8px 0 6px;}
+  .roominfo{font-size:13px;color:var(--muted);margin-bottom:16px;}
+  .players{display:flex;gap:14px;justify-content:center;margin-bottom:14px;}
+  .pcard{flex:1;max-width:200px;border:2px solid var(--cardline);border-radius:12px;padding:13px;background:var(--soft);}
   .pcard.a{border-color:var(--pa);}.pcard.b{border-color:var(--pb);}
   .pcard .role{font-family:'Black Han Sans',sans-serif;font-size:15px;}
   .pcard.a .role{color:var(--pa);}.pcard.b .role{color:var(--pb);}
   .pcard .status{font-size:12px;color:var(--muted);margin-top:4px;}.pcard .status.joined{color:var(--life);font-weight:700;}
-  .spinner{font-size:34px;animation:spin 1.4s linear infinite;display:inline-block;}
+  .spinner{font-size:32px;animation:spin 1.4s linear infinite;display:inline-block;}
   @keyframes spin{to{transform:rotate(360deg);}}
-  .phase-tag{text-align:center;font-family:'Gaegu',cursive;font-weight:700;font-size:14px;background:var(--soft);border-radius:16px;padding:4px 14px;display:inline-block;margin:0 auto 8px;color:var(--accent);}
-  .phase-wrap{text-align:center;}
-  .who-now{text-align:center;font-family:'Black Han Sans',sans-serif;font-size:18px;margin-bottom:2px;}
-  .who-now.a{color:var(--pa);}.who-now.b{color:var(--pb);}
-  .task{text-align:center;font-size:13.5px;color:var(--muted);margin-bottom:14px;}.task b{color:var(--accent);}
-  .item-now{text-align:center;background:var(--soft);border:2px dashed var(--cardline);border-radius:14px;padding:18px 12px;margin-bottom:12px;}
-  .item-now .emoji{font-size:64px;line-height:1;}
-  .item-now .nm{font-family:'Black Han Sans',sans-serif;font-size:23px;margin-top:4px;}
-  .lbl-btns{display:flex;gap:12px;}
+
+  /* ===== Code.org 스타일 실험실 무대 ===== */
+  .lab{position:relative;background:
+      radial-gradient(circle at 12% 18%,rgba(70,214,207,.10),transparent 30%),
+      radial-gradient(circle at 88% 80%,rgba(167,139,255,.10),transparent 32%),
+      linear-gradient(180deg,#123150 0%,#0c2138 100%);
+    border:2px solid var(--cardline);border-radius:16px;padding:16px 14px 18px;overflow:hidden;}
+  /* 상단 바: 질문 + 수집 카운터 */
+  .lab-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;}
+  .lab-q{font-family:'Black Han Sans',sans-serif;font-size:clamp(16px,2.6vw,22px);color:#dff;}
+  .counter{display:flex;align-items:center;gap:6px;background:#061626;border:1.5px solid var(--cardline);border-radius:18px;padding:4px 12px;font-family:'Black Han Sans';font-size:15px;}
+  .counter .ic{font-size:16px;}
+  .counter .n{color:var(--accent);}
+  /* 무대 가운데: 액자들 + 로봇 */
+  .stagewrap{display:flex;align-items:center;justify-content:center;gap:10px;min-height:230px;}
+  .frame{background:var(--frame);border-radius:8px;padding:9px 9px 22px;box-shadow:0 6px 16px rgba(0,0,0,.35);position:relative;}
+  .frame .pic{background:#222b33;border-radius:4px;width:150px;height:150px;display:flex;align-items:center;justify-content:center;font-size:84px;}
+  .frame.side{transform:scale(.62);opacity:.5;filter:blur(.4px);}
+  .frame.side .pic{font-size:70px;}
+  /* 스캔 프레임(네온 모서리) */
+  .scan{position:relative;}
+  .scan::before,.scan::after,.scan .c1,.scan .c2{content:"";position:absolute;width:26px;height:26px;border:3px solid var(--life);}
+  .scan::before{top:-8px;left:-8px;border-right:0;border-bottom:0;border-radius:6px 0 0 0;}
+  .scan::after{top:-8px;right:-8px;border-left:0;border-bottom:0;border-radius:0 6px 0 0;}
+  .scan .c1{bottom:-8px;left:-8px;border-right:0;border-top:0;border-radius:0 0 0 6px;}
+  .scan .c2{bottom:-8px;right:-8px;border-left:0;border-top:0;border-radius:0 0 6px 0;}
+  .scan.glow .c1,.scan.glow .c2,.scan.glow::before,.scan.glow::after{animation:scanpulse 1.1s ease-in-out infinite;}
+  @keyframes scanpulse{0%,100%{box-shadow:0 0 2px var(--life);}50%{box-shadow:0 0 10px var(--life);}}
+  .labrobot{font-size:64px;flex-shrink:0;animation:bob 2.6s ease-in-out infinite;}
+  .labrobot .tag{display:block;font-family:'Black Han Sans';font-size:12px;color:var(--muted);text-align:center;margin-top:-6px;}
+  .itemname{text-align:center;font-family:'Black Han Sans',sans-serif;font-size:18px;margin:8px 0 2px;}
+  /* 라벨 버튼 */
+  .lbl-btns{display:flex;gap:12px;margin-top:12px;}
   .lbl-btns button{flex:1;font-family:'Gaegu',cursive;font-weight:700;font-size:16px;border:none;border-radius:10px;padding:14px 6px;cursor:pointer;color:#fff;}
   .lbl-btns button:active{transform:translateY(2px);}
   .lbl-btns .trash{background:var(--trash);box-shadow:0 4px 0 #c14a26;}.lbl-btns .trash:active{box-shadow:0 2px 0 #c14a26;}
   .lbl-btns .life{background:var(--life);box-shadow:0 4px 0 #239a94;color:#04222e;}.lbl-btns .life:active{box-shadow:0 2px 0 #239a94;}
-  .progress{text-align:center;font-family:'Gaegu',cursive;font-size:14px;margin-top:14px;}
-  .progress b{font-family:'Black Han Sans',sans-serif;font-size:18px;color:var(--accent);}
-  .dots{display:flex;gap:5px;justify-content:center;margin-top:8px;flex-wrap:wrap;}
-  .dot{width:13px;height:13px;border-radius:50%;background:var(--cardline);}.dot.done{background:var(--accent);}
-  .partner-prog{text-align:center;font-size:12.5px;color:var(--muted);margin-top:10px;font-family:'Gaegu',cursive;}
+  .phase-tag{text-align:center;font-family:'Gaegu',cursive;font-weight:700;font-size:13px;background:var(--soft);border-radius:16px;padding:4px 14px;display:inline-block;margin:0 auto 8px;color:var(--accent);}
+  .who-now{text-align:center;font-family:'Black Han Sans',sans-serif;font-size:16px;margin-bottom:8px;}
+  .who-now.a{color:var(--pa);}.who-now.b{color:var(--pb);}
+  .dots{display:flex;gap:5px;justify-content:center;margin-top:12px;flex-wrap:wrap;}
+  .dot{width:12px;height:12px;border-radius:50%;background:var(--cardline);}.dot.done{background:var(--accent);}
+  .partner-prog{text-align:center;font-size:12.5px;color:var(--muted);margin-top:8px;font-family:'Gaegu',cursive;}
   .midresult{text-align:center;}
-  /* 청소 무대 */
-  .seafloor{background:linear-gradient(180deg,rgba(15,51,80,.5),rgba(8,25,43,.85));border:2px solid var(--cardline);border-radius:14px;padding:14px 10px;margin:6px 0 12px;min-height:120px;}
-  .robot-bar{text-align:center;font-size:34px;margin-bottom:8px;}
-  .cl-grid{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;min-height:60px;}
-  .cl-item{width:80px;background:var(--soft);border:2px solid var(--cardline);border-radius:12px;padding:8px 4px;text-align:center;position:relative;opacity:.35;transition:opacity .25s;}
-  .cl-item.shown{opacity:1;}
-  .cl-item .ce{font-size:30px;line-height:1.1;}
-  .cl-item .cn{font-size:10px;color:var(--muted);margin-top:2px;}
-  .cl-item .act{font-size:10.5px;font-weight:700;margin-top:4px;font-family:'Gaegu',cursive;min-height:14px;}
-  .cl-item.picked{border-color:var(--accent);}.cl-item.picked .act{color:var(--accent);}
-  .cl-item.left{border-color:var(--life);}.cl-item.left .act{color:var(--life);}
-  .cl-item.wrong{border-color:var(--trash);background:#3a1f17;}
-  .cl-item .badge2{position:absolute;top:-8px;right:-6px;font-size:15px;opacity:0;transition:opacity .2s;}
-  .cl-item.judged .badge2{opacity:1;}
-  .cl-item.suck{animation:suck .55s ease forwards;}
-  @keyframes suck{0%{transform:scale(1);}55%{transform:translateY(-12px) scale(1.15) rotate(8deg);}100%{transform:translateY(-26px) scale(.35);opacity:.2;}}
-  .cl-item.swim{animation:swim .7s ease;}
-  @keyframes swim{0%{transform:translateX(0);}25%{transform:translateX(-5px) rotate(-4deg);}75%{transform:translateX(5px) rotate(4deg);}100%{transform:translateX(0);}}
-  .cl-now{text-align:center;font-family:'Gaegu',cursive;font-size:13px;color:var(--muted);min-height:18px;margin-top:8px;}
-  .cl-total{text-align:center;font-family:'Black Han Sans',sans-serif;font-size:18px;margin:12px 0 4px;min-height:26px;}
-  .cl-total .pct{color:var(--accent);font-size:28px;}
-  .stepbar{display:flex;gap:6px;justify-content:center;margin-bottom:12px;flex-wrap:wrap;}
+
+  /* 청소 무대 결과 */
+  .stepbar{display:flex;gap:6px;justify-content:center;margin-bottom:10px;flex-wrap:wrap;}
   .stepchip{font-size:11.5px;font-family:'Gaegu',cursive;font-weight:700;padding:3px 10px;border-radius:12px;background:var(--soft);color:var(--muted);border:1.5px solid var(--cardline);}
   .stepchip.on{background:var(--accent);color:#3a2410;border-color:var(--accent);}
   .stepchip.done{color:var(--life);border-color:var(--life);}
-  .nextbox{text-align:center;margin-top:10px;}
-  .nextbox p{font-size:13.5px;color:#ffd9a8;margin:0 0 10px;}
-  .winner{text-align:center;font-family:'Gaegu',cursive;font-weight:700;font-size:16px;color:var(--life);margin:8px 0;min-height:22px;}
+  .verdict{text-align:center;font-family:'Gaegu',cursive;font-size:14px;min-height:22px;margin-top:10px;}
+  .scoreboard{text-align:center;font-family:'Black Han Sans',sans-serif;font-size:18px;margin:10px 0 2px;}
+  .scoreboard .pct{color:var(--accent);font-size:30px;display:inline-block;transition:transform .3s ease,color .3s ease;}
+  .scoreboard .cnt{font-size:13px;color:var(--muted);font-family:'Gowun Dodum';}
+  /* 처리된 물체들이 쌓이는 트레이 */
+  .trays{display:flex;gap:10px;margin-top:12px;}
+  .tray{flex:1;background:var(--soft);border:1.5px solid var(--cardline);border-radius:12px;padding:8px;min-height:70px;}
+  .tray.trash{border-color:var(--trash);}.tray.life{border-color:var(--life);}
+  .tray h4{margin:0 0 6px;font-family:'Black Han Sans';font-size:12.5px;text-align:center;}
+  .tray.trash h4{color:var(--trash);}.tray.life h4{color:var(--life);}
+  .tray .items{display:flex;flex-wrap:wrap;gap:3px;justify-content:center;}
+  .tray .ti{font-size:22px;position:relative;}
+  .tray .ti.wrong{filter:grayscale(0);} 
+  .tray .ti .x{position:absolute;top:-4px;right:-6px;font-size:11px;}
+  .winner{text-align:center;font-family:'Gaegu',cursive;font-weight:700;font-size:15px;color:var(--life);margin:10px 0;min-height:20px;}
+  .nextbox{text-align:center;margin-top:10px;}.nextbox p{font-size:13.5px;color:#ffd9a8;margin:0 0 10px;}
   .noise-sec{background:var(--soft);border-radius:12px;padding:16px;margin-top:14px;}
   .noise-sec h3{font-family:'Black Han Sans',sans-serif;font-size:15px;margin:0 0 4px;color:var(--accent);}
   .noise-sec p{font-size:12.5px;color:var(--muted);margin:0 0 12px;}
@@ -111,20 +127,20 @@
   .fixbtn{margin-left:auto;font-family:'Gaegu',cursive;font-weight:700;font-size:12.5px;background:var(--accent);color:#3a2410;border:none;border-radius:8px;padding:5px 12px;cursor:pointer;}
   .fixbtn:active{transform:translateY(1px);}.fixbtn.done{background:var(--soft);color:var(--muted);border:1.5px solid var(--cardline);}
   .recheck{margin-top:14px;text-align:center;}
-  .lb{margin-top:18px;}.lb h3{font-family:'Black Han Sans',sans-serif;font-size:16px;margin:0 0 10px;text-align:center;}
+  .lb{margin-top:16px;}.lb h3{font-family:'Black Han Sans',sans-serif;font-size:15px;margin:0 0 10px;text-align:center;}
   .lb-table{width:100%;border-collapse:collapse;font-size:13.5px;}
   .lb-table th,.lb-table td{border:1px solid var(--cardline);padding:7px 10px;}
   .lb-table thead th{background:var(--deep2);color:var(--ink);font-weight:400;font-size:12.5px;}
   .lb-table td.rank{text-align:center;font-family:'Black Han Sans',sans-serif;width:48px;}
   .lb-table td.acc{text-align:right;font-family:'Black Han Sans',sans-serif;color:var(--accent);width:70px;}
   .lb-table tr.me{background:#2a3f1a;}.lb-table tr.me td{font-weight:700;}
-  .talk{margin-top:20px;border:2px solid var(--accent);border-radius:14px;overflow:hidden;}
-  .talk .bar{background:var(--accent);color:#3a2410;padding:9px 18px;font-family:'Black Han Sans';font-size:16px;}
+  .talk{margin-top:18px;border:2px solid var(--accent);border-radius:14px;overflow:hidden;}
+  .talk .bar{background:var(--accent);color:#3a2410;padding:9px 18px;font-family:'Black Han Sans';font-size:15px;}
   .talk .body{background:var(--card);padding:14px 20px;}.talk ol{margin:0;padding-left:20px;}.talk li{font-size:14px;margin:8px 0;}
   .toolbar{text-align:center;margin-top:10px;}
   .reset{font-family:'Gaegu',cursive;font-weight:700;font-size:13.5px;background:var(--soft);border:2px solid var(--cardline);color:var(--ink);border-radius:10px;padding:8px 20px;cursor:pointer;}
-  .reset:active{transform:translateY(2px);}
-  .footer{margin-top:20px;text-align:center;font-family:'Gaegu',cursive;font-size:13px;color:var(--muted);}
+  .footer{margin-top:18px;text-align:center;font-family:'Gaegu',cursive;font-size:13px;color:var(--muted);}
+  @media(max-width:560px){.frame.side{display:none;}.frame .pic{width:120px;height:120px;font-size:66px;}.labrobot{font-size:48px;}}
 </style>
 </head>
 <body>
@@ -134,17 +150,19 @@
     <h1>바다 청소 <span class="hl">로봇</span> 가르치기</h1>
     <p class="lead">쓰레기는 줍고, 바다생물은 놔두도록 — AI에게 직접 가르쳐요!</p>
   </header>
-  <div class="warn" id="setupWarn" style="display:none;">⚙️ <b>아직 Supabase 키가 입력되지 않았어요.</b> 파일 상단 SUPABASE_URL / SUPABASE_ANON_KEY 를 채워야 실시간 연결됩니다.</div>
+  <div class="warn" id="setupWarn" style="display:none;">⚙️ <b>아직 Supabase 키가 입력되지 않았어요.</b></div>
 
+  <!-- 인트로 -->
   <div class="panel stage on" id="stageIntro">
     <div class="intro">
       <div class="robot">🤖</div>
-      <div class="speech">안녕하세요! 저는 바다 청소 로봇이에요. 🌊<br>바다에 <b>쓰레기가 너무 많아요.</b> 그런데 뭘 주워야 할지 몰라요.<br>쓰레기는 줍고, <b>물고기·거북이 같은 생물은 놔둬야</b> 하는데… 가르쳐 주세요! 🙏</div>
-      <p style="font-size:13px;color:var(--muted);max-width:480px;margin:0 auto 16px;">두 사람이 <b style="color:var(--pa)">서로 다른 물체</b>를 가르쳐요. 혼자 → 합치기 → 더 가르치기, 단계마다 로봇이 청소하는 모습이 어떻게 달라지는지 봐요!</p>
+      <div class="speech">안녕하세요! 저는 바다 청소 로봇이에요. 🌊<br>바다에 <b>쓰레기가 너무 많아요.</b> 뭘 주워야 할지 가르쳐 주세요!<br>쓰레기는 줍고, <b>물고기·거북이는 놔둬야</b> 해요. 🙏</div>
+      <p style="font-size:13px;color:var(--muted);max-width:480px;margin:0 auto 16px;">두 사람이 <b style="color:var(--pa)">서로 다른 물체</b>를 가르쳐요. 혼자 → 합치기 → 더 가르치기, 로봇이 점점 똑똑해지는 걸 봐요!</p>
       <button class="bigbtn" onclick="goLobby()">🚀 로봇 가르치러 가기</button>
     </div>
   </div>
 
+  <!-- 로비 -->
   <div class="panel stage" id="stage0">
     <div class="lobby">
       <h2>🚪 방 만들기 / 입장하기</h2>
@@ -158,9 +176,10 @@
     </div>
   </div>
 
+  <!-- 대기실 -->
   <div class="panel stage" id="stage1">
     <div class="waitroom">
-      <h2 style="font-family:'Black Han Sans';font-size:18px;margin:0 0 4px;">방 코드</h2>
+      <h2 style="font-family:'Black Han Sans';font-size:17px;margin:0 0 4px;">방 코드</h2>
       <div class="roomcode" id="roomCodeShow">----</div>
       <div class="roominfo">짝에게 이 코드를 알려주세요. 둘 다 들어오면 자동 시작!</div>
       <div class="players">
@@ -171,45 +190,67 @@
     </div>
   </div>
 
+  <!-- 라벨링: Code.org 스타일 무대 -->
   <div class="panel stage" id="stage2">
-    <div class="phase-wrap"><span class="phase-tag" id="phaseTag">1라운드 · 물체 5개 가르치기</span></div>
+    <div style="text-align:center;"><span class="phase-tag" id="phaseTag">1라운드 · 물체 5개 가르치기</span></div>
     <div class="who-now" id="whoNow">🟣 (가)의 차례</div>
-    <div class="task">로봇이 이걸 만났어요. <b>주울 쓰레기</b>? 놔둘 <b>바다생물</b>?</div>
-    <div class="item-now"><div class="emoji" id="lEmoji">🍶</div><div class="nm" id="lName">유리병</div></div>
-    <div class="lbl-btns">
-      <button class="trash" onclick="putLabel('trash')">🗑️ 쓰레기 (줍기)</button>
-      <button class="life" onclick="putLabel('sealife')">💙 바다생물 (놔두기)</button>
+    <div class="lab">
+      <div class="lab-top">
+        <span class="lab-q">이것은 무엇인가요?</span>
+        <span class="counter">🗑️ <span class="n" id="cntTrash">0</span> &nbsp;|&nbsp; 💙 <span class="n" id="cntLife" style="color:var(--life)">0</span></span>
+      </div>
+      <div class="stagewrap">
+        <div class="frame side"><div class="pic" id="prevPic">🍶</div></div>
+        <div class="frame scan glow"><div class="c1"></div><div class="c2"></div><div class="pic" id="lEmoji">🐟</div></div>
+        <div class="labrobot">🤖<span class="tag">A.I.</span></div>
+      </div>
+      <div class="itemname" id="lName">물고기</div>
     </div>
-    <div class="progress"><b id="lProg">0</b> / <span id="lTot">5</span> 개</div>
+    <div class="lbl-btns">
+      <button class="trash" onclick="putLabel('trash')">🗑️ 쓰레기 (주울 것)</button>
+      <button class="life" onclick="putLabel('sealife')">💙 바다생물 (놔둘 것)</button>
+    </div>
+    <div style="text-align:center;font-family:'Gaegu';font-size:14px;margin-top:12px;"><b id="lProg" style="font-family:'Black Han Sans';color:var(--accent);font-size:18px;">0</b> / <span id="lTot">5</span> 개</div>
     <div class="dots" id="lDots"></div>
     <div class="partner-prog" id="partnerProg"></div>
   </div>
 
+  <!-- 대기 -->
   <div class="panel stage" id="stageWait">
     <div class="midresult"><span class="spinner">🌊</span>
-      <h2 style="font-family:'Black Han Sans';font-size:18px;margin:12px 0 4px;" id="waitTitle">가르치기 완료!</h2>
+      <h2 style="font-family:'Black Han Sans';font-size:17px;margin:12px 0 4px;" id="waitTitle">가르치기 완료!</h2>
       <div style="font-size:13px;color:var(--muted);">짝이 끝내면 로봇이 청소를 시작해요. <span id="waitPartnerProg"></span></div>
     </div>
   </div>
 
+  <!-- 청소 무대 -->
   <div class="panel stage" id="stage3">
     <div class="stepbar">
       <span class="stepchip" id="chip1">1. 혼자 (5개)</span>
       <span class="stepchip" id="chip2">2. 합치기 (10개)</span>
       <span class="stepchip" id="chip3">3. 더 가르치기 (20개)</span>
     </div>
-    <div class="phase-wrap"><span class="phase-tag" id="resultTag">🤖 로봇이 바다를 청소합니다</span></div>
-    <div class="seafloor">
-      <div class="robot-bar">🤖</div>
-      <div class="cl-grid" id="clGrid"></div>
-      <div class="cl-now" id="clNow"></div>
+    <div style="text-align:center;"><span class="phase-tag" id="resultTag">🤖 로봇이 바다를 청소합니다</span></div>
+    <div class="lab">
+      <div class="lab-top">
+        <span class="lab-q" id="cleanQ">이것은 무엇일까?</span>
+        <span class="counter">정확도 <span class="n" id="livePct">--%</span></span>
+      </div>
+      <div class="stagewrap">
+        <div class="frame scan" id="cleanFrame"><div class="c1"></div><div class="c2"></div><div class="pic" id="cleanPic">🌊</div></div>
+        <div class="labrobot">🤖<span class="tag">A.I.</span></div>
+      </div>
+      <div class="verdict" id="verdict"></div>
     </div>
-    <div class="cl-total" id="clTotal"></div>
+    <div class="trays">
+      <div class="tray trash"><h4>🗑️ 주운 것 (쓰레기라고 판단)</h4><div class="items" id="trayTrash"></div></div>
+      <div class="tray life"><h4>💙 놔둔 것 (생물이라고 판단)</h4><div class="items" id="trayLife"></div></div>
+    </div>
+    <div class="scoreboard" id="scoreboard"></div>
     <div class="winner" id="growthMsg"></div>
 
     <div class="nextbox" id="nextBox" style="display:none;">
-      <p id="nextMsg"></p>
-      <button class="bigbtn" id="nextBtn" onclick="nextStep()">다음 →</button>
+      <p id="nextMsg"></p><button class="bigbtn" id="nextBtn" onclick="nextStep()">다음 →</button>
     </div>
 
     <div class="noise-sec" id="noiseSec" style="display:none;">
@@ -218,37 +259,33 @@
       <div class="noise-list" id="noiseList"></div>
       <div class="recheck"><button class="bigbtn" onclick="recheck()">♻️ 고쳐서 다시 청소</button></div>
     </div>
-
     <div class="lb" id="lbBox" style="display:none;">
       <h3>🏆 우리 반 청소 로봇 순위 (실시간)</h3>
       <table class="lb-table"><thead><tr><th>순위</th><th>조 이름</th><th>청소 정확도</th></tr></thead><tbody id="lbBody"></tbody></table>
     </div>
-
     <div class="talk" id="talkBox" style="display:none;">
       <div class="bar">💬 짝과 이야기해요</div>
       <div class="body"><ol>
-        <li>혼자 가르쳤을 때, 라벨을 잘못 붙이면 정확도가 어떻게 됐나요? (데이터가 적으면 실수 하나의 영향이 큼)</li>
-        <li>둘이 합치니(10개) 왜 더 안정적이 됐을까요? 한 명이 실수해도 괜찮아진 이유는?</li>
-        <li>더 가르치니(20개) 어려운 물체(해파리·산호)까지 맞히게 된 이유는?</li>
-        <li>로봇이 물고기를 주워버리면 어떤 일이 생길까요? 정확한 데이터가 왜 중요할까요?</li>
+        <li>혼자 가르쳤을 때, 라벨을 잘못 붙이면 정확도가 어떻게 됐나요?</li>
+        <li>둘이 합치니(10개) 왜 더 안정적이 됐을까요?</li>
+        <li>더 가르치니(20개) 어려운 물체까지 맞히게 된 이유는?</li>
+        <li>로봇이 물고기를 주워버리면 어떤 일이 생길까요?</li>
       </ol></div>
     </div>
     <div class="toolbar" id="resetBox" style="display:none;"><button class="reset" onclick="location.reload()">↺ 새 게임</button></div>
   </div>
 
-  <div class="footer">🌊 한 줄 요약 ✦ "데이터가 많고 정확할수록, 청소 로봇은 깨끗한 바다를 만든다."</div>
+  <div class="footer">🌊 "데이터가 많고 정확할수록, 청소 로봇은 깨끗한 바다를 만든다."</div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const SUPABASE_URL  = "https://irfcmhjgexiocigfpjaq.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_VWffGFDqnF2ldODgqHES6A_D0tGqfGA";
-
 let sb=null, connected=false;
 try{ if(SUPABASE_URL.startsWith("http") && SUPABASE_ANON_KEY.length>20){ sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY); connected=true; } }catch(e){ connected=false; }
 
 const FEATS=["hard","angular","moves","organic","shiny","eyes"];
-/* (가) 10개: 앞5=1R, 뒤5=2R */
 const A_ITEMS=[
   {e:"🍶",n:"유리병",hard:1,angular:.7,moves:0,organic:0,shiny:.8,eyes:0,truth:"trash"},
   {e:"🪝",n:"낚시바늘",hard:1,angular:.8,moves:0,organic:0,shiny:.9,eyes:0,truth:"trash"},
@@ -261,7 +298,6 @@ const A_ITEMS=[
   {e:"🪢",n:"폐그물",hard:.3,angular:.4,moves:0,organic:0,shiny:.2,eyes:0,truth:"trash"},
   {e:"🦀",n:"게",hard:.6,angular:.4,moves:1,organic:1,shiny:.2,eyes:1,truth:"sealife"},
 ];
-/* (나) 10개 */
 const B_ITEMS=[
   {e:"🐠",n:"열대어",hard:0,angular:.1,moves:1,organic:1,shiny:.4,eyes:1,truth:"sealife"},
   {e:"🐢",n:"바다거북",hard:.4,angular:.2,moves:1,organic:1,shiny:.1,eyes:1,truth:"sealife"},
@@ -300,16 +336,14 @@ const TEST=[
 let myRole=null, roomCode=null, teamName="";
 let round=1, idx=0, myItems=[], myLabels=[];
 let aLabels=[],bLabels=[],fixedA=[],fixedB=[];
-let curStep=0;        // 1=혼자, 2=합침, 3=더추가
-let soloShown=false, comboShown=false, moreShown=false, aStarted=false;
-let animTimer=null;
+let curStep=0, soloShown=false, moreShown=false, aStarted=false, animTimer=null, _soloPct=null;
+let myTrashCnt=0, myLifeCnt=0;
 const $=id=>document.getElementById(id);
 function showStage(n){["stageIntro","stage0","stage1","stage2","stageWait","stage3"].forEach(s=>$(s).classList.remove("on"));$(n).classList.add("on");}
 
 window.addEventListener("load",()=>{
-  if(!connected){ $("setupWarn").style.display="block";
-    $("connStatus").textContent="⚠️ 오프라인 모드 (키 미입력 — 실시간 불가)"; $("connStatus").className="conn bad";
-  }else{ $("connStatus").textContent="✅ 서버 연결됨 — 방을 만들거나 입장하세요"; $("connStatus").className="conn ok"; }
+  if(!connected){ $("setupWarn").style.display="block"; $("connStatus").textContent="⚠️ 오프라인 모드 (키 미입력)"; $("connStatus").className="conn bad"; }
+  else{ $("connStatus").textContent="✅ 서버 연결됨 — 방을 만들거나 입장하세요"; $("connStatus").className="conn ok"; }
 });
 function goLobby(){ showStage("stage0"); }
 function randCode(){const c="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";let s="";for(let i=0;i<4;i++)s+=c[Math.floor(Math.random()*c.length)];return s;}
@@ -350,34 +384,35 @@ function handleUpdate(row){
   if($("waitPartnerProg")) $("waitPartnerProg").textContent=`(짝 진행 ${Math.min(pc,need)}/${need})`;
   aLabels=(row.a_labels||"").split("").map(c=>c==="t"?"trash":"sealife");
   bLabels=(row.b_labels||"").split("").map(c=>c==="t"?"trash":"sealife");
-
-  // 1단계(혼자) 결과: 둘 다 solo_done
-  if(row.a_solo_done && row.b_solo_done && !soloShown && !row.a_done && !row.b_done){
-    soloShown=true; fixedA=aLabels.slice(0,5); fixedB=bLabels.slice(0,5);
-    curStep=1; showStage("stage3"); runCleanup(1);
+  if(row.a_solo_done && row.b_solo_done && !soloShown && !row.a_done && !row.b_done && aLabels.length>=5 && bLabels.length>=5){
+    soloShown=true; fixedA=aLabels.slice(0,5); fixedB=bLabels.slice(0,5); curStep=1; showStage("stage3"); runCleanup(1);
   }
-  // 3단계(더추가) 결과: 둘 다 done
-  if(row.a_done && row.b_done && !moreShown){
-    moreShown=true; fixedA=[...aLabels]; fixedB=[...bLabels];
-    curStep=3; showStage("stage3"); runCleanup(3);
+  if(row.a_done && row.b_done && !moreShown && aLabels.length>=10 && bLabels.length>=10){
+    moreShown=true; fixedA=aLabels.slice(0,10); fixedB=bLabels.slice(0,10); curStep=3; showStage("stage3"); runCleanup(3);
   }
 }
 
 function startRound1(){
-  round=1; idx=0; myLabels=[]; myItems = myRole==="A" ? A_ITEMS : B_ITEMS;
+  round=1; idx=0; myLabels=[]; myItems = myRole==="A" ? A_ITEMS : B_ITEMS; myTrashCnt=0; myLifeCnt=0;
+  $("cntTrash").textContent="0"; $("cntLife").textContent="0";
   $("whoNow").className="who-now "+(myRole==="A"?"a":"b");
   $("whoNow").textContent=(myRole==="A"?"🟣 (가)":"🟢 (나)")+"의 차례";
   $("phaseTag").textContent="1라운드 · 물체 5개 가르치기"; $("lTot").textContent="5";
   showStage("stage2"); showItem();
 }
-function startRound2(){
-  round=2; idx=5; $("phaseTag").textContent="2라운드 · 5개 더 가르치기"; $("lTot").textContent="10";
-  showStage("stage2"); showItem();
-}
+function startRound2(){ round=2; idx=5; $("phaseTag").textContent="2라운드 · 5개 더 가르치기"; $("lTot").textContent="10"; showStage("stage2"); showItem(); }
 function renderDots(){const s0=round===1?0:5,e0=round===1?5:10;let s='';for(let i=s0;i<e0;i++)s+=`<span class="dot${i<idx?' done':''}"></span>`;$("lDots").innerHTML=s;}
-function showItem(){const a=myItems[idx];$("lEmoji").textContent=a.e;$("lName").textContent=a.n;$("lProg").textContent=round===1?idx:(idx-5);renderDots();}
+function showItem(){
+  const a=myItems[idx];
+  // 이전 물체를 옆 액자에
+  if(idx>0){ $("prevPic").textContent=myItems[idx-1].e; }
+  else { $("prevPic").textContent="❔"; }
+  $("lEmoji").textContent=a.e; $("lName").textContent=a.n;
+  $("lProg").textContent= round===1?idx:(idx-5); renderDots();
+}
 async function putLabel(label){
   myLabels[idx]=label; idx++;
+  if(label==="trash"){myTrashCnt++;$("cntTrash").textContent=myTrashCnt;} else {myLifeCnt++;$("cntLife").textContent=myLifeCnt;}
   const str=myLabels.map(l=>l==="trash"?"t":"s").join("");
   if(connected) sb.from("sessions").update(myRole==="A"?{a_labels:str}:{b_labels:str}).eq("room_code",roomCode);
   const end=round===1?5:10;
@@ -390,104 +425,98 @@ async function putLabel(label){
   showItem();
 }
 
-/* 점수(프로파일) 기반 분류기 */
 function buildProfile(train){
   const g={trash:{},sealife:{}},cnt={trash:0,sealife:0};
   for(const f of FEATS){g.trash[f]=0;g.sealife[f]=0;}
-  for(const t of train){cnt[t.label]++;for(const f of FEATS)g[t.label][f]+=t[f];}
+  for(const t of train){ if(t.label!=="trash"&&t.label!=="sealife")continue; cnt[t.label]++; for(const f of FEATS)g[t.label][f]+=t[f]; }
   for(const lab of ["trash","sealife"])if(cnt[lab])for(const f of FEATS)g[lab][f]/=cnt[lab];
   return {g,cnt};
 }
 function classify(item,prof){const {g,cnt}=prof;if(!cnt.trash&&!cnt.sealife)return null;if(!cnt.trash)return "sealife";if(!cnt.sealife)return "trash";let dt=0,ds=0;for(const f of FEATS){dt+=Math.pow(item[f]-g.trash[f],2);ds+=Math.pow(item[f]-g.sealife[f],2);}return dt<=ds?"trash":"sealife";}
 function buildTrain(step){
-  if(step===1){ // 혼자: 더 잘한(정확도 높은) 쪽 보여주기
+  if(step===1){
     const ta=A_ITEMS.slice(0,5).map((a,i)=>({...a,label:fixedA[i]}));
     const tb=B_ITEMS.slice(0,5).map((a,i)=>({...a,label:fixedB[i]}));
-    return {solo:true, A:ta, B:tb};
+    return {A:ta,B:tb};
   }
-  const n = step===2?5:10;
+  const n=step===2?5:10;
   const ta=A_ITEMS.slice(0,n).map((a,i)=>({...a,label:fixedA[i]}));
   const tb=B_ITEMS.slice(0,n).map((a,i)=>({...a,label:fixedB[i]}));
   return [...ta,...tb];
 }
 function accOf(train){const p=buildProfile(train);let ok=0;for(const a of TEST)if(classify(a,p)===a.truth)ok++;return Math.round(ok/TEST.length*100);}
 
-/* 순차 청소 모션 */
 function runCleanup(step){
   if(animTimer) clearInterval(animTimer);
-  // 칩 상태
   $("chip1").className="stepchip"+(step===1?" on":(step>1?" done":""));
   $("chip2").className="stepchip"+(step===2?" on":(step>2?" done":""));
   $("chip3").className="stepchip"+(step===3?" on":"");
-  $("nextBox").style.display="none";
-  $("noiseSec").style.display="none"; $("lbBox").style.display="none"; $("talkBox").style.display="none"; $("resetBox").style.display="none";
+  $("nextBox").style.display="none"; $("noiseSec").style.display="none"; $("lbBox").style.display="none"; $("talkBox").style.display="none"; $("resetBox").style.display="none";
 
-  let train, label2;
+  let train;
   if(step===1){
     const t=buildTrain(1);
-    const accA=accOf(t.A), accB=accOf(t.B);
-    // 더 잘 가르친 쪽을 "우리 로봇"으로
-    if(accA>=accB){ train=t.A; label2="🟣 (가)가 혼자 가르친 로봇"; } else { train=t.B; label2="🟢 (나)가 혼자 가르친 로봇"; }
-    $("resultTag").textContent="1단계 · "+label2;
+    if(myRole==="A"){ train=t.A; $("resultTag").textContent="1단계 · 🟣 (가)가 혼자 가르친 로봇"; }
+    else { train=t.B; $("resultTag").textContent="1단계 · 🟢 (나)가 혼자 가르친 로봇"; }
   }else{
     train=buildTrain(step);
     $("resultTag").textContent= step===2 ? "2단계 · 🤝 둘이 합쳐 가르친 로봇 (10개)" : "3단계 · 📚 더 가르친 로봇 (20개)";
   }
   const prof=buildProfile(train);
-  // 그리드 미리 깔기(흐릿)
-  let cells='';
-  TEST.forEach((a,i)=>{ cells+=`<div class="cl-item" id="cl${i}"><span class="badge2"></span><div class="ce">${a.e}</div><div class="cn">${a.n}</div><div class="act"></div></div>`; });
-  $("clGrid").innerHTML=cells; $("clTotal").innerHTML=""; $("growthMsg").textContent=""; $("clNow").textContent="로봇이 물체를 하나씩 살펴봐요...";
+  $("trayTrash").innerHTML=""; $("trayLife").innerHTML=""; $("growthMsg").textContent=""; $("scoreboard").innerHTML="";
+  $("livePct").textContent="--%"; $("livePct").style.color="var(--accent)";
+  $("cleanPic").textContent="🌊"; $("verdict").textContent="로봇이 물체를 하나씩 살펴봐요...";
+  $("cleanFrame").classList.add("glow");
 
   let i=0, ok=0;
   animTimer=setInterval(()=>{
-    if(i>=TEST.length){ clearInterval(animTimer); finishCleanup(step,ok); return; }
+   try{
+    if(i>=TEST.length){ clearInterval(animTimer); $("cleanFrame").classList.remove("glow"); finishCleanup(step,ok); return; }
     const a=TEST[i], pred=classify(a,prof), correct=pred===a.truth; if(correct)ok++;
-    const el=$("cl"+i); el.classList.add("shown","judged");
-    el.classList.add(pred==="trash"?"picked":"left");
-    if(!correct) el.classList.add("wrong");
-    el.querySelector(".act").textContent = pred==="trash"?"🗑️ 주움":"💙 놔둠";
-    el.querySelector(".badge2").textContent = correct?"✅":"❌";
-    el.classList.add(pred==="trash"?"suck":"swim");
-    $("clNow").textContent = `${a.e} ${a.n} → 로봇: ${pred==="trash"?"🗑️ 줍는다":"💙 놔둔다"} ${correct?"(정답!)":"(앗, 실수!)"}`;
+    // 가운데 액자에 현재 물체
+    $("cleanPic").textContent=a.e;
+    // 트레이에 쌓기
+    const tray = pred==="trash" ? $("trayTrash") : $("trayLife");
+    const span=document.createElement("span");
+    span.className="ti"+(correct?"":" wrong");
+    span.innerHTML=a.e+(correct?"":'<span class="x">❌</span>');
+    span.title=a.n; tray.appendChild(span);
+    // 실시간 점수
+    const done=i+1, livePct=Math.round(ok/done*100);
+    const lp=$("livePct");
+    lp.textContent=livePct+"%"; lp.style.color=correct?"var(--life)":"var(--trash)"; lp.style.transform="scale(1.3)";
+    setTimeout(()=>{ if(lp){lp.style.transform="scale(1)";lp.style.color="var(--accent)";} },300);
+    $("verdict").innerHTML = `${a.e} <b>${a.n}</b> → 로봇: ${pred==="trash"?"🗑️ 줍는다":"💙 놔둔다"} <span style="color:${correct?'var(--life)':'var(--trash)'}">${correct?"(정답! 📈)":"(실수! 📉)"}</span>`;
     i++;
-  }, 420);
+   }catch(e){ clearInterval(animTimer); console.error(e); $("verdict").textContent="오류가 났어요. 새 게임으로 다시 시도해 주세요."; }
+  }, 620);
 }
 function finishCleanup(step,ok){
   const pct=Math.round(ok/TEST.length*100);
-  $("clNow").textContent="청소 끝!";
-  $("clTotal").innerHTML=`바르게 처리 ${ok} / ${TEST.length} &nbsp;→&nbsp; 청소 정확도 <span class="pct">${pct}%</span>`;
-  if(connected){
-    const f = step===1?{acc_solo:pct}:(step===2?{acc_combined:pct}:{acc_more:pct,best_acc:pct});
-    sb.from("sessions").update(f).eq("room_code",roomCode);
-  }
+  $("cleanPic").textContent="🌊"; $("verdict").textContent="청소 끝! 🌊";
+  $("scoreboard").innerHTML=`최종 청소 정확도 <span class="pct">${pct}%</span> <span class="cnt">(${TEST.length}개 중 ${ok}개 정답)</span>`;
+  if(connected){ const f = step===1?{acc_solo:pct}:(step===2?{acc_combined:pct}:{acc_more:pct,best_acc:pct}); sb.from("sessions").update(f).eq("room_code",roomCode); }
   if(step===1){
-    $("growthMsg").textContent = pct>=80 ? "꽤 잘하네요! 그런데 라벨을 틀리면 확 떨어져요. 합치면 더 안정적일까요?" : "혼자라 실수가 많아요. 데이터가 적으면 라벨 하나의 영향이 커요!";
+    let msg;
+    if(pct>=80) msg="잘 가르쳤네요! 그런데 데이터가 5개뿐이라 라벨 하나만 틀려도 확 떨어져요.";
+    else if(pct>=55) msg="군데군데 실수해요. 데이터가 적으면 라벨 하나의 영향이 큽니다!";
+    else msg="로봇이 많이 헷갈려 해요! 잘못 가르쳤거나 한쪽으로 치우쳤어요.";
+    $("growthMsg").textContent=msg;
     $("nextMsg").textContent="🤝 이제 짝의 데이터와 합쳐서 다시 청소시켜 봐요!";
     $("nextBtn").textContent="🤝 합쳐서 청소시키기 →"; $("nextBox").style.display="block";
   }else if(step===2){
-    const soloBest = curBestSolo();
-    $("growthMsg").textContent = `합치니 데이터가 10개! ${soloBest!=null?`혼자(${soloBest}%)보다 안정적이에요. `:""}어려운 물체는 아직 헷갈려요.`;
+    $("growthMsg").textContent=`합치니 데이터가 10개! ${_soloPct!=null?`혼자(${_soloPct}%)보다 안정적이에요. `:""}어려운 물체는 아직 헷갈려요.`;
     $("nextMsg").textContent="📚 5개씩 더 가르치면 어려운 것까지 맞힐까요?";
     $("nextBtn").textContent="📚 더 가르치러 가기 →"; $("nextBox").style.display="block";
   }else{
-    $("growthMsg").textContent = `🎉 데이터 20개! 로봇이 ${pct}% 정확도로 청소했어요.`;
-    // 노이즈/순위/토론 표시
-    renderNoiseList(); $("noiseSec").style.display="block"; $("lbBox").style.display="block"; $("talkBox").style.display="block"; $("resetBox").style.display="block";
-    loadLeaderboard();
+    $("growthMsg").textContent=`🎉 데이터 20개! 로봇이 ${pct}% 정확도로 청소했어요.`;
+    renderNoiseList(); $("noiseSec").style.display="block"; $("lbBox").style.display="block"; $("talkBox").style.display="block"; $("resetBox").style.display="block"; loadLeaderboard();
   }
 }
-let _soloPct=null;
-function curBestSolo(){ return _soloPct; }
 function nextStep(){
-  if(curStep===1){ // 혼자→합침
-    _soloPct = (function(){const t=buildTrain(1);return Math.max(accOf(t.A),accOf(t.B));})();
-    curStep=2; runCleanup(2);
-  }else if(curStep===2){ // 합침→더추가(2라운드 라벨링 필요)
-    startRound2();
-  }
+  if(curStep===1){ const t=buildTrain(1); _soloPct=Math.max(accOf(t.A),accOf(t.B)); curStep=2; runCleanup(2); }
+  else if(curStep===2){ startRound2(); }
 }
-
 function renderNoiseList(){
   let items='';
   A_ITEMS.forEach((a,i)=>{ if(fixedA[i]!==undefined && fixedA[i]!==a.truth) items+=nrow(a,"a",i); });
@@ -499,13 +528,11 @@ function nrow(a,who,i){return `<div class="noise-item"><span class="emoji">${a.e
 function fixA(i){ fixedA[i]=A_ITEMS[i].truth; const b=$("a"+i); if(b){b.textContent="✅ 고침";b.classList.add("done");b.disabled=true;} }
 function fixB(i){ fixedB[i]=B_ITEMS[i].truth; const b=$("b"+i); if(b){b.textContent="✅ 고침";b.classList.add("done");b.disabled=true;} }
 function recheck(){ runCleanup(3); }
-
 async function loadLeaderboard(){
   if(!connected)return;
   const {data}=await sb.from("sessions").select("team_name,best_acc,room_code").not("best_acc","is",null).order("best_acc",{ascending:false}).limit(10);
   if(!data)return;
-  let rows=''; data.forEach((r,i)=>{ const me=r.room_code===roomCode?' class="me"':'';
-    rows+=`<tr${me}><td class="rank">${i+1}</td><td>${esc(r.team_name||"이름없는 조")}</td><td class="acc">${r.best_acc}%</td></tr>`; });
+  let rows=''; data.forEach((r,i)=>{ const me=r.room_code===roomCode?' class="me"':''; rows+=`<tr${me}><td class="rank">${i+1}</td><td>${esc(r.team_name||"이름없는 조")}</td><td class="acc">${r.best_acc}%</td></tr>`; });
   if(!rows)rows='<tr><td colspan="3" style="text-align:center;color:var(--muted);">아직 완료한 조가 없어요.</td></tr>';
   $("lbBody").innerHTML=rows;
 }
