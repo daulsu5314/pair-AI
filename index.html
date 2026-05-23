@@ -526,6 +526,7 @@ function finishStage(){
   renderNoiseList();
   $("noiseSec").style.display="block"; $("lbBox").style.display="block"; $("talkBox").style.display="block"; $("resetBox").style.display="block";
   loadLeaderboard();
+}
 function nextStep(){
   if(curStep===1){ const t=buildTrain(1); _soloPct=Math.max(accOf(t.A),accOf(t.B)); curStep=2; runCleanup(2); }
   else if(curStep===2){ startRound2(); }
