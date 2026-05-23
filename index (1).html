@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>포유류 분류 AI — 데이터가 쌓일수록 똑똑해진다</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Black+Han+Sans&family=Gaegu:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#1a2330;--paper:#f3f0e8;--card:#fff;--accent:#d4502b;
+    --pa:#6b4ec9;--pabg:#ece7fa;--pb:#1f9a86;--pbbg:#e2f4f0;
+    --yes:#2f7fd0;--no:#9a8f78;--line:#d6cbb4;--soft:#ece4d2;--muted:#857c6b;}
+  *{box-sizing:border-box;}html,body{margin:0;padding:0;}
+  body{background:radial-gradient(circle at 12% 6%,#ece7fa 0%,transparent 36%),
+    radial-gradient(circle at 88% 94%,#e2f4f0 0%,transparent 38%),var(--paper);
+    color:var(--ink);font-family:'Gowun Dodum',sans-serif;line-height:1.55;padding:24px 16px 60px;min-height:100vh;}
+  .wrap{max-width:760px;margin:0 auto;}
+  header{text-align:center;margin-bottom:10px;}
+  .badge{display:inline-block;font-family:'Gaegu',cursive;font-weight:700;background:var(--accent);color:#fff;
+    padding:3px 16px;border-radius:20px;font-size:14px;letter-spacing:1px;margin-bottom:8px;}
+  h1{font-family:'Black Han Sans',sans-serif;font-size:clamp(24px,4.4vw,38px);margin:6px 0;letter-spacing:-1px;line-height:1.08;}
+  h1 .hl{color:var(--accent);}
+  .lead{font-family:'Gaegu',cursive;font-size:17px;margin:0 0 4px;}
+  .lead2{font-size:13.5px;color:var(--muted);max-width:630px;margin:0 auto 14px;}
+  .panel{background:var(--card);border:2px solid var(--ink);border-radius:16px;padding:22px;
+    box-shadow:6px 6px 0 rgba(26,35,48,.1);margin-bottom:18px;}
+  .stage{display:none;}.stage.on{display:block;animation:fade .3s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+  .warn{background:#fff4ec;border:2px dashed var(--accent);border-radius:12px;padding:14px 18px;margin-bottom:18px;
+    font-size:13px;color:#9a4a2c;text-align:center;}
+  .warn b{color:var(--accent);}
+
+  .lobby{text-align:center;}
+  .lobby h2{font-family:'Black Han Sans',sans-serif;font-size:20px;margin:0 0 12px;}
+  .field{margin:0 auto 14px;max-width:340px;text-align:left;}
+  .field label{font-size:13px;color:var(--muted);display:block;margin-bottom:4px;font-family:'Gaegu',cursive;font-weight:700;}
+  .field input{width:100%;font-family:'Gaegu',cursive;font-size:18px;border:2px solid var(--ink);border-radius:10px;
+    padding:11px 14px;text-align:center;letter-spacing:2px;text-transform:uppercase;}
+  .bigbtn{font-family:'Gaegu',cursive;font-weight:700;font-size:16px;background:var(--accent);color:#fff;
+    border:2px solid var(--ink);border-radius:10px;padding:13px 26px;cursor:pointer;box-shadow:3px 3px 0 rgba(26,35,48,.15);}
+  .bigbtn:active{transform:translateY(2px);}
+  .bigbtn.ghost{background:#fff;color:var(--ink);}
+  .or{font-family:'Gaegu',cursive;color:var(--muted);margin:14px 0;}
+  .err{color:var(--accent);font-size:12.5px;min-height:18px;margin-top:8px;}
+  .conn{font-size:11.5px;color:var(--muted);margin-top:14px;}
+  .conn.ok{color:var(--pb);}.conn.bad{color:var(--accent);}
+
+  .waitroom{text-align:center;}
+  .roomcode{font-family:'Black Han Sans',sans-serif;font-size:40px;letter-spacing:6px;color:var(--accent);
+    background:var(--soft);border:2px dashed var(--accent);border-radius:14px;padding:14px;margin:8px 0 6px;}
+  .roominfo{font-size:13px;color:var(--muted);margin-bottom:18px;}
+  .players{display:flex;gap:14px;justify-content:center;margin-bottom:16px;}
+  .pcard{flex:1;max-width:200px;border:2px solid var(--line);border-radius:12px;padding:14px;}
+  .pcard.a{border-color:var(--pa);}.pcard.b{border-color:var(--pb);}
+  .pcard .role{font-family:'Black Han Sans',sans-serif;font-size:15px;}
+  .pcard.a .role{color:var(--pa);}.pcard.b .role{color:var(--pb);}
+  .pcard .status{font-size:12px;color:var(--muted);margin-top:4px;}
+  .pcard .status.joined{color:var(--pb);font-weight:700;}
+  .spinner{font-size:34px;animation:spin 1.4s linear infinite;display:inline-block;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  .phase-tag{text-align:center;font-family:'Gaegu',cursive;font-weight:700;font-size:14px;
+    background:var(--soft);border-radius:16px;padding:4px 14px;display:inline-block;margin:0 auto 8px;color:var(--accent);}
+  .phase-wrap{text-align:center;}
+  .who-now{text-align:center;font-family:'Black Han Sans',sans-serif;font-size:18px;margin-bottom:2px;}
+  .who-now.a{color:var(--pa);}.who-now.b{color:var(--pb);}
+  .task{text-align:center;font-size:13.5px;color:var(--muted);margin-bottom:14px;}
+  .task b{color:var(--accent);}
+  .animal-now{text-align:center;background:var(--soft);border:2px dashed var(--line);border-radius:14px;padding:16px 12px;margin-bottom:12px;}
+  .animal-now .emoji{font-size:58px;line-height:1;}
+  .animal-now .nm{font-family:'Black Han Sans',sans-serif;font-size:23px;margin-top:2px;}
+  .clues{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:8px;}
+  .clue{font-size:11.5px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:2px 10px;color:var(--muted);}
+  .lbl-btns{display:flex;gap:12px;}
+  .lbl-btns button{flex:1;font-family:'Gaegu',cursive;font-weight:700;font-size:16px;border:2px solid var(--ink);
+    border-radius:10px;padding:13px 6px;cursor:pointer;background:#fff;transition:transform .08s;}
+  .lbl-btns button:active{transform:translateY(2px);}
+  .lbl-btns .y{color:var(--yes);}.lbl-btns .y:hover{background:#e8f0fc;}
+  .lbl-btns .n{color:var(--no);}.lbl-btns .n:hover{background:#f3efe6;}
+  .progress{text-align:center;font-family:'Gaegu',cursive;font-size:14px;margin-top:14px;}
+  .progress b{font-family:'Black Han Sans',sans-serif;font-size:18px;}
+  .dots{display:flex;gap:5px;justify-content:center;margin-top:8px;flex-wrap:wrap;}
+  .dot{width:13px;height:13px;border-radius:50%;background:var(--line);}
+  .dot.done{background:var(--accent);}
+  .dot.phase2{background:var(--line);border:2px solid var(--accent);}
+  .partner-prog{text-align:center;font-size:12.5px;color:var(--muted);margin-top:10px;font-family:'Gaegu',cursive;}
+
+  /* 중간 정확도 카드 */
+  .midresult{text-align:center;}
+  .midresult .lab{font-family:'Gaegu',cursive;font-size:15px;color:var(--muted);}
+  .acc-circle{font-family:'Black Han Sans',sans-serif;font-size:54px;color:var(--accent);margin:6px 0;}
+  .midresult p{font-size:13.5px;color:var(--muted);margin:6px auto 18px;max-width:440px;}
+  .midresult .arrow{font-size:28px;color:var(--accent);margin:4px 0;}
+
+  /* 비교 그래프 */
+  .compare{margin:14px 0;}
+  .bar-row{display:flex;align-items:center;gap:10px;margin:8px 0;font-size:13px;}
+  .bar-row .blab{width:84px;text-align:right;font-family:'Gaegu',cursive;font-weight:700;}
+  .bar-outer{flex:1;background:var(--soft);border-radius:8px;height:28px;overflow:hidden;border:1.5px solid var(--line);}
+  .bar-inner{height:100%;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;color:#fff;
+    font-family:'Black Han Sans',sans-serif;font-size:13px;transition:width .8s ease;}
+  .bar-inner.b5{background:var(--no);}
+  .bar-inner.b15{background:var(--accent);}
+
+  .scorecard{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;}
+  .score{border:2px solid var(--ink);border-radius:14px;padding:16px;text-align:center;box-shadow:5px 5px 0 rgba(26,35,48,.1);background:var(--card);}
+  .score.a{border-color:var(--pa);}.score.b{border-color:var(--pb);}
+  .score h3{font-family:'Black Han Sans',sans-serif;font-size:15px;margin:0 0 4px;}
+  .score.a h3{color:var(--pa);}.score.b h3{color:var(--pb);}
+  .score .big{font-family:'Black Han Sans',sans-serif;font-size:36px;line-height:1;}
+  .score.a .big{color:var(--pa);}.score.b .big{color:var(--pb);}
+  .score .sub{font-size:11px;color:var(--muted);margin-top:2px;}
+  .winner{text-align:center;font-family:'Gaegu',cursive;font-weight:700;font-size:17px;color:var(--accent);margin-bottom:8px;min-height:24px;}
+
+  .noise-sec{background:var(--soft);border-radius:12px;padding:16px;margin-top:10px;}
+  .noise-sec h3{font-family:'Black Han Sans',sans-serif;font-size:15px;margin:0 0 4px;}
+  .noise-sec p{font-size:12.5px;color:var(--muted);margin:0 0 12px;}
+  .noise-list{display:flex;flex-direction:column;gap:8px;}
+  .noise-item{display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:8px 12px;font-size:13.5px;flex-wrap:wrap;}
+  .noise-item .emoji{font-size:22px;}.noise-item .nm{font-weight:700;min-width:64px;}
+  .noise-item .who{font-size:11px;padding:1px 8px;border-radius:10px;}
+  .noise-item .who.a{background:var(--pabg);color:var(--pa);}
+  .noise-item .who.b{background:var(--pbbg);color:var(--pb);}
+  .fixbtn{margin-left:auto;font-family:'Gaegu',cursive;font-weight:700;font-size:12.5px;background:var(--accent);
+    color:#fff;border:2px solid var(--ink);border-radius:8px;padding:5px 12px;cursor:pointer;}
+  .fixbtn:active{transform:translateY(1px);}.fixbtn.done{background:#fff;color:var(--muted);border-color:var(--line);}
+  .recheck{margin-top:14px;text-align:center;}
+
+  .lb{margin-top:18px;}
+  .lb h3{font-family:'Black Han Sans',sans-serif;font-size:16px;margin:0 0 10px;text-align:center;}
+  .lb-table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  .lb-table th,.lb-table td{border:1px solid var(--line);padding:7px 10px;}
+  .lb-table thead th{background:var(--ink);color:#fff;font-weight:400;font-size:12.5px;}
+  .lb-table td.rank{text-align:center;font-family:'Black Han Sans',sans-serif;width:48px;}
+  .lb-table td.acc{text-align:right;font-family:'Black Han Sans',sans-serif;color:var(--accent);width:70px;}
+  .lb-table tr.me{background:#fff4ec;font-weight:700;}
+
+  .talk{margin-top:20px;border:2px solid var(--accent);border-radius:14px;overflow:hidden;box-shadow:6px 6px 0 rgba(212,80,43,.18);}
+  .talk .bar{background:var(--accent);color:#fff;padding:9px 18px;font-family:'Black Han Sans';font-size:16px;}
+  .talk .body{background:var(--card);padding:14px 20px;}
+  .talk ol{margin:0;padding-left:20px;}.talk li{font-size:14px;margin:8px 0;}
+  .toolbar{text-align:center;margin-top:10px;}
+  .reset{font-family:'Gaegu',cursive;font-weight:700;font-size:13.5px;background:#fff;border:2px solid var(--ink);
+    border-radius:10px;padding:8px 20px;cursor:pointer;box-shadow:2px 2px 0 rgba(26,35,48,.12);}
+  .reset:active{transform:translateY(2px);}
+  .footer{margin-top:20px;text-align:center;font-family:'Gaegu',cursive;font-size:13px;color:var(--muted);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="badge">지도학습 · 실시간 짝활동</span>
+    <h1>데이터가 쌓일수록 <span class="hl">똑똑해지는</span> AI</h1>
+    <p class="lead">5마리로 시작 → 정확도 확인 → 15마리로 늘리면? → AI 대결 + 노이즈 사냥</p>
+    <p class="lead2">두 사람이 각자 컴퓨터에서 같은 방에 들어가, 헷갈리는 동물에 "포유류/아님"을 라벨링해요. 먼저 5마리만 가르쳐 AI를 시험하고, 그다음 15마리로 늘려서 정확도가 어떻게 변하는지 봅니다. 라벨이 틀리면(노이즈) AI도 따라 틀려요!</p>
+  </header>
+
+  <div class="warn" id="setupWarn" style="display:none;">
+    ⚙️ <b>아직 Supabase 키가 입력되지 않았어요.</b> 이 파일 상단의 SUPABASE_URL 과 SUPABASE_ANON_KEY 를 채워야 실시간 연결이 됩니다. (설치 안내서 참고)
+  </div>
+
+  <!-- STAGE 0 로비 -->
+  <div class="panel stage on" id="stage0">
+    <div class="lobby">
+      <h2>🚪 방 만들기 / 입장하기</h2>
+      <div class="field"><label>우리 조 이름 (순위표에 표시)</label>
+        <input id="teamName" placeholder="예: 1모둠, 호랑이팀..." maxlength="14"/></div>
+      <button class="bigbtn" onclick="createRoom()">🟣 (가) 방 만들기</button>
+      <div class="or">— 또는 —</div>
+      <div class="field"><label>짝이 알려준 방 코드</label>
+        <input id="joinCode" placeholder="예: 7K2Q" maxlength="4"/></div>
+      <button class="bigbtn ghost" onclick="joinRoom()">🟢 (나) 방 입장하기</button>
+      <div class="err" id="lobbyErr"></div>
+      <div class="conn" id="connStatus">서버 연결 확인 중...</div>
+    </div>
+  </div>
+
+  <!-- STAGE 1 대기실 -->
+  <div class="panel stage" id="stage1">
+    <div class="waitroom">
+      <h2 style="font-family:'Black Han Sans';font-size:18px;margin:0 0 4px;">방 코드</h2>
+      <div class="roomcode" id="roomCodeShow">----</div>
+      <div class="roominfo">짝에게 이 코드를 알려주세요. 둘 다 들어오면 자동 시작!</div>
+      <div class="players">
+        <div class="pcard a"><div class="role">🟣 (가)</div><div class="status joined">입장함</div></div>
+        <div class="pcard b"><div class="role">🟢 (나)</div><div class="status" id="statB">기다리는 중...</div></div>
+      </div>
+      <div><span class="spinner">🐾</span><div style="font-size:13px;color:var(--muted);margin-top:6px;">짝이 들어오면 라벨링이 시작됩니다.</div></div>
+    </div>
+  </div>
+
+  <!-- STAGE 2 라벨링 -->
+  <div class="panel stage" id="stage2">
+    <div class="phase-wrap"><span class="phase-tag" id="phaseTag">1단계 · 처음 5마리 가르치기</span></div>
+    <div class="who-now" id="whoNow">🟣 (가)의 라벨링</div>
+    <div class="task">이 동물은 <b>포유류</b>인가요? 직접 판단해서 누르세요.</div>
+    <div class="animal-now">
+      <div class="emoji" id="lEmoji">🐬</div>
+      <div class="nm" id="lName">돌고래</div>
+      <div class="clues" id="lClues"></div>
+    </div>
+    <div class="lbl-btns">
+      <button class="y" onclick="putLabel('mammal')">✅ 포유류다</button>
+      <button class="n" onclick="putLabel('other')">❌ 포유류 아니다</button>
+    </div>
+    <div class="progress"><b id="lProg">0</b> / <span id="lTotal">5</span> 마리</div>
+    <div class="dots" id="lDots"></div>
+    <div class="partner-prog" id="partnerProg"></div>
+  </div>
+
+  <!-- STAGE 2.5 중간 정확도(5마리) -->
+  <div class="panel stage" id="stageMid">
+    <div class="midresult">
+      <span class="phase-tag">1단계 결과 · 5마리만 배운 AI</span>
+      <div class="lab">지금 내 AI의 정확도는</div>
+      <div class="acc-circle" id="acc5big">--%</div>
+      <p>아직 5마리밖에 못 배워서, 본 적 없는 동물을 자주 틀려요. 데이터를 더 주면 똑똑해질까요?</p>
+      <button class="bigbtn" onclick="startPhase2()">📈 10마리 더 가르치기 →</button>
+    </div>
+  </div>
+
+  <!-- STAGE 2.7 짝 대기 -->
+  <div class="panel stage" id="stageWait">
+    <div class="midresult">
+      <span class="spinner">⏳</span>
+      <h2 style="font-family:'Black Han Sans';font-size:18px;margin:12px 0 4px;">15마리 라벨링 완료!</h2>
+      <div style="font-size:13px;color:var(--muted);">짝이 끝내면 자동으로 결과가 나옵니다. <span id="waitPartnerProg"></span></div>
+    </div>
+  </div>
+
+  <!-- STAGE 3 결과 -->
+  <div class="panel stage" id="stage3">
+    <span class="phase-tag" style="display:block;width:fit-content;margin:0 auto 10px;">📊 데이터 5마리 → 15마리, 정확도 변화</span>
+    <div class="compare" id="myCompare"></div>
+    <div class="winner" id="growthMsg" style="color:var(--pb);"></div>
+
+    <div class="scorecard" style="margin-top:18px;">
+      <div class="score a"><h3>🟣 (가)의 AI</h3><div class="big" id="accA">0%</div><div class="sub" id="subA"></div></div>
+      <div class="score b"><h3>🟢 (나)의 AI</h3><div class="big" id="accB">0%</div><div class="sub" id="subB"></div></div>
+    </div>
+    <div class="winner" id="winner"></div>
+
+    <div class="noise-sec">
+      <h3>🔍 노이즈(틀린 라벨) 사냥</h3>
+      <p>AI가 틀린다면 학습 데이터에 <b>틀리게 붙인 라벨</b>이 있을지도! 정답을 확인하고 "고치기" 후 다시 시험해 정확도 변화를 보세요. 데이터가 많으면 노이즈가 좀 있어도 잘 버텨요.</p>
+      <div class="noise-list" id="noiseList"></div>
+      <div class="recheck"><button class="bigbtn" onclick="recheck()">♻️ 고친 데이터로 다시 시험</button></div>
+    </div>
+
+    <div class="lb">
+      <h3>🏆 우리 반 순위표 (실시간)</h3>
+      <table class="lb-table"><thead><tr><th>순위</th><th>조 이름</th><th>최고 정확도</th></tr></thead>
+      <tbody id="lbBody"><tr><td colspan="3" style="text-align:center;color:var(--muted);">불러오는 중...</td></tr></tbody></table>
+    </div>
+
+    <div class="talk">
+      <div class="bar">💬 짝과 이야기해요</div>
+      <div class="body"><ol>
+        <li>5마리만 배웠을 때와 15마리 배웠을 때, 내 AI 정확도는 어떻게 달라졌나요?</li>
+        <li>데이터가 많아지니 왜 더 잘 맞히게 됐을까요?</li>
+        <li>틀린 라벨(노이즈)을 고치니 정확도가 어떻게 변했나요?</li>
+        <li>"데이터는 많기만 하면 좋다"가 맞을까요? 양과 정확함 중 무엇이 더 중요할까요?</li>
+      </ol></div>
+    </div>
+    <div class="toolbar"><button class="reset" onclick="location.reload()">↺ 새 게임</button></div>
+  </div>
+
+  <div class="footer">한 줄 요약 ✦ "데이터가 많을수록 AI는 똑똑해진다. 단, 라벨이 정확할 때!"</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* ===================================================================
+   ① 아래 두 줄에 Supabase 값을 넣으세요 (Settings > API)
+   =================================================================== */
+const SUPABASE_URL  = "여기에_PROJECT_URL_붙여넣기";
+const SUPABASE_ANON_KEY = "여기에_ANON_PUBLIC_KEY_붙여넣기";
+/* =================================================================== */
+
+let sb=null, connected=false;
+try{ if(SUPABASE_URL.startsWith("http") && SUPABASE_ANON_KEY.length>20){ sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY); connected=true; } }catch(e){ connected=false; }
+
+/* 학습 동물 15마리 (앞 5마리 = 1단계, 뒤 10마리 = 2단계) */
+const TRAIN=[
+  {e:"🐕",n:"개",fur:.95,milk:1,legs:4,wet:.05,fly:0,eggs:0,truth:"mammal",clue:["털이 있다","새끼를 낳는다"]},
+  {e:"🐬",n:"돌고래",fur:.05,milk:1,legs:0,wet:.95,fly:0,eggs:0,truth:"mammal",clue:["물속에 산다","새끼를 낳는다"]},
+  {e:"🦅",n:"독수리",fur:0,milk:0,legs:2,wet:.05,fly:1,eggs:1,truth:"other",clue:["하늘을 난다","알을 낳는다"]},
+  {e:"🐟",n:"금붕어",fur:0,milk:0,legs:0,wet:.98,fly:0,eggs:1,truth:"other",clue:["물속에 산다","아가미로 숨쉰다"]},
+  {e:"🐅",n:"호랑이",fur:.95,milk:1,legs:4,wet:.05,fly:0,eggs:0,truth:"mammal",clue:["털이 있다","젖을 먹인다"]},
+  {e:"🦇",n:"박쥐",fur:.9,milk:1,legs:2,wet:.05,fly:1,eggs:0,truth:"mammal",clue:["하늘을 난다","털이 있다"]},
+  {e:"🦫",n:"오리너구리",fur:.8,milk:1,legs:4,wet:.6,fly:0,eggs:1,truth:"mammal",clue:["알을 낳는다","젖을 먹인다"]},
+  {e:"🦔",n:"천산갑",fur:.1,milk:1,legs:4,wet:.05,fly:0,eggs:0,truth:"mammal",clue:["몸이 비늘로 덮임","새끼를 낳는다"]},
+  {e:"🐘",n:"코끼리",fur:.3,milk:1,legs:4,wet:.1,fly:0,eggs:0,truth:"mammal",clue:["몸집이 크다","젖을 먹인다"]},
+  {e:"🐇",n:"토끼",fur:.9,milk:1,legs:4,wet:.03,fly:0,eggs:0,truth:"mammal",clue:["털이 있다","새끼를 낳는다"]},
+  {e:"🐧",n:"펭귄",fur:0,milk:0,legs:2,wet:.5,fly:0,eggs:1,truth:"other",clue:["헤엄친다","알을 낳는다"]},
+  {e:"🦈",n:"상어",fur:0,milk:0,legs:0,wet:.99,fly:0,eggs:0,truth:"other",clue:["물속에 산다","아가미로 숨쉰다"]},
+  {e:"🐸",n:"개구리",fur:0,milk:0,legs:4,wet:.5,fly:0,eggs:1,truth:"other",clue:["물과 땅을 오감","알을 낳는다"]},
+  {e:"🦎",n:"코모도왕도마뱀",fur:0,milk:0,legs:4,wet:.1,fly:0,eggs:1,truth:"other",clue:["비늘이 있다","알을 낳는다"]},
+  {e:"🐍",n:"뱀",fur:0,milk:0,legs:0,wet:.1,fly:0,eggs:1,truth:"other",clue:["다리가 없다","알을 낳는다"]},
+];
+const TEST=[
+  {n:"고래",fur:.02,milk:1,legs:0,wet:.99,fly:0,eggs:0,truth:"mammal"},
+  {n:"물범",fur:.2,milk:1,legs:4,wet:.75,fly:0,eggs:0,truth:"mammal"},
+  {n:"바늘두더지",fur:.6,milk:1,legs:4,wet:.1,fly:0,eggs:1,truth:"mammal"},
+  {n:"날다람쥐",fur:.9,milk:1,legs:4,wet:.05,fly:1,eggs:0,truth:"mammal"},
+  {n:"듀공",fur:.05,milk:1,legs:0,wet:.9,fly:0,eggs:0,truth:"mammal"},
+  {n:"타조",fur:0,milk:0,legs:2,wet:.05,fly:0,eggs:1,truth:"other"},
+  {n:"잉어",fur:0,milk:0,legs:0,wet:.95,fly:0,eggs:1,truth:"other"},
+  {n:"거북",fur:0,milk:0,legs:4,wet:.6,fly:0,eggs:1,truth:"other"},
+  {n:"악어",fur:0,milk:0,legs:4,wet:.6,fly:0,eggs:1,truth:"other"},
+  {n:"올빼미",fur:0,milk:0,legs:2,wet:.05,fly:1,eggs:1,truth:"other"},
+];
+const PHASE1=5;
+
+let myRole=null, roomCode=null, teamName="";
+let idx=0, myLabels=[], phase=1;
+let myAcc5=null;
+let aLabels=[],bLabels=[],fixedA=[],fixedB=[];
+let aAcc5=null,bAcc5=null,aAcc15=null,bAcc15=null;
+let resultShown=false, aStarted=false;
+const $=id=>document.getElementById(id);
+function showStage(n){["stage0","stage1","stage2","stageMid","stageWait","stage3"].forEach(s=>$(s).classList.remove("on"));$(n).classList.add("on");}
+
+window.addEventListener("load",()=>{
+  if(!connected){ $("setupWarn").style.display="block";
+    $("connStatus").textContent="⚠️ 오프라인 모드 (키 미입력 — 실시간 불가)"; $("connStatus").className="conn bad";
+  }else{ $("connStatus").textContent="✅ 서버 연결됨 — 방을 만들거나 입장하세요"; $("connStatus").className="conn ok"; }
+});
+function randCode(){const c="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";let s="";for(let i=0;i<4;i++)s+=c[Math.floor(Math.random()*c.length)];return s;}
+
+async function createRoom(){
+  if(!connected){$("lobbyErr").textContent="Supabase 키를 먼저 입력해야 해요.";return;}
+  teamName=$("teamName").value.trim()||"이름없는 조"; roomCode=randCode(); myRole="A";
+  const {error}=await sb.from("sessions").insert({room_code:roomCode,team_name:teamName});
+  if(error){$("lobbyErr").textContent="방 생성 실패: "+error.message;return;}
+  $("roomCodeShow").textContent=roomCode; showStage("stage1"); subscribe();
+}
+async function joinRoom(){
+  if(!connected){$("lobbyErr").textContent="Supabase 키를 먼저 입력해야 해요.";return;}
+  const code=$("joinCode").value.trim().toUpperCase();
+  if(code.length!==4){$("lobbyErr").textContent="방 코드 4자리를 입력하세요.";return;}
+  const {data,error}=await sb.from("sessions").select("*").eq("room_code",code).maybeSingle();
+  if(error||!data){$("lobbyErr").textContent="그런 방이 없어요. 코드를 확인하세요.";return;}
+  if(data.b_joined){$("lobbyErr").textContent="이 방엔 이미 (나)가 들어와 있어요.";return;}
+  roomCode=code; myRole="B"; teamName=data.team_name||"";
+  await sb.from("sessions").update({b_joined:true}).eq("room_code",code);
+  subscribe(); startLabeling();
+}
+let chan=null;
+function subscribe(){
+  chan=sb.channel("room-"+roomCode)
+    .on("postgres_changes",{event:"*",schema:"public",table:"sessions",filter:"room_code=eq."+roomCode},
+      p=>handleUpdate(p.new)).subscribe();
+  sb.channel("lb-"+roomCode).on("postgres_changes",{event:"*",schema:"public",table:"sessions"},()=>loadLeaderboard()).subscribe();
+  pollOnce();
+}
+async function pollOnce(){ const {data}=await sb.from("sessions").select("*").eq("room_code",roomCode).maybeSingle(); if(data)handleUpdate(data); }
+
+function handleUpdate(row){
+  if(!row)return;
+  if(myRole==="A" && !aStarted && row.b_joined){
+    aStarted=true; $("statB").textContent="입장함!"; $("statB").classList.add("joined"); setTimeout(startLabeling,500);
+  }
+  const partnerLabels = myRole==="A" ? row.b_labels : row.a_labels;
+  const pc = partnerLabels ? partnerLabels.length : 0;
+  if($("partnerProg")) $("partnerProg").textContent=`짝 진행: ${pc} / 15`;
+  if($("waitPartnerProg")) $("waitPartnerProg").textContent=`(짝 진행 ${pc}/15)`;
+
+  if(row.a_done && row.b_done && !resultShown){
+    aLabels=(row.a_labels||"").split("").map(c=>c==="m"?"mammal":"other");
+    bLabels=(row.b_labels||"").split("").map(c=>c==="m"?"mammal":"other");
+    aAcc5=row.a_acc5; bAcc5=row.b_acc5;
+    fixedA=[...aLabels]; fixedB=[...bLabels];
+    resultShown=true; showStage("stage3"); renderResult(true); renderNoiseList(); loadLeaderboard();
+  }
+}
+
+function startLabeling(){
+  idx=0; myLabels=[]; phase=1;
+  $("whoNow").className="who-now "+(myRole==="A"?"a":"b");
+  $("whoNow").textContent=(myRole==="A"?"🟣 (가)":"🟢 (나)")+"의 라벨링";
+  $("phaseTag").textContent="1단계 · 처음 5마리 가르치기";
+  $("lTotal").textContent=PHASE1;
+  showStage("stage2"); showLabelAnimal();
+}
+function renderDots(){
+  let s='';const total=phase===1?PHASE1:TRAIN.length;
+  for(let i=0;i<total;i++){
+    let cls="dot"; if(i<idx)cls+=" done"; else if(i>=PHASE1)cls+=" phase2";
+    s+=`<span class="${cls}"></span>`;
+  }
+  $("lDots").innerHTML=s;
+}
+function showLabelAnimal(){
+  const a=TRAIN[idx];
+  $("lEmoji").textContent=a.e; $("lName").textContent=a.n;
+  $("lClues").innerHTML=a.clue.map(c=>`<span class="clue">🔎 ${c}</span>`).join("");
+  $("lProg").textContent=phase===1?idx:idx; renderDots();
+}
+async function putLabel(label){
+  myLabels.push(label); idx++;
+  const str=myLabels.map(l=>l==="mammal"?"m":"o").join("");
+  if(connected) sb.from("sessions").update(myRole==="A"?{a_labels:str}:{b_labels:str}).eq("room_code",roomCode);
+  if(phase===1 && idx>=PHASE1){ // 1단계 끝 → 중간 정확도
+    myAcc5=accuracy(myLabels.slice(0,PHASE1), PHASE1).pct;
+    if(connected) sb.from("sessions").update(myRole==="A"?{a_acc5:myAcc5}:{b_acc5:myAcc5}).eq("room_code",roomCode);
+    $("acc5big").textContent=myAcc5+"%"; showStage("stageMid"); return;
+  }
+  if(phase===2 && idx>=TRAIN.length){ finishLabeling(str); return; }
+  showLabelAnimal();
+}
+function startPhase2(){
+  phase=2; $("phaseTag").textContent="2단계 · 10마리 더 가르치기";
+  $("lTotal").textContent=TRAIN.length; showStage("stage2"); showLabelAnimal();
+}
+async function finishLabeling(str){
+  const acc15=accuracy(myLabels, TRAIN.length).pct;
+  const upd = myRole==="A" ? {a_labels:str,a_done:true,a_acc15:acc15} : {b_labels:str,b_done:true,b_acc15:acc15};
+  if(connected) await sb.from("sessions").update(upd).eq("room_code",roomCode);
+  showStage("stageWait"); pollOnce();
+}
+
+/* K-최근접 다수결 분류기. labels 길이만큼만 학습데이터로 사용 */
+function dist(a,t){let d=0;d+=Math.pow(a.fur-t.fur,2);d+=Math.pow(a.milk-t.milk,2);d+=Math.pow((a.legs-t.legs)/4,2);d+=Math.pow(a.wet-t.wet,2);d+=Math.pow(a.fly-t.fly,2);d+=Math.pow(a.eggs-t.eggs,2);return d;}
+function classify(animal, labels, count){
+  const n=count||labels.length;
+  const pool=[];
+  for(let i=0;i<n;i++) pool.push({d:dist(animal,TRAIN[i]),label:labels[i]});
+  pool.sort((x,y)=>x.d-y.d);
+  const K=Math.min(5, pool.length); let m=0,o=0;
+  for(let i=0;i<K;i++) pool[i].label==="mammal"?m++:o++;
+  return m>=o?"mammal":"other";
+}
+function accuracy(labels, count){
+  let ok=0; for(const a of TEST) if(classify(a,labels,count)===a.truth) ok++;
+  return {pct:Math.round(ok/TEST.length*100),hit:ok,total:TEST.length};
+}
+
+async function renderResult(save){
+  const ra5=aAcc5!=null?aAcc5:accuracy(aLabels.slice(0,PHASE1),PHASE1).pct;
+  const rb5=bAcc5!=null?bAcc5:accuracy(bLabels.slice(0,PHASE1),PHASE1).pct;
+  const ra=accuracy(fixedA, TRAIN.length), rb=accuracy(fixedB, TRAIN.length);
+  // 내 5→15 비교 막대
+  const my5 = myRole==="A"?ra5:rb5;
+  const my15 = (myRole==="A"?ra:rb).pct;
+  $("myCompare").innerHTML=
+    `<div class="bar-row"><span class="blab">5마리</span><div class="bar-outer"><div class="bar-inner b5" style="width:${Math.max(my5,8)}%">${my5}%</div></div></div>`+
+    `<div class="bar-row"><span class="blab">15마리</span><div class="bar-outer"><div class="bar-inner b15" style="width:${Math.max(my15,8)}%">${my15}%</div></div></div>`;
+  const diff=my15-my5;
+  $("growthMsg").textContent= diff>0 ? `📈 데이터를 늘리니 정확도가 ${diff}%p 올랐어요!` : (diff===0?"정확도가 그대로네요. 노이즈를 점검해 보세요!":"어라, 떨어졌네요? 노이즈(틀린 라벨)를 의심해 보세요!");
+  $("accA").textContent=ra.pct+"%"; $("subA").textContent=`5마리 ${ra5}% → 15마리 ${ra.pct}%`;
+  $("accB").textContent=rb.pct+"%"; $("subB").textContent=`5마리 ${rb5}% → 15마리 ${rb.pct}%`;
+  let w; if(ra.pct>rb.pct)w="🟣 (가)의 AI가 더 똑똑해요!"; else if(rb.pct>ra.pct)w="🟢 (나)의 AI가 더 똑똑해요!"; else w="🤝 두 AI 정확도가 같아요!";
+  $("winner").textContent=w;
+  if(save && connected){ const best=Math.max(ra.pct,rb.pct);
+    await sb.from("sessions").update({a_acc15:ra.pct,b_acc15:rb.pct,best_acc:best}).eq("room_code",roomCode); }
+}
+function renderNoiseList(){
+  let items='';
+  for(let i=0;i<TRAIN.length;i++){
+    const a=TRAIN[i]; const wA=fixedA[i]!==a.truth, wB=fixedB[i]!==a.truth;
+    if(wA||wB){ let tags=''; if(wA)tags+=`<span class="who a">(가) 틀림</span>`; if(wB)tags+=`<span class="who b">(나) 틀림</span>`;
+      items+=`<div class="noise-item" id="ni${i}"><span class="emoji">${a.e}</span><span class="nm">${a.n}</span>${tags}<button class="fixbtn" onclick="fixNoise(${i})">정답으로 고치기</button></div>`; }
+  }
+  if(!items)items='<p style="font-size:13px;color:var(--muted);margin:0;">🎉 틀린 라벨이 없어요! 둘 다 정확히 했네요.</p>';
+  $("noiseList").innerHTML=items;
+}
+function fixNoise(i){ const t=TRAIN[i].truth; fixedA[i]=t; fixedB[i]=t;
+  const b=document.querySelector(`#ni${i} .fixbtn`); if(b){b.textContent="✅ 고침";b.classList.add("done");b.disabled=true;} }
+async function recheck(){ await renderResult(true); loadLeaderboard();
+  $("winner").style.transition="none";$("winner").style.transform="scale(1.08)";
+  setTimeout(()=>{$("winner").style.transition="transform .3s";$("winner").style.transform="scale(1)";},30); }
+
+async function loadLeaderboard(){
+  if(!connected)return;
+  const {data}=await sb.from("sessions").select("team_name,best_acc,room_code").not("best_acc","is",null).order("best_acc",{ascending:false}).limit(10);
+  if(!data)return;
+  let rows=''; data.forEach((r,i)=>{ const me=r.room_code===roomCode?' class="me"':'';
+    rows+=`<tr${me}><td class="rank">${i+1}</td><td>${esc(r.team_name||"이름없는 조")}</td><td class="acc">${r.best_acc}%</td></tr>`; });
+  if(!rows)rows='<tr><td colspan="3" style="text-align:center;color:var(--muted);">아직 완료한 조가 없어요.</td></tr>';
+  $("lbBody").innerHTML=rows;
+}
+function esc(s){return (s||"").replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+</script>
+</body>
+</html>
